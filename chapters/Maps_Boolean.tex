@@ -1,0 +1,225 @@
+\section{Conjugacy and isometric conjugacy}
+
+\begin{definition}
+    Let $f,g \colon \F^n\to \F^n$ be Boolean networks. A conjugacy from $f$ to $g$ is a bijection $h\colon \F^n\to \F^n$ such that $h\circ h=g\circ h$. When such a map exists, we say that $f$ and $g$ are conjugate and write $f\sim g$.
+\end{definition}
+
+We can represent the previous identity as the following commutative diagram.
+
+\[
+		\begin{tikzpicture}[scale=1.25, every node/.style={midway}]
+			\matrix[column sep={4em,between origins}, row sep={2em}] at (0,0) {
+				\node(A) {$\F^n$}; && \node(A1) {$\F^m$};\\
+				\\
+				\node(B) {$\F^n$}; && \node(B1) {$\F^m$};\\           
+			};
+			\draw[->] (A) -- node(A2) [above] {$h$} (A1);
+			\draw[->] (A) -- (B) node[anchor=east] {$f$};
+			\draw[->] (B) -- (B1) node[anchor=south] {$h$};
+			\draw[->] (A1) -- (B1) node[anchor=west] {$g$};
+		\end{tikzpicture}
+\]
+
+Consequently, one may either (i) update a state via $f$ and subsequently relabel it through $h$, or (ii) first apply the relabeling $h$ and then update via $g$; in both cases the resulting state is identical. Furthermore, given a Boolean network $f$ and a bijection $h$, there exists a unique map $g$ that renders the corresponding diagram commutative, namely
+\[
+g = h\circ f\circ h^{-1}.
+\]
+
+Observe that the identity map conjugates $f$ to itself. If $h\circ f = g\circ h$, then composing on the right with $h^{-1}$ yields $f\circ h^{-1} = h^{-1}\circ g$, and hence $h^{-1}$ conjugates $g$ to $f$. Finally, if $h\circ f = g\circ h$ and $k\circ g = l\circ k$, then
+\[
+(k\circ h)\circ f \;=\; k\circ(g\circ h)\;=\; l\circ(k\circ h),
+\]
+which shows that $k\circ h$ conjugates $f$ to $l$. Therefore,
+\begin{proposition}
+    Conjugacy is an equivalence relation on Boolean networks.
+\end{proposition}
+
+\begin{example}
+A paradigmatic instance of a structural correspondence is provided by the equivalence between OR-networks and AND-networks. Specifically, consider the maps $f,g\colon \F^3\to\F^3$ defined by
+\[
+f(x_1,x_2,x_3)= (x_1x_2x_3,\ x_1x_2,\ x_1x_3); \quad
+g(y_1,y_2,y_3)= (y_1\vee y_2\vee y_3,\ y_1\vee y_2,\ y_1\vee y_3).
+\]
+The wiring diagrams associated with these two networks coincide; they are given below, where self-loops are understood and each edge is regarded as bidirectional:
+\[
+\begin{tikzpicture}[scale=.9,xscale=.75,every label/.append style={font=\scriptsize}]
+ \tikzstyle{v} = [circle, draw, fill=black,inner sep=0pt, minimum size=.75mm]
+    \tikzstyle{e} = [thick] 
+    %%
+    
+        \node[v,label=above:{$1$}] (r) at (0,1) {};
+        \node[v,label=below:{$2$}] (v1) at (-.5,0) {};
+        \node[v,label=below:{$3$}] (v2) at (.5,0) {};
+        \draw[e] (r)--(v1); \draw[e] (r)--(v2);
+    
+        
+    \end{tikzpicture}
+\]
+Define $h\colon \F^3\to\F^3$ by $h(x_1,x_2,x_3)=(\Not{x}_1,\Not{x}_2,\Not{x}_3)$. This map is a bijection (indeed, an involution). Moreover, a direct computation yields
+\begin{align*}
+        hf(x_1,x_2,x_3) &= h(x_1x_2x_3,\ x_1x_2,\ x_1x_3)\\
+        &= (\Not{x}_1\vee \Not{x}_2\vee \Not{x}_3,\ \Not{x}_1\vee \Not{x}_2,\ \Not{x}_1\vee \Not{x}_3)\\
+        &= g(\Not{x}_1,\Not{x}_2,\Not{x}_3)\\
+        &= gh(x_1,x_2,x_3),
+\end{align*}
+and hence $hf=gh$, establishing that $f$ and $g$ are conjugate via $h$.
+\end{example}
+
+It should be observed that the conjugacy identity is invariant under arbitrary iteration. More precisely, for every \(k \in \mathbb{N}\),
+\[
+    h \circ f^{k} = g^{k} \circ h .
+\]
+Here, \(f^{k}\) (respectively, \(g^{k}\)) denotes the \(k\)-fold iterate of \(f\) (respectively, \(g\)), i.e., the \(k\)-fold self-composition. It follows that \(h\) maps the entire forward orbit of \(x\),
+\[
+x,\ f(x),\ f^2(x), \dots,
+\]
+onto the forward orbit of \(h(x)\),
+\[
+h(x),\ g(h(x)),\ g^2(h(x)), \dots,
+\]
+in a term-wise manner. Equivalently, in graph-theoretic language, a conjugacy is precisely an isomorphism of directed graphs between the corresponding phase spaces.
+
+Conjugacy exhibits numerous desirable properties that are compatible with dynamical behavior; we have mentioned only a subset of these. Many such properties are investigated in \cite{laubenbacher2001equivalence,laubenbacher2003decomposition,reidys2005certain,kadelka2023modularity}, among other works. However, some limitations have been found regarding the geometry of the Boolean networks; we will see this explicitly in the following example.
+
+\begin{example}\label{picard}
+
+    Let $f,g\colon\F^3\to\F^3$ be the Boolean networks defined by
+    \[
+        f(x_0,x_1,x_2)=(x_0,0,0)
+    \]
+    and
+    \[
+        g(x_0,x_1,x_2)=\bigl(p(x),p(x),p(x)\bigr),
+        \qquad
+        p(x)=x_0\oplus x_1\oplus x_2,
+    \]
+    where $x=(x_0,x_1,x_2)$ and $\oplus$ denotes addition modulo $2$. Define a map $\pi\colon\F^3\to\F^3$ by
+    \[
+        \pi(x_0,x_1,x_2)
+        =\bigl(x_0\oplus x_1,\ x_0\oplus x_2,\ x_0\oplus x_1\oplus x_2\bigr).
+    \]
+
+    \medskip
+
+    To verify that $\pi$ is bijective, define
+    \[
+        \pi^{-1}(y_0,y_1,y_2)
+        =\bigl(y_0\oplus y_1\oplus y_2,\ y_1\oplus y_2,\ y_0\oplus y_2\bigr).
+    \]
+    Using the identities $a\oplus a=0$ and $a\oplus0=a$, together with the associativity and commutativity of $\oplus$, we obtain
+    \begin{align*}
+        \pi^{-1}(\pi(x_0,x_1,x_2))
+        & =\Bigl(
+        (x_0\oplus x_1)\oplus(x_0\oplus x_2)\oplus(x_0\oplus x_1\oplus x_2),\\
+        &\hspace{2.7cm}(x_0\oplus x_2)\oplus(x_0\oplus x_1\oplus x_2),\\
+        &\hspace{2.7cm}(x_0\oplus x_1)\oplus(x_0\oplus x_1\oplus x_2)
+        \Bigr)\\
+        & =(x_0,x_1,x_2).
+    \end{align*}
+    Conversely, if
+    \[
+        (x_0,x_1,x_2)
+        =\pi^{-1}(y_0,y_1,y_2)
+        =\bigl(y_0\oplus y_1\oplus y_2,\ y_1\oplus y_2,\ y_0\oplus y_2\bigr),
+    \]
+    then
+    \begin{align*}
+        \pi(\pi^{-1}(y_0,y_1,y_2))
+        & =\Bigl(
+        (y_0\oplus y_1\oplus y_2)\oplus(y_1\oplus y_2),\\
+        &\hspace{2.7cm}(y_0\oplus y_1\oplus y_2)\oplus(y_0\oplus y_2),\\
+        &\hspace{2.7cm}(y_0\oplus y_1\oplus y_2)\oplus(y_1\oplus y_2)\oplus(y_0\oplus y_2)
+        \Bigr)\\
+        & =(y_0,y_1,y_2).
+    \end{align*}
+    Thus $\pi^{-1}$ is the inverse of $\pi$, so $\pi$ is a permutation of the eight-element set $\{0,1\}^3$.
+
+    \medskip
+    
+    For every $(x_0,x_1,x_2)\in\F^3$,
+    \[
+        \pi(f(x_0,x_1,x_2))
+        =\pi(x_0,0,0)
+        =(x_0,x_0,x_0).
+    \]
+    Now let $(y_0,y_1,y_2)=\pi(x_0,x_1,x_2)$. Then
+    \begin{align*}
+        y_0\oplus y_1\oplus y_2
+        & =(x_0\oplus x_1)
+        \oplus(x_0\oplus x_2)
+        \oplus(x_0\oplus x_1\oplus x_2)\\
+        & =x_0.
+    \end{align*}
+    It follows that
+    \[
+        g(\pi(x_0,x_1,x_2))
+        =g(y_0,y_1,y_2)
+        =(x_0,x_0,x_0).
+    \]
+    Therefore,
+    \[
+        g\circ\pi=\pi\circ f.
+    \]
+
+    \medskip
+
+    The corresponding wiring diagrams of $f$ and $g$ are as follows:
+    \medskip
+    
+    \begin{center}
+        \begin{minipage}{0.43\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                >=Stealth,
+                vertex/.style={draw, circle, minimum size=7mm, inner sep=0pt}
+            ]
+                \node[vertex] (f0) at (0,1.5) {$0$};
+                \node[vertex] (f1) at (-1.5,-1) {$1$};
+                \node[vertex] (f2) at (1.5,-1) {$2$};
+
+                \draw[->, looseness=6, out=120, in=60] (f0) to (f0);
+            \end{tikzpicture}
+
+            \small\textit{$G(f)$}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.43\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                >=Stealth,
+                vertex/.style={draw, circle, minimum size=7mm, inner sep=0pt}
+            ]
+                \node[vertex] (g0) at (0,1.5) {$0$};
+                \node[vertex] (g1) at (-1.5,-1) {$1$};
+                \node[vertex] (g2) at (1.5,-1) {$2$};
+
+                \draw[->, bend left=15] (g0) to (g1);
+                \draw[->, bend left=15] (g1) to (g0);
+                \draw[->, bend right=15] (g0) to (g2);
+                \draw[->, bend right=15] (g2) to (g0);
+                \draw[->, bend left=15] (g1) to (g2);
+                \draw[->, bend left=15] (g2) to (g1);
+                \draw[->, looseness=6, out=120, in=60] (g0) to (g0);
+                \draw[->, looseness=6, out=210, in=150] (g1) to (g1);
+                \draw[->, looseness=6, out=30, in=-30] (g2) to (g2);
+            \end{tikzpicture}
+
+            \small\textit{$G(g)$}
+        \end{minipage}
+    \end{center}
+
+    \medskip
+    
+    The only essential dependence in $f$ is that of $f_0$ on $x_0$, whereas each coordinate function of $g$ depends essentially on all three variables. Hence,
+    \[
+        |E(W(f))|=1,
+        \qquad
+        |E(W(g))|=9.
+    \]
+    Since an isomorphism of directed graphs preserves the number of edges,
+    \[
+        W(f)\not\cong W(g).
+    \]
+\end{example}
+
+A general theory of the above example is explored in \cite{marchetto2021isomorphic}.

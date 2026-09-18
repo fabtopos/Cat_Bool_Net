@@ -1,0 +1,250 @@
+
+%
+% The document guidelines say the font can be between 10pt and 12pt.
+%
+\documentclass[10pt]{ClemsonThesis}
+
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{braket}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{enumerate}
+\setstretch{2}
+%\def\Not{\neg} 
+%\def\Not{\overline} 
+\newcommand{\Not}[1]{\overline #1}
+\DeclareMathOperator{\id}{Id}
+
+\usepackage{comment}
+\usepackage{arydshln}
+
+\newcounter{comments}
+ \setcounter{comments}{0}
+ \newcommand{\fr}[1]{\addtocounter{comments}{1}{\color{blue}[Fabrice \thecomments: #1]}}
+ \newcommand{\mm}[1]{\addtocounter{comments}{1}{\color{red}[Matt \thecomments: #1]}}
+ 
+\usepackage{tikz-3dplot}
+\usepackage{tikz-network}
+\usepackage{mathrsfs}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{backgrounds}
+
+% Math theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition} 
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+
+\title{Categories of Boolean networks}
+\department{School of Mathematical and Statistical Sciences}
+\documentType{Dissertation}
+\major{Mathematics}
+\degree{Doctor of Philosophy}
+\graduationMonth{May}
+\graduationYear{2028}
+\author{Fabrice Razafimahatratra}
+\committeeChair{Dr.\ Matthew Macauley}
+\committeeMemberTwo{Dr.\ Keisha Cook}
+\committeeMemberThree{Dr.\ Ryann Cartor}
+\committeeMemberFour{Dr.\ Cody Stockdale}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={black},
+    citecolor={black},
+    filecolor={black},
+    urlcolor={black},
+    pdftitle={\theTitle},
+    pdfauthor={\theAuthor},
+    pdfsubject={\theDocumentType},
+    pdfkeywords={Clemson University, \theDepartment, \theDocumentType, \theMajor, \theDegree},
+    pdfstartpage={1},
+}
+
+\usepackage{comment}
+\def\<{\langle}
+\def\>{\rangle}
+\def\longto{\longrightarrow}
+
+
+%% Sets and Rings
+\def\C{\mathbb{C}}
+\def\F{\mathbb{F}_2}
+\def\N{\mathbb{N}}
+\def\Q{\mathbb{Q}}
+\def\R{\mathbb{R}}
+\def\Z{\mathbb{Z}}
+
+\def\Sum{\sum\limits}
+\def\Prod{\prod\limits}
+\def\Cap{\mathop\cap\limits}
+\def\Cup{\mathop\cup\limits}
+\def\Times{\mathop\times\limits}
+\def\Oplus{\mathop\oplus\limits}
+\def\Lim{\mathop\lim\limits}
+\def\del{\partial}
+
+\def\s{\mathbf{s}}
+\def\t{\mathbf{t}}
+
+\DeclareMathOperator\Image{Im}
+\DeclareMathOperator\Mod{Mod}
+\DeclareMathOperator\supp{supp}
+\DeclareMathOperator\Sign{sign}
+\DeclareMathOperator\XOR{XOR}
+
+%% Categories
+\DeclareMathOperator\Hom{Hom}
+\DeclareMathOperator\Ob{Ob}
+\newcommand{\catname}[1]{{\normalfont\mathbf{#1}}}
+\newcommand{\Ab}{\catname{Ab}}
+\newcommand{\Field}{\catname{Field}}
+\newcommand{\Gph}{\catname{Gph}}
+\newcommand{\Grp}{\catname{Grp}}
+\newcommand{\LocBool}{\catname{LocBool}}    
+\newcommand{\BN}{\catname{BN}}
+\newcommand{\FDS}{\catname{FDS}}
+\newcommand{\Ring}{\catname{Ring}}
+\newcommand{\Rng}{\catname{Rng}}
+\newcommand{\Top}{\catname{Top}}
+\newcommand{\Boolal}{\catname{BoolAlg}}
+\newcommand{\Nilp}{\catname{Nil}}    
+\newcommand{\Svl}{\catname{Svl}}
+\newcommand{\TruthTable}{\catname{Tbl}}
+\newcommand{\fdv}{\catname{FinDimVec}}
+\newcommand\cat{\mathcal{C}}
+\newcommand\dat{\mathcal{D}}
+\newcommand\eat{\mathcal{E}}
+\newcommand\fun{\mathcal{F}}
+\newcommand{\catset}{\mathbf{Set}}
+\newcommand{\Bool}{\mathcal{B}}
+
+\DeclareRobustCommand{\loongrightarrow}{%
+  \DOTSB\relbar\joinrel\relbar\joinrel\rightarrow
+}
+
+\DeclareRobustCommand{\loongleftarrow}{%
+  \DOTSB\leftarrow\joinrel\relbar\joinrel\relbar
+}
+
+%% Operators
+
+\def\And{\wedge}
+\def\Or{\vee}
+%\def\OR{\Or\limits}
+%\def\AND{\And\limits}
+
+\newcommand{\join}{\vee}
+\newcommand{\meet}{\wedge}
+\newcommand{\sloop}{\scalebox{0.8}{\tikz \draw[->] (0,0) arc (530:200:0.15);}}
+\DeclareMathOperator\ad{ad}
+\def\0{\mathbf{0}}
+\def\1{\mathbf{1}}
+\def\e{\bm{e}}
+
+\tikzset{%
+  Unknown/.tip={Bar[sep]Triangle[angle=45:4pt]},
+  %Unknown/.tip={Bar[sep]Triangle[open,angle=45:4pt]},
+  tipB/.tip={Bar[sep]Square[open]}
+}
+
+
+\definecolor{m-red}{rgb}{0.8500, 0.3250, 0.0980}
+\definecolor{m-blue}{rgb}{0, 0.4470, 0.7410}
+\definecolor{m-yellow}{rgb}{.9290, 0.6940, 0.1250}
+
+
+\begin{document}
+%  ============================================================================
+    \frontmatter % Begin front matter (pages are numbered with Roman numerals)
+%  ============================================================================
+
+    \addtotoc{Title Page}{\maketitle}          % Generate the title page
+    \doublespacing                             % Text should be double spaced
+    \setcounter{page}{2}                       % Abstract begins on page 2
+    \addtotoc{Abstract}{\input{chapters/abstract}}  % Generate the abstract
+
+    % The dedication page is optional.  
+    %
+    \addtotoc{Dedication}{\input{chapters/dedication.tex}}
+
+    % The acknowledgment page is optional.  
+    %
+    %\addtotoc{Acknowledgments}{\input{chapters/acknowledgement}}
+
+    \singlespacing                             % Single space the lists
+    \tableofcontents \clearpage                % Generate the Table of Contents
+
+    %
+    % REMEMBER: Review your caption listings in the genrated lists
+    %           and make sure they include '\newline' commands as necessary.
+    %           See the README for further information.
+    %
+   % \addtotoc{List of Tables}{\listoftables}   % Generate the List of Tables
+   % \addtotoc{List of Figures}{\listoffigures} % Generate the List of Figures
+
+    %
+    % Include other optional lists.  Computer science, for example, would
+    % likely include a 'List of Listings' (and would \usepackage{listings}
+    % and \renewcommand\lstlistlistingname{List of Listings}).
+    %
+    %% \addtotoc{List of Listings}{\lstlistoflistings}
+
+
+
+%  ===========================================================================
+    \mainmatter % Begin main matter (pages are numbered with Arabic numerals)
+%  ===========================================================================
+    \doublespacing % Text should be double spaced
+
+    %
+    % Here we have each chapter in a separate file.  Name these as you choose,
+    % and include them in the order you want them to appear.  Be sure to use
+    % the \inputfile command.
+    %
+    \chapter{Introduction}\label{ch:introduction}
+    \inputfile{chapters/introduction.tex}
+
+    \chapter{Maps Between Boolean Networks}\label{ch: maps boolean}
+    \inputfile{chapters/Maps_Boolean.tex}
+   
+    \chapter*{Concluding remarks}\label{ch:conclusions}
+    \addtotoc{Concluding remarks}{\inputfile{chapters/conclusions.tex}}
+    %\inputfile{appendixA.tex}
+    %\chapter{Notes}
+    %\inputfile{chapters/Notes}
+    % The appendices are optional.  This is the format for two or more.
+    % If you do not wish to include an appendix, comment out these lines.
+    % If you want just one, see the formatting guidelines.
+    %
+    %\begin{appendices}
+       % \begin{subappendices}
+            %\inputfile{Appendices/counting_maps.tex}
+        %\end{subappendices}
+   % \end{appendices}
+
+
+
+    \singlespacing                             % Single space the Bibliography
+
+
+    \bibliographystyle{plain}
+    \addtotoc{Bibliography}{\bibliography{References}}
+\end{document}
