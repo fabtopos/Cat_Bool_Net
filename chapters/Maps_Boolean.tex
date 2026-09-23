@@ -91,12 +91,12 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
     \[
         g(x_0,x_1,x_2)=\bigl(p(x),p(x),p(x)\bigr),
         \qquad
-        p(x)=x_0\oplus x_1\oplus x_2,
+        p(x)=x_0+ x_1+ x_2,
     \]
-    where $x=(x_0,x_1,x_2)$ and $\oplus$ denotes addition modulo $2$. Define a map $\pi\colon\F^3\to\F^3$ by
+    where $x=(x_0,x_1,x_2)$ and $+$ denotes addition modulo $2$. Define a map $\pi\colon\F^3\to\F^3$ by
     \[
         \pi(x_0,x_1,x_2)
-        =\bigl(x_0\oplus x_1,\ x_0\oplus x_2,\ x_0\oplus x_1\oplus x_2\bigr).
+        =\bigl(x_0+ x_1,\ x_0+ x_2,\ x_0+ x_1+ x_2\bigr).
     \]
 
     \medskip
@@ -104,15 +104,15 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
     To verify that $\pi$ is bijective, define
     \[
         \pi^{-1}(y_0,y_1,y_2)
-        =\bigl(y_0\oplus y_1\oplus y_2,\ y_1\oplus y_2,\ y_0\oplus y_2\bigr).
+        =\bigl(y_0+ y_1+ y_2,\ y_1+ y_2,\ y_0+ y_2\bigr).
     \]
-    Using the identities $a\oplus a=0$ and $a\oplus0=a$, together with the associativity and commutativity of $\oplus$, we obtain
+    Using the identities $a+ a=0$ and $a+0=a$, together with the associativity and commutativity of $+$, we obtain
     \begin{align*}
         \pi^{-1}(\pi(x_0,x_1,x_2))
         & =\Bigl(
-        (x_0\oplus x_1)\oplus(x_0\oplus x_2)\oplus(x_0\oplus x_1\oplus x_2),\\
-        &\hspace{2.7cm}(x_0\oplus x_2)\oplus(x_0\oplus x_1\oplus x_2),\\
-        &\hspace{2.7cm}(x_0\oplus x_1)\oplus(x_0\oplus x_1\oplus x_2)
+        (x_0+ x_1)+(x_0+ x_2)+(x_0+ x_1+ x_2),\\
+        &\hspace{2.7cm}(x_0+ x_2)+(x_0+ x_1+ x_2),\\
+        &\hspace{2.7cm}(x_0+ x_1)+(x_0+ x_1+ x_2)
         \Bigr)\\
         & =(x_0,x_1,x_2).
     \end{align*}
@@ -120,15 +120,15 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
     \[
         (x_0,x_1,x_2)
         =\pi^{-1}(y_0,y_1,y_2)
-        =\bigl(y_0\oplus y_1\oplus y_2,\ y_1\oplus y_2,\ y_0\oplus y_2\bigr),
+        =\bigl(y_0+ y_1+ y_2,\ y_1+ y_2,\ y_0+ y_2\bigr),
     \]
     then
     \begin{align*}
         \pi(\pi^{-1}(y_0,y_1,y_2))
         & =\Bigl(
-        (y_0\oplus y_1\oplus y_2)\oplus(y_1\oplus y_2),\\
-        &\hspace{2.7cm}(y_0\oplus y_1\oplus y_2)\oplus(y_0\oplus y_2),\\
-        &\hspace{2.7cm}(y_0\oplus y_1\oplus y_2)\oplus(y_1\oplus y_2)\oplus(y_0\oplus y_2)
+        (y_0+ y_1+ y_2)+(y_1+ y_2),\\
+        &\hspace{2.7cm}(y_0+ y_1+ y_2)+(y_0+ y_2),\\
+        &\hspace{2.7cm}(y_0+ y_1+ y_2)+(y_1+ y_2)+(y_0+ y_2)
         \Bigr)\\
         & =(y_0,y_1,y_2).
     \end{align*}
@@ -144,10 +144,10 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
     \]
     Now let $(y_0,y_1,y_2)=\pi(x_0,x_1,x_2)$. Then
     \begin{align*}
-        y_0\oplus y_1\oplus y_2
-        & =(x_0\oplus x_1)
-        \oplus(x_0\oplus x_2)
-        \oplus(x_0\oplus x_1\oplus x_2)\\
+        y_0+ y_1+ y_2
+        & =(x_0+ x_1)
+        +(x_0+ x_2)
+        +(x_0+ x_1+ x_2)\\
         & =x_0.
     \end{align*}
     It follows that
@@ -422,11 +422,11 @@ In this definition, the distance-preserving condition is imposed on $h$; the upd
 
 \subsection{Preservation of the wiring diagram}
 
-We now show that isometric conjugacy preserves the wiring diagram up to a relabeling of its vertices. Let $e_i\in\F^n$ denote the vector whose $i$th coordinate is $1$ and whose other coordinates are $0$. We use $\oplus$ componentwise on vectors, so $x\oplus e_i$ is the state obtained from $x$ by changing its $i$th coordinate. Recall that the wiring diagram $W(f)$ has vertex set $\{1,\dots,n\}$, with
+We now show that isometric conjugacy preserves the wiring diagram up to a relabeling of its vertices. Let $e_i\in\F^n$ denote the vector whose $i$th coordinate is $1$ and whose other coordinates are $0$. We use $+$ componentwise on vectors, so $x+ e_i$ is the state obtained from $x$ by changing its $i$th coordinate. Recall that the wiring diagram $W(f)$ has vertex set $\{1,\dots,n\}$, with
 \begin{equation}\label{eq:essential-dependence}
     i\longrightarrow j\text{ in }W(f)
     \quad\Longleftrightarrow\quad
-    f_j(x)\ne f_j(x\oplus e_i)\text{ for some }x\in\F^n.
+    f_j(x)\ne f_j(x+ e_i)\text{ for some }x\in\F^n.
 \end{equation}
 This is the unsigned wiring diagram; self-loops are included. Its vertices are coordinates, whereas the vertices of $Q_n$ are states.
 
@@ -435,7 +435,7 @@ The essential geometric point is that an isometry sends all edges in a given coo
 \begin{lemma}\label{lem:isometry-directions}
     Let $h\colon\F^n\to\F^n$ be an isometry. There exists a unique permutation $\sigma$ of $\{1,\dots,n\}$ such that
     \begin{equation}\label{eq:isometry-directions}
-        h(x\oplus e_i)=h(x)\oplus e_{\sigma(i)}
+        h(x+ e_i)=h(x)+ e_{\sigma(i)}
         \qquad\text{for every }x\in\F^n\text{ and every }i.
     \end{equation}
     Moreover, for all $u,v\in\F^n$,
@@ -448,22 +448,21 @@ The essential geometric point is that an isometry sends all edges in a given coo
 \begin{proof}
     Since $h$ is an automorphism of $Q_n$, it maps the $n$ neighbors of each $x$ bijectively onto the $n$ neighbors of $h(x)$. Thus there is a permutation $\sigma_x$ such that
     \[
-        h(x\oplus e_i)=h(x)\oplus e_{\sigma_x(i)}.
+        h(x+ e_i)=h(x)+ e_{\sigma_x(i)}.
     \]
     Traversing the same edge in the opposite direction shows that
-    $\sigma_{x\oplus e_i}(i)=\sigma_x(i)$.
+    $\sigma_{x+ e_i}(i)=\sigma_x(i)$.
 
     Now let $i\ne j$. The four distinct states
     \[
-        x,\quad x\oplus e_i,\quad x\oplus e_i\oplus e_j,
-        \quad x\oplus e_j
+        x,\quad x+ e_i,\quad x+ e_i+ e_j,
+        \quad x+ e_j
     \]
-    form a square in $Q_n$. Put $z=h(x)$, $r=\sigma_x(i)$, and $s=\sigma_x(j)$. The two common neighbors of $z\oplus e_r$ and $z\oplus e_s$ are precisely $z$ and $z\oplus e_r\oplus e_s$. Since $h$ is injective, the vertex opposite $x$ must therefore satisfy
+    form a square in $Q_n$. Put $z=h(x)$, $r=\sigma_x(i)$, and $s=\sigma_x(j)$. The two common neighbors of $z+ e_r$ and $z+ e_s$ are precisely $z$ and $z+ e_r+ e_s$. Since $h$ is injective, the vertex opposite $x$ must therefore satisfy
     \[
-        h(x\oplus e_i\oplus e_j)=z\oplus e_r\oplus e_s.
+        h(x+ e_i+ e_j)=z+ e_r+ e_s= h(x+ e_j)+e_r.
     \]
-    Comparing this with $h(x\oplus e_j)=z\oplus e_s$ gives
-    $\sigma_{x\oplus e_j}(i)=\sigma_x(i)$. Consequently, $\sigma_x(i)$ is unchanged when any coordinate of $x$ is changed. The cube is connected, so $\sigma_x$ is a single permutation $\sigma$, independent of $x$. Its uniqueness follows from the images of the edges incident with $\0$.
+    Therefore, $\sigma_{x+ e_j}(i)=\sigma_x(i)$. Consequently, $\sigma_x(i)$ is unchanged when any coordinate of $x$ is changed. The cube is connected, so $\sigma_x$ is a single permutation $\sigma$, independent of $x$. Its uniqueness follows from the images of the edges incident with $\0$.
 
     Finally, join $u$ to $v$ by changing each coordinate in which they differ exactly once. Equation~\eqref{eq:isometry-directions} shows that the image path changes precisely the corresponding coordinates $\sigma(i)$, again exactly once. In particular, its endpoints differ in coordinate $\sigma(j)$ if and only if $u$ and $v$ differ in coordinate $j$, proving~\eqref{eq:isometry-coordinate-differences}.
 \end{proof}
@@ -481,19 +480,19 @@ The essential geometric point is that an isometry sends all edges in a given coo
 \begin{proof}
     Fix $x\in\F^n$ and put $y=h(x)$. By~\eqref{eq:isometry-directions},
     \[
-        h(x\oplus e_i)=y\oplus e_{\sigma(i)}.
+        h(x+ e_i)=y+ e_{\sigma(i)}.
     \]
     The conjugacy identity gives
     \[
         g(y)=h(f(x)),
         \qquad
-        g(y\oplus e_{\sigma(i)})=h(f(x\oplus e_i)).
+        g(y+ e_{\sigma(i)})=h(f(x+ e_i)).
     \]
     Applying~\eqref{eq:isometry-coordinate-differences} to these two output states yields
     \[
-        g_{\sigma(j)}(y)\ne g_{\sigma(j)}(y\oplus e_{\sigma(i)})
+        g_{\sigma(j)}(y)\ne g_{\sigma(j)}(y+ e_{\sigma(i)})
         \quad\Longleftrightarrow\quad
-        f_j(x)\ne f_j(x\oplus e_i).
+        f_j(x)\ne f_j(x+ e_i).
     \]
     Since $h$ is bijective, $y$ ranges over all of $\F^n$ as $x$ does. Taking the existence of such a state on both sides and using~\eqref{eq:essential-dependence} proves the assertion, including the case $i=j$.
 \end{proof}
@@ -501,14 +500,14 @@ The essential geometric point is that an isometry sends all edges in a given coo
 \begin{example}\label{ex:isometric-wiring}
     Consider the Boolean network
     \[
-        f(x_1,x_2,x_3)=(x_1x_2,\ x_1\vee x_3,\ x_1\oplus x_2)
+        f(x_1,x_2,x_3)=(x_1x_2,\ x_1\vee x_3,\ x_1+ x_2)
     \]
     and the isometry $h(x_1,x_2,x_3)=(\Not{x}_3,x_1,\Not{x}_2)$ from Example~\ref{ex:coordinate-isometry}. Define $g=h\circ f\circ h^{-1}$. Substituting the expression for $h^{-1}$ gives
     \begin{align*}
         g(y_1,y_2,y_3)
         &=h\bigl(y_2\Not{y}_3,\ y_2\vee\Not{y}_1,
-                 \ y_2\oplus\Not{y}_3\bigr)\\
-        &=\bigl(y_2\oplus y_3,\ y_2\Not{y}_3,
+                 \ y_2+\Not{y}_3\bigr)\\
+        &=\bigl(y_2+ y_3,\ y_2\Not{y}_3,
                  \ y_1\Not{y}_2\bigr).
     \end{align*}
     For example, at $x=(1,0,1)$,
@@ -582,7 +581,7 @@ For a permutation $\sigma$ of $\{1,\dots,n\}$, let $P_\sigma\colon\F^n\to\F^n$ b
     \qquad\text{equivalently}\qquad
     (P_\sigma(x))_j=x_{\sigma^{-1}(j)}.
 \]
-Thus an input coordinate $i$ is moved to output coordinate $\sigma(i)$, consistently with the relabeling of the wiring diagram above. For $a\in\F^n$, define $\tau_a(x)=a\oplus x$. This map complements precisely those coordinates $j$ for which $a_j=1$.
+Thus an input coordinate $i$ is moved to output coordinate $\sigma(i)$, consistently with the relabeling of the wiring diagram above. For $a\in\F^n$, define $\tau_a(x)=a+ x$. This map complements precisely those coordinates $j$ for which $a_j=1$.
 
 \begin{theorem}\label{thm:cube-isometries}
     A map $h\colon\F^n\to\F^n$ is an isometry if and only if there exist $a\in\F^n$ and a permutation $\sigma$ of $\{1,\dots,n\}$ such that
@@ -591,28 +590,28 @@ Thus an input coordinate $i$ is moved to output coordinate $\sigma(i)$, consiste
     \]
     Equivalently,
     \[
-        h(x)_j=a_j\oplus x_{\sigma^{-1}(j)}
+        h(x)_j=a_j+ x_{\sigma^{-1}(j)}
         \qquad\text{for every }j\in\{1,\dots,n\}.
     \]
     The pair $(a,\sigma)$ is unique, with $a=h(\0)$ and
     \[
-        h(e_i)\oplus h(\0)=e_{\sigma(i)}.
+        h(e_i)+ h(\0)=e_{\sigma(i)}.
     \]
 \end{theorem}
 
 \begin{proof}
     Suppose first that $h$ is an isometry. Put $a=h(\0)$ and let $\sigma$ be the permutation from Lemma~\ref{lem:isometry-directions}. Starting at $\0$ and changing each coordinate $i$ for which $x_i=1$, equation~\eqref{eq:isometry-directions} gives
     \[
-        h(x)=a\oplus\bigoplus_{\{i:x_i=1\}}e_{\sigma(i)}
-             =a\oplus P_\sigma(x).
+        h(x)=a+\bigoplus_{\{i:x_i=1\}}e_{\sigma(i)}
+             =a+ P_\sigma(x).
     \]
     Here the empty sum is $\0$. Evaluating at $\0$ determines $a$, and evaluating at each $e_i$ then determines $\sigma$, proving uniqueness.
 
-    Conversely, suppose that $h(x)=a\oplus P_\sigma(x)$. For every $x,y\in\F^n$,
+    Conversely, suppose that $h(x)=a+ P_\sigma(x)$. For every $x,y\in\F^n$,
     \begin{align*}
         d_H\bigl(h(x),h(y)\bigr)
-        &=\bigl|\{j:a_j\oplus x_{\sigma^{-1}(j)}
-                     \ne a_j\oplus y_{\sigma^{-1}(j)}\}\bigr|\\
+        &=\bigl|\{j:a_j+ x_{\sigma^{-1}(j)}
+                     \ne a_j+ y_{\sigma^{-1}(j)}\}\bigr|\\
         &=\bigl|\{j:x_{\sigma^{-1}(j)}\ne y_{\sigma^{-1}(j)}\}\bigr|\\
         &=d_H(x,y).
     \end{align*}
@@ -621,8 +620,8 @@ Thus an input coordinate $i$ is moved to output coordinate $\sigma(i)$, consiste
 
 Consequently, there are exactly $2^n n!$ isometries of $Q_n$, and an isometry is completely determined by its values at $\0,e_1,\dots,e_n$. In particular, an isometry fixing $\0$ is a coordinate permutation. The characterization also gives the coordinate form of an isometric conjugacy: if $g=h\circ f\circ h^{-1}$ and $h=\tau_a\circ P_\sigma$, then
 \[
-    g_j(y)=a_j\oplus
-    f_{\sigma^{-1}(j)}\bigl(P_{\sigma^{-1}}(y\oplus a)\bigr).
+    g_j(y)=a_j+
+    f_{\sigma^{-1}(j)}\bigl(P_{\sigma^{-1}}(y+ a)\bigr).
 \]
 When $\sigma$ is the identity, the wiring diagram is unchanged as a labeled graph. For a general $\sigma$, its vertices are relabeled by $\sigma$.
 
@@ -634,13 +633,13 @@ When $\sigma$ is the identity, the wiring diagram is unchanged as a labeled grap
     \]
     Thus $a=(1,0,1)$, and
     \[
-        h(e_1)\oplus a=e_2,\qquad
-        h(e_2)\oplus a=e_3,\qquad
-        h(e_3)\oplus a=e_1.
+        h(e_1)+ a=e_2,\qquad
+        h(e_2)+ a=e_3,\qquad
+        h(e_3)+ a=e_1.
     \]
     We recover $\sigma=(1\ 2\ 3)$ and
     \[
-        h(x)=(1,0,1)\oplus(x_3,x_1,x_2),
+        h(x)=(1,0,1)+(x_3,x_1,x_2),
     \]
     in agreement with the two labeled cubes in Example~\ref{ex:coordinate-isometry}. These four images determine the images of all eight states. By contrast, the map $\pi$ from Example~\ref{picard} fixes $000$ but sends $100$ to $111$; it therefore cannot be a coordinate permutation and hence cannot be an isometry. Proposition~\ref{prop:isometric-wiring} further shows that no other conjugacy between the two networks in Example~\ref{picard} can be isometric, since their wiring diagrams are not isomorphic.
 \end{example}
@@ -653,10 +652,10 @@ The characterization has a particularly simple interpretation when the update ma
 
 \begin{proof}
     If $f$ is isometric, Theorem~\ref{thm:cube-isometries} gives
-    $f_{\sigma(i)}(x)=a_{\sigma(i)}\oplus x_i$. Its wiring diagram therefore has exactly the edges $i\longrightarrow\sigma(i)$, so every vertex has one incoming and one outgoing edge.
+    $f_{\sigma(i)}(x)=a_{\sigma(i)}+ x_i$. Its wiring diagram therefore has exactly the edges $i\longrightarrow\sigma(i)$, so every vertex has one incoming and one outgoing edge.
 
     Conversely, suppose that every vertex has one incoming and one outgoing edge, and write its unique outgoing edge as $i\longrightarrow\sigma(i)$. The incoming-edge condition makes $\sigma$ a permutation. The function $f_{\sigma(i)}$ depends essentially only on $x_i$: changing any other coordinate does not change its value, and any two states with the same $i$th coordinate can be joined by such changes. A nonconstant Boolean function of one variable is either that variable or its complement. Hence
-    $f_{\sigma(i)}(x)=a_{\sigma(i)}\oplus x_i$ for some $a_{\sigma(i)}\in\F$, and Theorem~\ref{thm:cube-isometries} applies.
+    $f_{\sigma(i)}(x)=a_{\sigma(i)}+ x_i$ for some $a_{\sigma(i)}\in\F$, and Theorem~\ref{thm:cube-isometries} applies.
 \end{proof}
 
 \begin{example}
