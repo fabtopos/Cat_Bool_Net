@@ -1,7 +1,7 @@
 \section{Conjugacy and isometric conjugacy}
 
 \begin{definition}
-    Let $f,g \colon \F^n\to \F^n$ be Boolean networks. A conjugacy from $f$ to $g$ is a bijection $h\colon \F^n\to \F^n$ such that $h\circ h=g\circ h$. When such a map exists, we say that $f$ and $g$ are conjugate and write $f\sim g$.
+    Let $f,g \colon \F^n\to \F^n$ be Boolean networks. A conjugacy from $f$ to $g$ is a bijection $h\colon \F^n\to \F^n$ such that $h\circ f=g\circ h$. When such a map exists, we say that $f$ and $g$ are conjugate and write $f\sim g$.
 \end{definition}
 
 We can represent the previous identity as the following commutative diagram.
@@ -9,9 +9,9 @@ We can represent the previous identity as the following commutative diagram.
 \[
 		\begin{tikzpicture}[scale=1.25, every node/.style={midway}]
 			\matrix[column sep={4em,between origins}, row sep={2em}] at (0,0) {
-				\node(A) {$\F^n$}; && \node(A1) {$\F^m$};\\
+				\node(A) {$\F^n$}; && \node(A1) {$\F^n$};\\
 				\\
-				\node(B) {$\F^n$}; && \node(B1) {$\F^m$};\\           
+				\node(B) {$\F^n$}; && \node(B1) {$\F^n$};\\
 			};
 			\draw[->] (A) -- node(A2) [above] {$h$} (A1);
 			\draw[->] (A) -- (B) node[anchor=east] {$f$};
@@ -34,7 +34,7 @@ which shows that $k\circ h$ conjugates $f$ to $l$. Therefore,
     Conjugacy is an equivalence relation on Boolean networks.
 \end{proposition}
 
-\begin{example}
+\begin{example}\label{ex:and-or-conjugacy}
 A paradigmatic instance of a structural correspondence is provided by the equivalence between OR-networks and AND-networks. Specifically, consider the maps $f,g\colon \F^3\to\F^3$ defined by
 \[
 f(x_1,x_2,x_3)= (x_1x_2x_3,\ x_1x_2,\ x_1x_3); \quad
@@ -180,7 +180,7 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
                 \draw[->, looseness=6, out=120, in=60] (f0) to (f0);
             \end{tikzpicture}
 
-            \small\textit{$G(f)$}
+            \small\textit{$W(f)$}
         \end{minipage}
         \hfill
         \begin{minipage}{0.43\linewidth}
@@ -204,7 +204,7 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
                 \draw[->, looseness=6, out=30, in=-30] (g2) to (g2);
             \end{tikzpicture}
 
-            \small\textit{$G(g)$}
+            \small\textit{$W(g)$}
         \end{minipage}
     \end{center}
 
@@ -223,3 +223,478 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
 \end{example}
 
 A general theory of the above example is explored in \cite{marchetto2021isomorphic}.
+
+The preceding example shows that the phase space alone does not determine the wiring diagram. The distinction arises because a wiring diagram records the effect of changing one coordinate at a time, whereas an arbitrary conjugacy need not preserve such changes. In fact, the map $\pi$ in Example~\ref{picard} sends the states $(0,0,0)$ and $(1,0,0)$, which differ in only one coordinate, to $(0,0,0)$ and $(1,1,1)$, which differ in all three coordinates. To obtain a notion of conjugacy that also preserves the wiring diagram, we therefore seek relabelings that respect the geometry of the Boolean cube.
+
+\subsection{The Hamming distance and the Boolean cube}
+
+\begin{definition}
+    For $x,y\in\F^n$, the \emph{Hamming distance} between $x$ and $y$ is
+    \[
+        d_H(x,y)=\bigl|\{i\in\{1,\dots,n\}:x_i\ne y_i\}\bigr|.
+    \]
+    The \emph{Boolean cube} $Q_n$ is the undirected graph with vertex set $\F^n$, in which two states are adjacent if their Hamming distance is $1$.
+\end{definition}
+
+The Hamming distance is a metric. Indeed, it is nonnegative and symmetric, and $d_H(x,y)=0$ if and only if $x=y$. For the triangle inequality, observe that if $x_i\ne z_i$, then either $x_i\ne y_i$ or $y_i\ne z_i$. Counting these coordinates gives
+\[
+    d_H(x,z)\le d_H(x,y)+d_H(y,z).
+\]
+Moreover, $d_H(x,y)$ is precisely the length of a shortest path from $x$ to $y$ in $Q_n$: every differing coordinate must be changed at least once, and changing each of them exactly once provides such a path. Thus $Q_n$ is the graph of vertices and edges of the unit cube $[0,1]^n$. Its edges describe single-coordinate changes, independently of any Boolean network defined on its vertices.
+
+\begin{example}\label{ex:cube-distortion}
+    In $\F^3$, we have
+    \[
+        d_H\bigl((0,0,0),(1,0,0)\bigr)=1,
+        \qquad
+        d_H\bigl((0,0,0),(1,1,1)\bigr)=3.
+    \]
+    Returning to the conjugacy $\pi$ in Example~\ref{picard}, these equalities show that
+    \[
+        d_H\bigl(\pi(0,0,0),\pi(1,0,0)\bigr)
+        \ne d_H\bigl((0,0,0),(1,0,0)\bigr).
+    \]
+    The highlighted edge on the left is sent to the pair of opposite vertices on the right. The dashed segment is a body diagonal of the unit cube, not an edge of $Q_3$.
+
+    \begin{center}
+        \begin{minipage}{0.46\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                scale=1.05,
+                vertex/.style={circle, fill=black, inner sep=1.3pt},
+                every label/.style={font=\scriptsize}
+            ]
+                \coordinate (v000) at (0,0);
+                \coordinate (v100) at (1.7,0);
+                \coordinate (v010) at (.8,.45);
+                \coordinate (v110) at (2.5,.45);
+                \coordinate (v001) at (0,1.7);
+                \coordinate (v101) at (1.7,1.7);
+                \coordinate (v011) at (.8,2.15);
+                \coordinate (v111) at (2.5,2.15);
+                \draw[gray] (v000)--(v100)--(v110)--(v010)--cycle;
+                \draw[gray] (v001)--(v101)--(v111)--(v011)--cycle;
+                \draw[gray] (v000)--(v001) (v100)--(v101)
+                            (v010)--(v011) (v110)--(v111);
+                \draw[m-blue, very thick] (v000)--(v100);
+                \foreach \v/\pos in {000/below left,100/below,010/left,110/right,
+                                     001/left,101/below right,011/above,111/above right}
+                    \node[vertex, label=\pos:{$\v$}] at (v\v) {};
+            \end{tikzpicture}
+
+            \small $d_H(000,100)=1$
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.46\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                scale=1.05,
+                vertex/.style={circle, fill=black, inner sep=1.3pt},
+                every label/.style={font=\scriptsize}
+            ]
+                \coordinate (v000) at (0,0);
+                \coordinate (v100) at (1.7,0);
+                \coordinate (v010) at (.8,.45);
+                \coordinate (v110) at (2.5,.45);
+                \coordinate (v001) at (0,1.7);
+                \coordinate (v101) at (1.7,1.7);
+                \coordinate (v011) at (.8,2.15);
+                \coordinate (v111) at (2.5,2.15);
+                \draw[gray] (v000)--(v100)--(v110)--(v010)--cycle;
+                \draw[gray] (v001)--(v101)--(v111)--(v011)--cycle;
+                \draw[gray] (v000)--(v001) (v100)--(v101)
+                            (v010)--(v011) (v110)--(v111);
+                \draw[m-red, very thick, dashed] (v000)--(v111);
+                \foreach \v/\pos in {000/below left,100/below,010/below,110/right,
+                                     001/left,101/below right,011/above,111/above right}
+                    \node[vertex, label=\pos:{$\v$}] at (v\v) {};
+            \end{tikzpicture}
+
+            \small $d_H\bigl(\pi(000),\pi(100)\bigr)=3$
+        \end{minipage}
+    \end{center}
+    Here and in subsequent cube drawings, a string such as $100$ denotes the state $(1,0,0)$. The two cubes above display the selected pair and its image under $\pi$; their remaining vertices retain their usual coordinate labels.
+\end{example}
+
+\begin{definition}\label{def:cube-isometry}
+    A map $h\colon\F^n\to\F^n$ is an \emph{isometry} of the Boolean cube if
+    \[
+        d_H\bigl(h(x),h(y)\bigr)=d_H(x,y)
+        \qquad\text{for all }x,y\in\F^n.
+    \]
+    A Boolean network is called \emph{isometric} if its update map is an isometry.
+\end{definition}
+
+Every isometry is injective, since $h(x)=h(y)$ implies $d_H(x,y)=0$, and hence $x=y$. Since $\F^n$ is finite, every isometry of the Boolean cube is therefore bijective. Its inverse is also an isometry. Equivalently, an isometry is an automorphism of $Q_n$: distance preservation gives adjacency preservation in both directions, and a graph automorphism preserves shortest-path lengths.
+
+\begin{definition}\label{def:isometric-conjugacy}
+    Let $f,g\colon\F^n\to\F^n$ be Boolean networks. An \emph{isometric conjugacy} from $f$ to $g$ is an isometry $h\colon\F^n\to\F^n$ such that
+    \[
+        h\circ f=g\circ h.
+    \]
+    When such a map exists, we say that $f$ and $g$ are \emph{isometrically conjugate} and write $f\sim_{\mathrm{iso}}g$.
+\end{definition}
+
+In this definition, the distance-preserving condition is imposed on $h$; the update maps $f$ and $g$ need not themselves be isometries. Since the identity, inverses, and compositions of isometries are isometries, the same argument used for conjugacy shows that isometric conjugacy is an equivalence relation on Boolean networks.
+
+\begin{example}\label{ex:coordinate-isometry}
+    Consider the map $h\colon\F^3\to\F^3$ defined by
+    \[
+        h(x_1,x_2,x_3)=(\Not{x}_3,x_1,\Not{x}_2).
+    \]
+    Complementing a coordinate does not change whether two entries agree, and permuting the coordinates does not change the number of disagreements. Consequently,
+    \begin{align*}
+        d_H\bigl(h(x),h(y)\bigr)
+        &=|\Not{x}_3-\Not{y}_3|+|x_1-y_1|+|\Not{x}_2-\Not{y}_2|\\
+        &=|x_3-y_3|+|x_1-y_1|+|x_2-y_2|\\
+        &=d_H(x,y),
+    \end{align*}
+    where the differences in this calculation are taken in $\R$. Thus $h$ is an isometry, with inverse
+    \[
+        h^{-1}(y_1,y_2,y_3)=(y_2,\Not{y}_3,\Not{y}_1).
+    \]
+    The following drawings show the action of $h$ on every vertex of the unit cube. Vertices in corresponding positions are related by $h$. The blue, orange, and gray edges represent changes in $x_1,x_2,x_3$, respectively; their images represent changes in $y_2,y_3,y_1$.
+
+    \begin{center}
+        \begin{minipage}{0.46\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                scale=1.05,
+                vertex/.style={circle, fill=black, inner sep=1.3pt},
+                every label/.style={font=\scriptsize}
+            ]
+                \coordinate (v000) at (0,0);
+                \coordinate (v100) at (1.7,0);
+                \coordinate (v010) at (.8,.45);
+                \coordinate (v110) at (2.5,.45);
+                \coordinate (v001) at (0,1.7);
+                \coordinate (v101) at (1.7,1.7);
+                \coordinate (v011) at (.8,2.15);
+                \coordinate (v111) at (2.5,2.15);
+                \draw[m-blue, thick] (v000)--(v100) (v010)--(v110)
+                                     (v001)--(v101) (v011)--(v111);
+                \draw[m-red, thick] (v000)--(v010) (v100)--(v110)
+                                    (v001)--(v011) (v101)--(v111);
+                \draw[gray, thick] (v000)--(v001) (v100)--(v101)
+                                   (v010)--(v011) (v110)--(v111);
+                \foreach \v/\pos in {000/below left,100/below,010/left,110/right,
+                                     001/left,101/below right,011/above,111/above right}
+                    \node[vertex, label=\pos:{$\v$}] at (v\v) {};
+            \end{tikzpicture}
+
+            \small $x=(x_1,x_2,x_3)$
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.46\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                scale=1.05,
+                vertex/.style={circle, fill=black, inner sep=1.3pt},
+                every label/.style={font=\scriptsize}
+            ]
+                \coordinate (v000) at (0,0);
+                \coordinate (v100) at (1.7,0);
+                \coordinate (v010) at (.8,.45);
+                \coordinate (v110) at (2.5,.45);
+                \coordinate (v001) at (0,1.7);
+                \coordinate (v101) at (1.7,1.7);
+                \coordinate (v011) at (.8,2.15);
+                \coordinate (v111) at (2.5,2.15);
+                \draw[m-blue, thick] (v000)--(v100) (v010)--(v110)
+                                     (v001)--(v101) (v011)--(v111);
+                \draw[m-red, thick] (v000)--(v010) (v100)--(v110)
+                                    (v001)--(v011) (v101)--(v111);
+                \draw[gray, thick] (v000)--(v001) (v100)--(v101)
+                                   (v010)--(v011) (v110)--(v111);
+                \foreach \v/\w/\pos in {000/101/below left,100/111/below,
+                                        010/100/left,110/110/right,
+                                        001/001/left,101/011/below right,
+                                        011/000/above,111/010/above right}
+                    \node[vertex, label=\pos:{$\w$}] at (v\v) {};
+            \end{tikzpicture}
+
+            \small $y=h(x)$
+        \end{minipage}
+    \end{center}
+
+    The complementation map from Example~\ref{ex:and-or-conjugacy} is also an isometry. Hence the AND-network and OR-network in that example are isometrically conjugate. Neither update map is an isometry: the AND-network sends both $(0,0,0)$ and $(0,0,1)$ to $(0,0,0)$, while the OR-network sends both $(1,0,0)$ and $(1,1,0)$ to $(1,1,1)$.
+\end{example}
+
+\subsection{Preservation of the wiring diagram}
+
+We now show that isometric conjugacy preserves the wiring diagram up to a relabeling of its vertices. Let $e_i\in\F^n$ denote the vector whose $i$th coordinate is $1$ and whose other coordinates are $0$. We use $\oplus$ componentwise on vectors, so $x\oplus e_i$ is the state obtained from $x$ by changing its $i$th coordinate. Recall that the wiring diagram $W(f)$ has vertex set $\{1,\dots,n\}$, with
+\begin{equation}\label{eq:essential-dependence}
+    i\longrightarrow j\text{ in }W(f)
+    \quad\Longleftrightarrow\quad
+    f_j(x)\ne f_j(x\oplus e_i)\text{ for some }x\in\F^n.
+\end{equation}
+This is the unsigned wiring diagram; self-loops are included. Its vertices are coordinates, whereas the vertices of $Q_n$ are states.
+
+The essential geometric point is that an isometry sends all edges in a given coordinate direction to edges in one fixed coordinate direction. The choice of the new direction cannot depend on the state.
+
+\begin{lemma}\label{lem:isometry-directions}
+    Let $h\colon\F^n\to\F^n$ be an isometry. There exists a unique permutation $\sigma$ of $\{1,\dots,n\}$ such that
+    \begin{equation}\label{eq:isometry-directions}
+        h(x\oplus e_i)=h(x)\oplus e_{\sigma(i)}
+        \qquad\text{for every }x\in\F^n\text{ and every }i.
+    \end{equation}
+    Moreover, for all $u,v\in\F^n$,
+    \begin{equation}\label{eq:isometry-coordinate-differences}
+        h(u)_{\sigma(j)}\ne h(v)_{\sigma(j)}
+        \quad\Longleftrightarrow\quad u_j\ne v_j.
+    \end{equation}
+\end{lemma}
+
+\begin{proof}
+    Since $h$ is an automorphism of $Q_n$, it maps the $n$ neighbors of each $x$ bijectively onto the $n$ neighbors of $h(x)$. Thus there is a permutation $\sigma_x$ such that
+    \[
+        h(x\oplus e_i)=h(x)\oplus e_{\sigma_x(i)}.
+    \]
+    Traversing the same edge in the opposite direction shows that
+    $\sigma_{x\oplus e_i}(i)=\sigma_x(i)$.
+
+    Now let $i\ne j$. The four distinct states
+    \[
+        x,\quad x\oplus e_i,\quad x\oplus e_i\oplus e_j,
+        \quad x\oplus e_j
+    \]
+    form a square in $Q_n$. Put $z=h(x)$, $r=\sigma_x(i)$, and $s=\sigma_x(j)$. The two common neighbors of $z\oplus e_r$ and $z\oplus e_s$ are precisely $z$ and $z\oplus e_r\oplus e_s$. Since $h$ is injective, the vertex opposite $x$ must therefore satisfy
+    \[
+        h(x\oplus e_i\oplus e_j)=z\oplus e_r\oplus e_s.
+    \]
+    Comparing this with $h(x\oplus e_j)=z\oplus e_s$ gives
+    $\sigma_{x\oplus e_j}(i)=\sigma_x(i)$. Consequently, $\sigma_x(i)$ is unchanged when any coordinate of $x$ is changed. The cube is connected, so $\sigma_x$ is a single permutation $\sigma$, independent of $x$. Its uniqueness follows from the images of the edges incident with $\0$.
+
+    Finally, join $u$ to $v$ by changing each coordinate in which they differ exactly once. Equation~\eqref{eq:isometry-directions} shows that the image path changes precisely the corresponding coordinates $\sigma(i)$, again exactly once. In particular, its endpoints differ in coordinate $\sigma(j)$ if and only if $u$ and $v$ differ in coordinate $j$, proving~\eqref{eq:isometry-coordinate-differences}.
+\end{proof}
+
+\begin{proposition}\label{prop:isometric-wiring}
+    Let $f,g\colon\F^n\to\F^n$ be isometrically conjugate via $h$, and let $\sigma$ be the permutation associated with $h$ in Lemma~\ref{lem:isometry-directions}. Then
+    \[
+        i\longrightarrow j\text{ in }W(f)
+        \quad\Longleftrightarrow\quad
+        \sigma(i)\longrightarrow\sigma(j)\text{ in }W(g).
+    \]
+    Thus $\sigma\colon W(f)\to W(g)$ is an isomorphism of directed graphs.
+\end{proposition}
+
+\begin{proof}
+    Fix $x\in\F^n$ and put $y=h(x)$. By~\eqref{eq:isometry-directions},
+    \[
+        h(x\oplus e_i)=y\oplus e_{\sigma(i)}.
+    \]
+    The conjugacy identity gives
+    \[
+        g(y)=h(f(x)),
+        \qquad
+        g(y\oplus e_{\sigma(i)})=h(f(x\oplus e_i)).
+    \]
+    Applying~\eqref{eq:isometry-coordinate-differences} to these two output states yields
+    \[
+        g_{\sigma(j)}(y)\ne g_{\sigma(j)}(y\oplus e_{\sigma(i)})
+        \quad\Longleftrightarrow\quad
+        f_j(x)\ne f_j(x\oplus e_i).
+    \]
+    Since $h$ is bijective, $y$ ranges over all of $\F^n$ as $x$ does. Taking the existence of such a state on both sides and using~\eqref{eq:essential-dependence} proves the assertion, including the case $i=j$.
+\end{proof}
+
+\begin{example}\label{ex:isometric-wiring}
+    Consider the Boolean network
+    \[
+        f(x_1,x_2,x_3)=(x_1x_2,\ x_1\vee x_3,\ x_1\oplus x_2)
+    \]
+    and the isometry $h(x_1,x_2,x_3)=(\Not{x}_3,x_1,\Not{x}_2)$ from Example~\ref{ex:coordinate-isometry}. Define $g=h\circ f\circ h^{-1}$. Substituting the expression for $h^{-1}$ gives
+    \begin{align*}
+        g(y_1,y_2,y_3)
+        &=h\bigl(y_2\Not{y}_3,\ y_2\vee\Not{y}_1,
+                 \ y_2\oplus\Not{y}_3\bigr)\\
+        &=\bigl(y_2\oplus y_3,\ y_2\Not{y}_3,
+                 \ y_1\Not{y}_2\bigr).
+    \end{align*}
+    For example, at $x=(1,0,1)$,
+    \[
+        f(x)=(0,1,1),\qquad h(f(x))=(0,0,0),
+    \]
+    while $h(x)=(0,1,1)$ and $g(h(x))=(0,0,0)$, as required by the conjugacy identity.
+
+    The coordinate directions are permuted according to
+    \[
+        \sigma(1)=2,\qquad\sigma(2)=3,\qquad\sigma(3)=1.
+    \]
+    The wiring diagrams are drawn below, with corresponding vertices placed in corresponding positions. Every arrow on the left has its image on the right; in particular, the self-loop at $1$ becomes the self-loop at $2$.
+
+    \begin{center}
+        \begin{minipage}{0.46\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                >=Stealth,
+                vertex/.style={draw, circle, minimum size=7mm, inner sep=0pt}
+            ]
+                \node[vertex] (f1) at (0,1.4) {$1$};
+                \node[vertex] (f2) at (-1.2,-.8) {$2$};
+                \node[vertex] (f3) at (1.2,-.8) {$3$};
+                \draw[->, bend left=15] (f1) to (f2);
+                \draw[->, bend left=15] (f2) to (f1);
+                \draw[->] (f1) to (f3);
+                \draw[->, bend left=15] (f2) to (f3);
+                \draw[->, bend left=15] (f3) to (f2);
+                \draw[->, looseness=6, out=120, in=60] (f1) to (f1);
+            \end{tikzpicture}
+
+            \small $W(f)$
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.46\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                >=Stealth,
+                vertex/.style={draw, circle, minimum size=7mm, inner sep=0pt}
+            ]
+                \node[vertex] (g2) at (0,1.4) {$2$};
+                \node[vertex] (g3) at (-1.2,-.8) {$3$};
+                \node[vertex] (g1) at (1.2,-.8) {$1$};
+                \draw[->, bend left=15] (g2) to (g3);
+                \draw[->, bend left=15] (g3) to (g2);
+                \draw[->] (g2) to (g1);
+                \draw[->, bend left=15] (g3) to (g1);
+                \draw[->, bend left=15] (g1) to (g3);
+                \draw[->, looseness=6, out=120, in=60] (g2) to (g2);
+            \end{tikzpicture}
+
+            \small $W(g)$
+        \end{minipage}
+    \end{center}
+
+    The corresponding map of unit cubes is exactly the one displayed in Example~\ref{ex:coordinate-isometry}. The wiring diagrams have only three vertices, one for each coordinate, while each cube has eight vertices, one for each state. In this example, $W(f)$ and $W(g)$ are isomorphic but are not equal as labeled graphs: their self-loops have different labels.
+\end{example}
+
+\begin{remark}
+    Proposition~\ref{prop:isometric-wiring} concerns unsigned wiring diagrams. Complementing coordinates can change whether a dependence is increasing or decreasing. For example, the first coordinate function $f_1=x_1x_2$ in Example~\ref{ex:isometric-wiring} is increasing in $x_2$, whereas the corresponding function $g_2=y_2\Not{y}_3$ is decreasing in $y_3$. Thus preservation of the unsigned diagram does not assert preservation of individual edge signs.
+\end{remark}
+
+\subsection{Characterization of the isometries}
+
+Example~\ref{ex:coordinate-isometry} suggests that coordinate permutations and coordinate complementations are the basic isometries of the Boolean cube. We now show that every isometry is obtained in this way. This standard characterization is also recorded in \cite{dewinter2016weak}.
+
+For a permutation $\sigma$ of $\{1,\dots,n\}$, let $P_\sigma\colon\F^n\to\F^n$ be the coordinate permutation defined by
+\[
+    (P_\sigma(x))_{\sigma(i)}=x_i,
+    \qquad\text{equivalently}\qquad
+    (P_\sigma(x))_j=x_{\sigma^{-1}(j)}.
+\]
+Thus an input coordinate $i$ is moved to output coordinate $\sigma(i)$, consistently with the relabeling of the wiring diagram above. For $a\in\F^n$, define $\tau_a(x)=a\oplus x$. This map complements precisely those coordinates $j$ for which $a_j=1$.
+
+\begin{theorem}\label{thm:cube-isometries}
+    A map $h\colon\F^n\to\F^n$ is an isometry if and only if there exist $a\in\F^n$ and a permutation $\sigma$ of $\{1,\dots,n\}$ such that
+    \[
+        h=\tau_a\circ P_\sigma.
+    \]
+    Equivalently,
+    \[
+        h(x)_j=a_j\oplus x_{\sigma^{-1}(j)}
+        \qquad\text{for every }j\in\{1,\dots,n\}.
+    \]
+    The pair $(a,\sigma)$ is unique, with $a=h(\0)$ and
+    \[
+        h(e_i)\oplus h(\0)=e_{\sigma(i)}.
+    \]
+\end{theorem}
+
+\begin{proof}
+    Suppose first that $h$ is an isometry. Put $a=h(\0)$ and let $\sigma$ be the permutation from Lemma~\ref{lem:isometry-directions}. Starting at $\0$ and changing each coordinate $i$ for which $x_i=1$, equation~\eqref{eq:isometry-directions} gives
+    \[
+        h(x)=a\oplus\bigoplus_{\{i:x_i=1\}}e_{\sigma(i)}
+             =a\oplus P_\sigma(x).
+    \]
+    Here the empty sum is $\0$. Evaluating at $\0$ determines $a$, and evaluating at each $e_i$ then determines $\sigma$, proving uniqueness.
+
+    Conversely, suppose that $h(x)=a\oplus P_\sigma(x)$. For every $x,y\in\F^n$,
+    \begin{align*}
+        d_H\bigl(h(x),h(y)\bigr)
+        &=\bigl|\{j:a_j\oplus x_{\sigma^{-1}(j)}
+                     \ne a_j\oplus y_{\sigma^{-1}(j)}\}\bigr|\\
+        &=\bigl|\{j:x_{\sigma^{-1}(j)}\ne y_{\sigma^{-1}(j)}\}\bigr|\\
+        &=d_H(x,y).
+    \end{align*}
+    Hence $h$ is an isometry.
+\end{proof}
+
+Consequently, there are exactly $2^n n!$ isometries of $Q_n$, and an isometry is completely determined by its values at $\0,e_1,\dots,e_n$. In particular, an isometry fixing $\0$ is a coordinate permutation. The characterization also gives the coordinate form of an isometric conjugacy: if $g=h\circ f\circ h^{-1}$ and $h=\tau_a\circ P_\sigma$, then
+\[
+    g_j(y)=a_j\oplus
+    f_{\sigma^{-1}(j)}\bigl(P_{\sigma^{-1}}(y\oplus a)\bigr).
+\]
+When $\sigma$ is the identity, the wiring diagram is unchanged as a labeled graph. For a general $\sigma$, its vertices are relabeled by $\sigma$.
+
+\begin{example}\label{ex:recover-isometry}
+    For $h(x_1,x_2,x_3)=(\Not{x}_3,x_1,\Not{x}_2)$, the images of the origin and its three neighbors are
+    \[
+        h(000)=101,\qquad h(100)=111,\qquad
+        h(010)=100,\qquad h(001)=001.
+    \]
+    Thus $a=(1,0,1)$, and
+    \[
+        h(e_1)\oplus a=e_2,\qquad
+        h(e_2)\oplus a=e_3,\qquad
+        h(e_3)\oplus a=e_1.
+    \]
+    We recover $\sigma=(1\ 2\ 3)$ and
+    \[
+        h(x)=(1,0,1)\oplus(x_3,x_1,x_2),
+    \]
+    in agreement with the two labeled cubes in Example~\ref{ex:coordinate-isometry}. These four images determine the images of all eight states. By contrast, the map $\pi$ from Example~\ref{picard} fixes $000$ but sends $100$ to $111$; it therefore cannot be a coordinate permutation and hence cannot be an isometry. Proposition~\ref{prop:isometric-wiring} further shows that no other conjugacy between the two networks in Example~\ref{picard} can be isometric, since their wiring diagrams are not isomorphic.
+\end{example}
+
+The characterization has a particularly simple interpretation when the update map of a Boolean network is itself an isometry.
+
+\begin{corollary}\label{cor:isometric-network}
+    A Boolean network $f\colon\F^n\to\F^n$ is isometric if and only if every vertex of $W(f)$ has exactly one incoming edge and exactly one outgoing edge. Equivalently, $W(f)$ is a disjoint union of directed cycles, with self-loops allowed as cycles of length one.
+\end{corollary}
+
+\begin{proof}
+    If $f$ is isometric, Theorem~\ref{thm:cube-isometries} gives
+    $f_{\sigma(i)}(x)=a_{\sigma(i)}\oplus x_i$. Its wiring diagram therefore has exactly the edges $i\longrightarrow\sigma(i)$, so every vertex has one incoming and one outgoing edge.
+
+    Conversely, suppose that every vertex has one incoming and one outgoing edge, and write its unique outgoing edge as $i\longrightarrow\sigma(i)$. The incoming-edge condition makes $\sigma$ a permutation. The function $f_{\sigma(i)}$ depends essentially only on $x_i$: changing any other coordinate does not change its value, and any two states with the same $i$th coordinate can be joined by such changes. A nonconstant Boolean function of one variable is either that variable or its complement. Hence
+    $f_{\sigma(i)}(x)=a_{\sigma(i)}\oplus x_i$ for some $a_{\sigma(i)}\in\F$, and Theorem~\ref{thm:cube-isometries} applies.
+\end{proof}
+
+\begin{example}
+    Regard the isometry from Example~\ref{ex:coordinate-isometry} as an update map, and denote the resulting network by
+    \[
+        q(x_1,x_2,x_3)=(\Not{x}_3,x_1,\Not{x}_2).
+    \]
+    Its wiring diagram and all of its periodic orbits are given below.
+
+    \begin{center}
+        \begin{minipage}{0.32\linewidth}
+            \centering
+            \begin{tikzpicture}[
+                >=Stealth,
+                vertex/.style={draw, circle, minimum size=7mm, inner sep=0pt}
+            ]
+                \node[vertex] (q1) at (0,1.4) {$1$};
+                \node[vertex] (q2) at (-1.2,-.8) {$2$};
+                \node[vertex] (q3) at (1.2,-.8) {$3$};
+                \draw[->] (q1)--(q2);
+                \draw[->] (q2)--(q3);
+                \draw[->] (q3)--(q1);
+            \end{tikzpicture}
+
+            \small $W(q)$
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.64\linewidth}
+            \centering
+            Fixed points: $001$ and $110$.
+            \[
+                000\longrightarrow101\longrightarrow011\longrightarrow000,
+            \]
+            \[
+                100\longrightarrow111\longrightarrow010\longrightarrow100.
+            \]
+        \end{minipage}
+    \end{center}
+
+    The corresponding cube map appears in Example~\ref{ex:coordinate-isometry}. The directed cycle in $W(q)$ records coordinate dependencies, whereas the two cycles of length three above record the evolution of states. Although $q$ preserves distances between pairs of updated states, it need not move each state along a cube edge: $d_H(000,q(000))=2$.
+\end{example}
