@@ -588,11 +588,6 @@ Thus an input coordinate $i$ is moved to output coordinate $\sigma(i)$, consiste
     \[
         h=\tau_a\circ P_\sigma.
     \]
-    Equivalently,
-    \[
-        h(x)_j=a_j+ x_{\sigma^{-1}(j)}
-        \qquad\text{for every }j\in\{1,\dots,n\}.
-    \]
     The pair $(a,\sigma)$ is unique, with $a=h(\0)$ and
     \[
         h(e_i)+ h(\0)=e_{\sigma(i)}.
@@ -602,7 +597,7 @@ Thus an input coordinate $i$ is moved to output coordinate $\sigma(i)$, consiste
 \begin{proof}
     Suppose first that $h$ is an isometry. Put $a=h(\0)$ and let $\sigma$ be the permutation from Lemma~\ref{lem:isometry-directions}. Starting at $\0$ and changing each coordinate $i$ for which $x_i=1$, equation~\eqref{eq:isometry-directions} gives
     \[
-        h(x)=a+\bigoplus_{\{i:x_i=1\}}e_{\sigma(i)}
+        h(x)=a+\sum_{\{i:x_i=1\}}e_{\sigma(i)}
              =a+ P_\sigma(x).
     \]
     Here the empty sum is $\0$. Evaluating at $\0$ determines $a$, and evaluating at each $e_i$ then determines $\sigma$, proving uniqueness.
