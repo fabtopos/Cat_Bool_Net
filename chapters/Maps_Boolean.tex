@@ -1,3 +1,12 @@
+
+Conjugate Boolean networks need not have isomorphic wiring diagrams. In fact, it has recently been shown that every so-called non-trivial Boolean network is conjugate to one with a complete wiring diagram. It is well known that the bijections of $\F^n\to\F^n$ that preserving the wiring diagram are precisely the isometries of the Boolean cube. These form the group of signed permutations, also known as the type $B$ Weyl group, and they are isomorphic to the wreath product $C_2\wr C_n$. These can be considered as isomorphisms of Boolean networks. In this section, we will explore the concept of a homomorphism of Boolean networks. 
+
+Summarize this chapter in a paragraph or two. 
+
+
+Structure-preserving 
+
+
 \section{Conjugacy and isometric conjugacy}
 
 \begin{definition}
@@ -132,7 +141,7 @@ Conjugacy exhibits numerous desirable properties that are compatible with dynami
         \Bigr)\\
         & =(y_0,y_1,y_2).
     \end{align*}
-    Thus $\pi^{-1}$ is the inverse of $\pi$, so $\pi$ is a permutation of the eight-element set $\{0,1\}^3$.
+    Thus $\pi^{-1}$ is the inverse of $\pi$, so $\pi$ is a permutation of the eight-element set $\F^3$.
 
     \medskip
     
@@ -464,7 +473,7 @@ The essential geometric point is that an isometry sends all edges in a given coo
     \]
     Therefore, $\sigma_{x+ e_j}(i)=\sigma_x(i)$. Consequently, $\sigma_x(i)$ is unchanged when any coordinate of $x$ is changed. The cube is connected, so $\sigma_x$ is a single permutation $\sigma$, independent of $x$. Its uniqueness follows from the images of the edges incident with $\0$.
 
-    Finally, join $u$ to $v$ by changing each coordinate in which they differ exactly once. Equation~\eqref{eq:isometry-directions} shows that the image path changes precisely the corresponding coordinates $\sigma(i)$, again exactly once. In particular, its endpoints differ in coordinate $\sigma(j)$ if and only if $u$ and $v$ differ in coordinate $j$, proving~\eqref{eq:isometry-coordinate-differences}.
+    Finally, join $u$ to $v$ by changing each coordinate in which they differ exactly once. Equation~\eqref{eq:isometry-directions} shows that the image path changes precisely the corresponding coordinates $\sigma(i)$, again exactly once. In particular, its endpoints differ in coordinate $\sigma(j)$ if and only if $u$ and $v$ differ in coordinate $j$, proving Equation~\eqref{eq:isometry-coordinate-differences}.
 \end{proof}
 
 \begin{proposition}\label{prop:isometric-wiring}
@@ -632,7 +641,7 @@ When $\sigma$ is the identity, the wiring diagram is unchanged as a labeled grap
         h(e_2)+ a=e_3,\qquad
         h(e_3)+ a=e_1.
     \]
-    We recover $\sigma=(1\ 2\ 3)$ and
+    We recover $\sigma=(123)$ and
     \[
         h(x)=(1,0,1)+(x_3,x_1,x_2),
     \]
