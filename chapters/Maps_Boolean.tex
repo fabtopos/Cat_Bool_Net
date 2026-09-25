@@ -694,4 +694,417 @@ The characterization has a particularly simple interpretation when the update ma
 \end{example}
 
 
-\section{Semiconjugacy and contraction}
+\section{Semiconjugacy and contraction}\label{sec:semiconjugacy-contraction}
+
+Conjugacy describes a change of labels on the state space. To compare a network with a smaller system that records only some of its information, we must also allow distinct states to have the same image. We therefore replace the bijective state map by a surjective one. The dynamical condition remains a commutative square, but its consequences for the Boolean cube and the wiring diagram require separate consideration.
+
+Throughout this section, $n,m\ge1$, $[n]=\{1,\dots,n\}$, and $+$ denotes addition modulo $2$. We use the Hamming distance on cubes of either dimension, and $e_i$ denotes the standard basis vector in the cube indicated by its context.
+
+\subsection{Semiconjugacy and the identification of states}
+
+\begin{definition}\label{def:boolean-semiconjugacy}
+    Let $f\colon\F^n\to\F^n$ and $g\colon\F^m\to\F^m$ be Boolean networks. A \emph{semiconjugacy} from $f$ to $g$ is a surjective Boolean map $h\colon\F^n\to\F^m$ such that
+    \begin{equation}\label{eq:semiconjugacy}
+        h\circ f=g\circ h.
+    \end{equation}
+    Thus the following diagram commutes:
+    \[
+        \begin{tikzpicture}[>=Stealth]
+            \node (A) at (0,1.5) {$\F^n$};
+            \node (B) at (4,1.5) {$\F^m$};
+            \node (C) at (0,0) {$\F^n$};
+            \node (D) at (4,0) {$\F^m$};
+            \draw[->>] (A)--node[above] {$h$} (B);
+            \draw[->] (A)--node[left] {$f$} (C);
+            \draw[->] (B)--node[right] {$g$} (D);
+            \draw[->>] (C)--node[below] {$h$} (D);
+        \end{tikzpicture}
+    \]
+    When such a map exists, $g$ is called a \emph{factor} of $f$. Surjectivity is part of our convention for semiconjugacy.
+\end{definition}
+
+The map $h$ records an observation of a state. Equation~\eqref{eq:semiconjugacy} says that this observation can be updated using $g$ without knowing which state in the fiber $h^{-1}(y)$ produced it. Surjectivity ensures that every state of the smaller network is represented. It also implies $m\le n$. If $m=n$, then $h$ is bijective and the semiconjugacy is a conjugacy.
+
+As with conjugacy, induction gives $h\circ f^k=g^k\circ h$ for every $k\ge0$. Thus $h$ maps each forward orbit onto the corresponding forward orbit in the factor. Distinct trajectories can merge under $h$, and the period of a periodic state can decrease to a divisor of its original period. Identity maps are semiconjugacies, and compositions of semiconjugacies are semiconjugacies.
+
+\begin{samepage}
+\begin{proposition}\label{prop:semiconjugacy-fibers}
+    Let $f\colon\F^n\to\F^n$ and let $h\colon\F^n\to\F^m$ be surjective. There is a Boolean network $g$ satisfying~\eqref{eq:semiconjugacy} if and only if
+    \begin{equation}\label{eq:forward-compatible-state-fibers}
+        h(x)=h(x')\quad\Longrightarrow\quad h(f(x))=h(f(x'))
+        \qquad(x,x'\in\F^n).
+    \end{equation}
+    If $g$ exists, it is unique.
+\end{proposition}
+\end{samepage}
+
+\begin{proof}
+    Necessity follows by applying $g$ to $h(x)=h(x')$. Conversely, for $y\in\F^m$, choose $x\in h^{-1}(y)$ and put $g(y)=h(f(x))$. Condition~\eqref{eq:forward-compatible-state-fibers} makes this definition independent of the choice of $x$. It gives $gh=hf$, and surjectivity of $h$ forces these values of $g$ at every $y$.
+\end{proof}
+
+\begin{example}\label{ex:semiconjugacy-projection}
+    Consider the eight-node network
+    \[
+        f(x)=\bigl(x_2,x_3,x_4,\Not{x}_1,
+                   x_1+x_5,x_2x_6,x_3\vee x_7,\Not{x}_8\bigr)
+    \]
+    and the four-node network
+    \[
+        g(y)=\bigl(y_2,y_3,y_4,\Not{y}_1\bigr).
+    \]
+    The projection $h(x)=(x_1,x_2,x_3,x_4)$ is surjective, and
+    \[
+        h(f(x))=(x_2,x_3,x_4,\Not{x}_1)=g(h(x)).
+    \]
+    Every state $y$ has $16$ preimages: its first four coordinates are prescribed, and the last four are arbitrary. Although the discarded coordinates have their own dynamics and receive inputs from retained coordinates, they do not affect the evolution of the observation.
+
+    This reduction cannot preserve all distances. For instance, $h(\0)=h(e_5)$ even though $d_H(\0,e_5)=1$. It does satisfy
+    \[
+        d_H(h(x),h(x'))
+        =\bigl|\{i\le4:x_i\ne x'_i\}\bigr|
+        \le d_H(x,x').
+    \]
+    Thus information can be discarded without increasing the size of a perturbation.
+\end{example}
+
+\begin{example}\label{ex:expanding-semiconjugacy}
+    Semiconjugacy alone does not impose the preceding inequality. In fact, its failure can be arbitrarily large. Let $m\ge2$ and $r\ge1$, write a source state as $(u,z)\in\F^m\times\F^r$, and let $R\colon\F^r\to\F^r$ cyclically permute the coordinates. Define
+    \begin{align*}
+        h(u,z)&=(u_1,u_1+u_2,\dots,u_1+u_m),\\
+        f(u,z)&=(\Not{u}_1,0,\dots,0;R(z)),\\
+        g(y)&=(\Not{y}_1,\Not{y}_1,\dots,\Not{y}_1).
+    \end{align*}
+    Here the semicolon separates the first $m$ updated coordinates from the last $r$. Given $y$, take $u_1=y_1$ and $u_i=y_1+y_i$ for $2\le i\le m$; any $z$ then gives a preimage. Moreover,
+    \[
+        h(f(u,z))=(\Not{u}_1,\dots,\Not{u}_1)=g(h(u,z)).
+    \]
+    These are nonconstant dynamics, and $g$ exchanges $\0$ and $\1$. Nevertheless,
+    \[
+        d_H(\0,e_1)=1,
+        \qquad d_H(h(\0),h(e_1))=m.
+    \]
+    One changed input can therefore appear as a simultaneous change in every observed coordinate. The case $m=5$, $r=3$ already gives an eight-node network mapping onto a five-node network with this behavior.
+\end{example}
+
+\subsection{Contractions of Boolean cubes}
+
+Distance preservation would force $h$ to be injective, excluding every proper reduction of the state space. Example~\ref{ex:semiconjugacy-projection} suggests allowing distances to decrease, while Example~\ref{ex:expanding-semiconjugacy} explains why an upper bound is an additional condition.
+
+\begin{definition}\label{def:boolean-contraction}
+    A Boolean map $h\colon\F^n\to\F^m$ is a \emph{contraction} if
+    \begin{equation}\label{eq:hamming-contraction}
+        d_H(h(x),h(x'))\le d_H(x,x')
+        \qquad\text{for all }x,x'\in\F^n.
+    \end{equation}
+    A semiconjugacy satisfying this condition is a \emph{contractive semiconjugacy}.
+\end{definition}
+
+The inequality~\eqref{eq:hamming-contraction} is usually called \emph{Hamming nonexpansiveness}, or the $1$-Lipschitz condition; see, for example, \cite{richard2011nonexpansive}. We use \emph{contraction} for this non-strict inequality. A bound with a constant strictly smaller than $1$ would identify the endpoints of every cube edge, and connectedness of the cube would force the map to be constant. The contraction condition here concerns $h$; the update maps $f$ and $g$ need not be contractions.
+
+\begin{lemma}\label{lem:contraction-edges}
+    A map $h\colon\F^n\to\F^m$ is a contraction if and only if
+    \begin{equation}\label{eq:contraction-edges}
+        d_H(h(x+e_i),h(x))\le1
+        \qquad\text{for every }x\in\F^n\text{ and }i\in[n].
+    \end{equation}
+    Equivalently, each edge of $Q_n$ maps either to an edge of $Q_m$ or to a single vertex.
+\end{lemma}
+
+\begin{proof}
+    Necessity follows by taking two inputs at distance $1$. Conversely, join $x$ to $x'$ by a path of length $d_H(x,x')$ in $Q_n$. Each step changes the image by distance at most $1$. The triangle inequality bounds the distance between the image endpoints by the length of this path.
+\end{proof}
+
+For Boolean self-maps, this criterion says that changing one input affects at most one output at any fixed state. It is the local out-degree characterization of nonexpansiveness in \cite[Proposition~2]{richard2011nonexpansive}. The proof above applies also when the two cubes have different dimensions. Compositions of contractions are contractions. A surjective contraction from $\F^n$ to itself is an isometry. Indeed, it is a bijection of a finite set, so $h^N=\id$ for some $N\ge1$. Repeated application of~\eqref{eq:hamming-contraction} gives
+\[
+    d_H(x,x')\ge d_H(h(x),h(x'))\ge\cdots
+    \ge d_H(h^N(x),h^N(x'))=d_H(x,x'),
+\]
+so all inequalities are equalities.
+
+The edge criterion leaves open which output coordinate changes. Unlike Lemma~\ref{lem:isometry-directions}, it does not assert that this coordinate is determined by the input direction alone. The following example shows both this obstruction and its effect on wiring diagrams.
+
+\begin{example}\label{ex:contraction-variable-directions}
+    For $u\in\F^3$, let $|u|$ be its number of nonzero coordinates, and define $H\colon\F^3\to\F^2$ by
+    \[
+        \begin{array}{c|cccc}
+            |u|&0&1&2&3\\ \hline
+            H(u)&00&10&11&01
+        \end{array}.
+    \]
+    The four possible outputs occur, so $H$ is surjective. Adjacent input states have consecutive weights, and consecutive entries in the second row are adjacent in $Q_2$. Lemma~\ref{lem:contraction-edges} therefore shows that $H$ is a contraction.
+
+    Consider the networks
+    \[
+        F(u_1,u_2,u_3)=(\Not{u}_3,\Not{u}_1,\Not{u}_2),
+        \qquad G(v_1,v_2)=(v_1,\Not{v}_2).
+    \]
+    Since $|F(u)|=3-|u|$, the table gives $H(F(u))=G(H(u))$. Thus $H$ is a contractive semiconjugacy between two nonidentity networks. Nevertheless, two edges in input direction $1$ have images in different directions:
+    \[
+        \begin{array}{ccc}
+            000\longleftrightarrow100&\xmapsto{\ H\ }&00\longleftrightarrow10,\\[2pt]
+            010\longleftrightarrow110&\xmapsto{\ H\ }&10\longleftrightarrow11.
+        \end{array}
+    \]
+    Hence no single output direction can be assigned to this input direction at every state.
+
+    There is also a direct obstruction to lifting wiring edges. The diagrams are
+    \[
+        \begin{tikzpicture}[>=Stealth,
+            vertex/.style={draw,circle,minimum size=6mm,inner sep=0pt}]
+            \node[vertex] (a1) at (0,1) {$1$};
+            \node[vertex] (a2) at (-1,-.7) {$2$};
+            \node[vertex] (a3) at (1,-.7) {$3$};
+            \draw[->] (a1)--(a2);
+            \draw[->] (a2)--(a3);
+            \draw[->] (a3)--(a1);
+            \node at (0,-1.3) {$W(F)$};
+            \node[vertex] (b1) at (4,.15) {$1$};
+            \node[vertex] (b2) at (6,.15) {$2$};
+            \draw[->,loop above] (b1) to (b1);
+            \draw[->,loop above] (b2) to (b2);
+            \node at (5,-1.3) {$W(G)$};
+        \end{tikzpicture}
+    \]
+    Every surjection $[3]\to[2]$ has a singleton fiber. The loop at its image node would have to lift to a loop at that single source node, but $W(F)$ has no loops. Thus contraction and semiconjugacy do not even guarantee the existence of a surjective node map lifting every target edge.
+
+    This obstruction persists in larger systems with interacting additional coordinates. For $r\ge2$, let $R$ cyclically permute $r$ coordinates and set
+    \[
+        h(u,z)=(H(u),z),\qquad
+        f(u,z)=(F(u),R(z)),\qquad
+        g(v,z)=(G(v),R(z)).
+    \]
+    These give a contractive semiconjugacy from $r+3$ nodes to $r+2$ nodes. The source wiring diagram is the disjoint union of a directed $3$-cycle and a directed $r$-cycle, so it has no loops. The target has two loops and a directed $r$-cycle. Any surjection $[r+3]\to[r+2]$ has exactly one fiber of size $2$ and all remaining fibers of size $1$. Both loop vertices would need a fiber of size at least $2$, which is impossible. Taking $r=4$ gives a seven-node to six-node example, and $r$ can be arbitrarily large.
+\end{example}
+
+\subsection{Compatible node maps and aggregation}
+
+To connect a state map to wiring diagrams, we need a consistent assignment of input coordinates to output coordinates. We allow an input perturbation to disappear, and we allow several inputs to affect the same output. We require that an input cannot affect different outputs at different states.
+
+For example, consider
+\[
+    h(x_1,\dots,x_9)
+    =\bigl(x_1\vee x_2\vee x_3,\ x_4x_5x_6,\ x_7+x_8+x_9\bigr).
+\]
+Changing any of the first three inputs affects only the first output, and the other two groups behave similarly. Some changes disappear: changing $x_1$ has no effect when $x_2=1$. Nevertheless, there is an unambiguous assignment of all nine source nodes to three target nodes. Each aggregation function is nonconstant, and its inputs are disjoint from the inputs of the others, so every output state can be attained independently. This example suggests the following definition.
+
+\begin{definition}\label{def:compatible-node-map}
+    Let $h\colon\F^n\to\F^m$ be a surjective Boolean map. A \emph{compatible node map} for $h$ is a surjection $\phi\colon[n]\to[m]$ such that
+    \begin{equation}\label{eq:compatible-node-directions}
+        h(x+e_i)+h(x)\in\{\0,e_{\phi(i)}\}
+        \qquad\text{for every }x\in\F^n\text{ and }i\in[n].
+    \end{equation}
+    We write $B_a=\phi^{-1}(a)$ for its \emph{node fibers}. Thus the sets $B_a$ form a partition of $[n]$ into nonempty blocks.
+\end{definition}
+
+The maps $h\colon\F^n\to\F^m$ and $\phi\colon[n]\to[m]$ act on different sets: $h$ identifies states, while $\phi$ groups nodes. In particular, a node fiber $B_a$ is not a state fiber $h^{-1}(y)$. No condition on the edges of $W(f)$ or $W(g)$ is included in Definition~\ref{def:compatible-node-map}; the edge-lifting conclusion will be deduced from compatibility and semiconjugacy.
+
+\begin{samepage}
+\begin{proposition}\label{prop:compatible-block-form}
+    Let $h\colon\F^n\to\F^m$ be surjective and let $\phi\colon[n]\to[m]$ be a surjection. The following conditions are equivalent:
+    \begin{enumerate}[(i)]
+        \item $\phi$ is compatible with $h$.
+        \item For every $a\in[m]$, the function $h_a$ depends only on the coordinates in $B_a=\phi^{-1}(a)$.
+        \item There are nonconstant Boolean functions $H_a\colon\F^{B_a}\to\F$ such that
+        \begin{equation}\label{eq:compatible-block-form}
+            h(x)=\bigl(H_1(x|_{B_1}),\dots,H_m(x|_{B_m})\bigr).
+        \end{equation}
+    \end{enumerate}
+    Here $\F^{B_a}$ denotes states indexed by the nodes in $B_a$, and $x|_{B_a}$ is the restriction of $x$ to those coordinates. These conditions imply that $h$ is a contraction.
+\end{proposition}
+\end{samepage}
+
+\begin{proof}
+    Suppose (i) holds. If $i\notin B_a$, equation~\eqref{eq:compatible-node-directions} gives $h_a(x+e_i)=h_a(x)$. Any two states agreeing on $B_a$ can be joined by changing only coordinates outside $B_a$, so they have the same value of $h_a$. This proves (ii). Condition (ii) defines $H_a$ by restriction, and surjectivity of $h$ ensures that each $h_a$, hence each $H_a$, takes both Boolean values. Thus (iii) holds.
+
+    Conversely, under (iii), changing an input coordinate $i$ can affect only the output with $a=\phi(i)$, which gives (i). Finally, equation~\eqref{eq:compatible-node-directions} implies~\eqref{eq:contraction-edges}, so Lemma~\ref{lem:contraction-edges} gives contraction.
+\end{proof}
+
+This proposition identifies the extra restriction beyond contraction. At a fixed state, a contraction permits an input to affect at most one output; compatibility requires the same assignment at every state. Equivalently, a surjective $h$ admits a compatible node map precisely when each input coordinate is essential in at most one of the functions $h_1,\dots,h_m$. An input essential in $h_a$ must be assigned to $a$. Inputs ignored by every component of $h$ can be assigned to any node. Each output has an essential input because it is nonconstant, so these assignments give a surjection. When a compatible node map exists, it is unique exactly when every input is used or $m=1$.
+
+The projection in Example~\ref{ex:semiconjugacy-projection} therefore has compatible node maps: the first four nodes have forced assignments, while the last four can be assigned freely. The map in Example~\ref{ex:contraction-variable-directions} has none. In the isometric case, the node fibers are singletons and the compatible map is precisely the permutation in Lemma~\ref{lem:isometry-directions}.
+
+\begin{example}\label{ex:large-compatible-aggregation}
+    \begin{samepage}
+    We now construct a semiconjugacy from a twelve-node network to a four-node network, using four different aggregation rules. Partition $[12]$ into
+    \[
+        B_1=\{1,2,3\},\quad B_2=\{4,5,6\},\quad
+        B_3=\{7,8,9\},\quad B_4=\{10,11,12\},
+    \]
+    \end{samepage}
+    and put
+    \begin{align*}
+        P(x)&=x_1+x_2+x_3,& A(x)&=x_4x_5x_6,\\
+        O(x)&=x_7\vee x_8\vee x_9,&
+        M(x)&=(x_{10}x_{11})\vee(x_{10}x_{12})\vee(x_{11}x_{12}).
+    \end{align*}
+    Thus $M$ is the majority function on the last three inputs. Set
+    \[
+        h(x)=(P(x),A(x),O(x),M(x)),\qquad
+        \phi(i)=a\quad\text{for }i\in B_a.
+    \]
+    The assignment of nodes is displayed below; the arrows describe $\phi$, rather than wiring edges.
+    \begin{center}
+        \begin{tikzpicture}[>=Stealth,
+            block/.style={draw,rounded corners,minimum width=2.15cm,minimum height=9mm},
+            vertex/.style={draw,circle,minimum size=6mm,inner sep=0pt}]
+            \node[block] (b1) at (0,1.5) {$1,2,3$};
+            \node[block] (b2) at (2.8,1.5) {$4,5,6$};
+            \node[block] (b3) at (5.6,1.5) {$7,8,9$};
+            \node[block] (b4) at (8.4,1.5) {$10,11,12$};
+            \node[vertex] (a1) at (0,0) {$1$};
+            \node[vertex] (a2) at (2.8,0) {$2$};
+            \node[vertex] (a3) at (5.6,0) {$3$};
+            \node[vertex] (a4) at (8.4,0) {$4$};
+            \draw[->] (b1)--node[right,font=\small] {parity} (a1);
+            \draw[->] (b2)--node[right,font=\small] {AND} (a2);
+            \draw[->] (b3)--node[right,font=\small] {OR} (a3);
+            \draw[->] (b4)--node[right,font=\small] {majority} (a4);
+        \end{tikzpicture}
+    \end{center}
+    Each rule takes a constant triple $(t,t,t)$ to $t$, so
+    \[
+        s(y)=(y_1,y_1,y_1,y_2,y_2,y_2,y_3,y_3,y_3,y_4,y_4,y_4)
+    \]
+    satisfies $h(s(y))=y$. Hence $h$ is surjective, and Proposition~\ref{prop:compatible-block-form} shows that it is a contraction with compatible node map $\phi$. Every source coordinate is essential in its aggregation rule, so $\phi$ is unique. This map reduces $4096$ states to $16$ states. Its state fibers need not have equal sizes: the fibers over $(0,1,0,0)$ and $(0,0,1,0)$ have sizes $4\cdot1\cdot1\cdot4=16$ and $4\cdot7\cdot7\cdot4=784$, respectively.
+
+    Define the target network by
+    \begin{equation}\label{eq:four-node-aggregate-network}
+        g(y)=\bigl(y_1y_2+y_3,\ y_1\vee y_4,\ y_2+y_4,
+                    \ y_1(y_3\vee y_4)\bigr).
+    \end{equation}
+    For the construction of $f$, abbreviate the four prescribed aggregate updates as
+    \[
+        u_1=PA+O,\qquad u_2=P\vee M,\qquad
+        u_3=A+M,\qquad u_4=P(O\vee M).
+    \]
+    These are explicit functions of $x$, namely the components of $g(h(x))$. Define $f$ block by block:
+    \begin{align*}
+        (f_1,f_2,f_3)&=(x_{10},x_{11},u_1+x_{10}+x_{11}),\\
+        (f_4,f_5,f_6)&=(u_2\vee x_7,u_2\vee\Not{x}_7,u_2\vee x_8),\\
+        (f_7,f_8,f_9)&=(u_3x_1,u_3\Not{x}_1,u_3x_2),\\
+        (f_{10},f_{11},f_{12})&=(u_4,x_4,\Not{x}_4).
+    \end{align*}
+    Applying the four aggregation rules to these updates gives
+    \begin{align*}
+        P(f(x))&=x_{10}+x_{11}+u_1+x_{10}+x_{11}=u_1,\\
+        A(f(x))&=(u_2\vee x_7)(u_2\vee\Not{x}_7)(u_2\vee x_8)=u_2,\\
+        O(f(x))&=(u_3x_1)\vee(u_3\Not{x}_1)\vee(u_3x_2)=u_3,\\
+        M(f(x))&=\operatorname{maj}(u_4,x_4,\Not{x}_4)=u_4.
+    \end{align*}
+    The last equality holds because the last two arguments are opposite, leaving the first argument to determine the majority. Thus $hf=gh$. None of the twelve coordinate functions of $f$ is constant.
+
+    All four target nodes interact. The wiring diagram of $g$ and one lift of each of its ten edges are shown below. Each lift is an essential dependence obtained directly from the displayed coordinate functions of $f$.
+    \begin{center}
+        \begin{minipage}{0.45\linewidth}
+            \centering
+            \begin{tikzpicture}[>=Stealth,
+                vertex/.style={draw,circle,minimum size=7mm,inner sep=0pt}]
+                \node[vertex] (g1) at (0,2.1) {$1$};
+                \node[vertex] (g2) at (2.2,2.1) {$2$};
+                \node[vertex] (g3) at (2.2,0) {$3$};
+                \node[vertex] (g4) at (0,0) {$4$};
+                \draw[->,bend left=12] (g1) to (g2);
+                \draw[->,bend left=12] (g2) to (g1);
+                \draw[->] (g2)--(g3);
+                \draw[->,bend left=12] (g3) to (g4);
+                \draw[->,bend left=12] (g4) to (g3);
+                \draw[->] (g1)--(g4);
+                \draw[->] (g3)--(g1);
+                \draw[->] (g4)--(g2);
+                \draw[->,loop above] (g1) to (g1);
+                \draw[->,loop below] (g4) to (g4);
+            \end{tikzpicture}
+
+            \small $W(g)$
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.5\linewidth}
+            \centering
+            \small
+            \renewcommand{\arraystretch}{1.1}
+            \begin{tabular}{c|c}
+                Edge in $W(g)$ & A lift in $W(f)$\\ \hline
+                $1\to1$ & $1\to3$\\
+                $2\to1$ & $4\to3$\\
+                $3\to1$ & $7\to3$\\
+                $1\to2$ & $1\to4$\\
+                $4\to2$ & $10\to4$\\
+                $2\to3$ & $4\to7$\\
+                $4\to3$ & $10\to7$\\
+                $1\to4$ & $1\to10$\\
+                $3\to4$ & $7\to10$\\
+                $4\to4$ & $10\to10$
+            \end{tabular}
+        \end{minipage}
+    \end{center}
+
+    The reverse implication fails. For instance, $10\to1$ is an edge of $W(f)$ because $f_1=x_{10}$. Its endpoints have images $4$ and $1$, but $4\to1$ is absent from $W(g)$: the occurrences of $x_{10}$ cancel in the first aggregate. Similarly, the source edges $7\to4$, $1\to7$, and $4\to11$ have images $3\to2$, $1\to3$, and $2\to4$, respectively, all absent from $W(g)$. The AND, OR, and majority computations above explain their disappearance. In particular, a compatible node map need not be a graph homomorphism between the wiring diagrams.
+\end{example}
+
+The construction is not limited to twelve nodes or to these four rules. Let $[n]=B_1\sqcup\cdots\sqcup B_m$ be any partition into nonempty blocks, and choose any nonconstant functions $H_a\colon\F^{B_a}\to\F$. Define $h$ by~\eqref{eq:compatible-block-form}. Independent choices in the blocks show that $h$ is surjective, and its block assignment is compatible. For each $a$, choose states $s_a(0),s_a(1)$ with $H_a(s_a(t))=t$. Given any target network $g$, define a source network by
+\[
+    f(x)|_{B_a}=s_a\bigl(g_a(h(x))\bigr),\qquad a\in[m].
+\]
+Then $h_a(f(x))=g_a(h(x))$ for every $a$, so $h$ is a contractive semiconjugacy. Both the number of blocks and their sizes can be arbitrarily large. The preceding example allows additional variation within the aggregate fibers, which accounts for its disappearing dependencies.
+
+\subsection{Lifting edges through node fibers}
+
+The examples suggest a one-sided relationship between wiring diagrams: every dependency in the factor should come from at least one dependency between the appropriate source blocks. Several source edges may give the same target edge, and some source dependencies may disappear under aggregation. For a node map $\phi$, write
+\[
+    (\phi\times\phi)(E(W(f)))
+    =\{(\phi(i),\phi(j)):(i,j)\in E(W(f))\}.
+\]
+We seek inclusion of $E(W(g))$ in this set. Equality, and hence preservation of every source edge, is not asserted.
+
+Here \emph{edge lifting} means the existence of an edge between the indicated node fibers. A graph fibration additionally requires a graph homomorphism and a unique incoming-edge lift at every prescribed vertex above its target \cite[Definition~3.1]{deville2015dynamics}.
+
+\begin{theorem}[Edge lifting]\label{thm:compatible-edge-lifting}
+    Let $f\colon\F^n\to\F^n$ and $g\colon\F^m\to\F^m$ be Boolean networks. Suppose that $h\colon\F^n\to\F^m$ is a contractive semiconjugacy admitting a compatible node map $\phi\colon[n]\to[m]$. Write $B_a=\phi^{-1}(a)$. Then
+    \begin{equation}\label{eq:compatible-edge-lifting}
+        a\longrightarrow b\text{ in }W(g)
+        \quad\Longrightarrow\quad
+        \begin{gathered}
+            \text{there exist }i\in B_a\text{ and }j\in B_b\\
+            \text{such that }i\longrightarrow j\text{ in }W(f).
+        \end{gathered}
+    \end{equation}
+    Equivalently,
+    \[
+        E(W(g))\subseteq(\phi\times\phi)(E(W(f))).
+    \]
+    Self-loops are included: a loop at $a$ lifts to an edge whose two endpoints lie in $B_a$, and these endpoints need not be equal. Since compatibility already implies contraction, semiconjugacy and compatibility are sufficient hypotheses.
+\end{theorem}
+
+\begin{proof}
+    Suppose $a\to b$ belongs to $W(g)$. By essential dependence, there is $y\in\F^m$ such that
+    \[
+        g_b(y)\ne g_b(y+e_a).
+    \]
+    Surjectivity gives states $x,z\in\F^n$ with $h(x)=y$ and $h(z)=y+e_a$. Define $x'$ by replacing only the coordinates of $x$ in $B_a$:
+    \[
+        x'_i=\begin{cases}
+            z_i,&i\in B_a,\\
+            x_i,&i\notin B_a.
+        \end{cases}
+    \]
+    Proposition~\ref{prop:compatible-block-form} shows that $h_c$ depends only on $B_c$. Thus $h_a(x')=h_a(z)=y_a+1$, while $h_c(x')=h_c(x)=y_c$ for every $c\ne a$. Consequently,
+    \[
+        h(x')=y+e_a,
+        \qquad x'|_{[n]\setminus B_a}=x|_{[n]\setminus B_a}.
+    \]
+    Applying the semiconjugacy identity gives
+    \[
+        h_b(f(x))=g_b(y)\ne g_b(y+e_a)=h_b(f(x')).
+    \]
+    Since $h_b$ depends only on $B_b$, the output states $f(x)$ and $f(x')$ must differ in at least one coordinate $j\in B_b$. Fix such a $j$.
+
+    Join $x$ to $x'$ by changing each coordinate in which they differ exactly once. All these coordinates belong to $B_a$. Write the resulting path as
+    \[
+        x=x^{(0)},x^{(1)},\dots,x^{(\ell)}=x'.
+    \]
+    Since $f_j(x)\ne f_j(x')$, there is a step $t$ for which
+    \[
+        f_j(x^{(t)})\ne f_j(x^{(t+1)}).
+    \]
+    This step has $x^{(t+1)}=x^{(t)}+e_i$ for some $i\in B_a$. It therefore witnesses an essential dependence of $f_j$ on $x_i$, giving $i\to j$ in $W(f)$. By construction, $\phi(i)=a$ and $\phi(j)=b$, as required. The argument also applies when $a=b$.
+\end{proof}
