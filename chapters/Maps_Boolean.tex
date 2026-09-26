@@ -1,11 +1,7 @@
 
-Conjugate Boolean networks need not have isomorphic wiring diagrams. In fact, it has recently been shown that every so-called non-trivial Boolean network is conjugate to one with a complete wiring diagram. It is well known that the bijections of $\F^n\to\F^n$ that preserving the wiring diagram are precisely the isometries of the Boolean cube. These form the group of signed permutations, also known as the type $B$ Weyl group, and they are isomorphic to the wreath product $C_2\wr C_n$. These can be considered as isomorphisms of Boolean networks. In this section, we will explore the concept of a homomorphism of Boolean networks. 
+This chapter investigates how maps between Boolean networks can respect both their dynamics and the dependencies recorded by their wiring diagrams. Conjugate Boolean networks have isomorphic phase spaces, yet their wiring diagrams need not be isomorphic: an arbitrary relabeling of states need not preserve changes in a single coordinate. We therefore begin with conjugacies that preserve the Hamming distance on the Boolean cube. These isometric conjugacies induce isomorphisms of wiring diagrams and provide a natural notion of isomorphism for Boolean networks. We show that every isometry is a composition of a coordinate permutation and coordinate complementations. Such maps form the group of signed permutations, or the Weyl group of type $B_n$, isomorphic to the wreath product $C_2\wr S_n$, where $S_n$ is the symmetric group.
 
-Summarize this chapter in a paragraph or two. 
-
-
-Structure-preserving 
-
+Our main goal is to extend this connection between dynamics and wiring diagrams to reductions that aggregate several nodes into one. A semiconjugacy is a surjective state map $h$ satisfying $h\circ f=g\circ h$, so that the reduced network $g$ describes the evolution of the observed states. Requiring $h$ to be a contraction ensures that aggregation does not increase Hamming distances, but this alone does not ensure a corresponding relationship between wiring diagrams. We introduce a compatible node map $\phi$, which partitions the source nodes into blocks and requires each coordinate of $h$ to depend only on its assigned block. The main result, the edge-lifting theorem (Theorem~\ref{thm:compatible-edge-lifting}), shows that under these conditions every edge $a\to b$ in the reduced network lifts to an edge $i\to j$ in the original network with $\phi(i)=a$ and $\phi(j)=b$. Thus every dependency observed after reduction has a witness among the original dependencies. Examples show why compatibility is needed and how aggregation can erase source dependencies. The theorem gives a precise structural guarantee for network reduction and extends the preservation of wiring diagrams under isometric conjugacy to maps that identify states and group nodes.
 
 \section{Conjugacy and isometric conjugacy}
 
@@ -473,7 +469,7 @@ The essential geometric point is that an isometry sends all edges in a given coo
     \]
     Therefore, $\sigma_{x+ e_j}(i)=\sigma_x(i)$. Consequently, $\sigma_x(i)$ is unchanged when any coordinate of $x$ is changed. The cube is connected, so $\sigma_x$ is a single permutation $\sigma$, independent of $x$. Its uniqueness follows from the images of the edges incident with $\0$.
 
-    Finally, join $u$ to $v$ by changing each coordinate in which they differ exactly once. Equation~\eqref{eq:isometry-directions} shows that the image path changes precisely the corresponding coordinates $\sigma(i)$, again exactly once. In particular, its endpoints differ in coordinate $\sigma(j)$ if and only if $u$ and $v$ differ in coordinate $j$, proving Equation~\eqref{eq:isometry-coordinate-differences}.
+    Finally, join $u$ to $v$ by changing each coordinate in which they differ exactly once. Equation~\eqref{eq:isometry-directions} shows that the image path changes precisely the corresponding coordinates $\sigma(i)$, again exactly once. In particular, its endpoints differ in coordinate $\sigma(j)$ if and only if $u$ and $v$ differ in coordinate $j$, proving equation~\eqref{eq:isometry-coordinate-differences}.
 \end{proof}
 
 \begin{proposition}\label{prop:isometric-wiring}
@@ -487,7 +483,7 @@ The essential geometric point is that an isometry sends all edges in a given coo
 \end{proposition}
 
 \begin{proof}
-    Fix $x\in\F^n$ and put $y=h(x)$. By~\eqref{eq:isometry-directions},
+    Fix $x\in\F^n$ and put $y=h(x)$. By equation~\eqref{eq:isometry-directions},
     \[
         h(x+ e_i)=y+ e_{\sigma(i)}.
     \]
@@ -497,13 +493,13 @@ The essential geometric point is that an isometry sends all edges in a given coo
         \qquad
         g(y+ e_{\sigma(i)})=h(f(x+ e_i)).
     \]
-    Applying~\eqref{eq:isometry-coordinate-differences} to these two output states yields
+    Applying equation~\eqref{eq:isometry-coordinate-differences} to these two output states yields
     \[
         g_{\sigma(j)}(y)\ne g_{\sigma(j)}(y+ e_{\sigma(i)})
         \quad\Longleftrightarrow\quad
         f_j(x)\ne f_j(x+ e_i).
     \]
-    Since $h$ is bijective, $y$ ranges over all of $\F^n$ as $x$ does. Taking the existence of such a state on both sides and using~\eqref{eq:essential-dependence} proves the assertion, including the case $i=j$.
+    Since $h$ is bijective, $y$ ranges over all of $\F^n$ as $x$ does. Taking the existence of such a state on both sides and using equation~\eqref{eq:essential-dependence} proves the assertion, including the case $i=j$.
 \end{proof}
 
 \begin{example}\label{ex:isometric-wiring}
@@ -738,7 +734,7 @@ As with conjugacy, induction gives $h\circ f^k=g^k\circ h$ for every $k\ge0$. Th
 
 \begin{samepage}
 \begin{proposition}\label{prop:semiconjugacy-fibers}
-    Let $f\colon\F^n\to\F^n$ and let $h\colon\F^n\to\F^m$ be surjective. There is a Boolean network $g$ satisfying~\eqref{eq:semiconjugacy} if and only if
+    Let $f\colon\F^n\to\F^n$ and let $h\colon\F^n\to\F^m$ be surjective. There is a Boolean network $g$ satisfying equation~\eqref{eq:semiconjugacy} if and only if
     \begin{equation}\label{eq:forward-compatible-state-fibers}
         h(x)=h(x')\quad\Longrightarrow\quad h(f(x))=h(f(x'))
         \qquad(x,x'\in\F^n).
@@ -748,7 +744,7 @@ As with conjugacy, induction gives $h\circ f^k=g^k\circ h$ for every $k\ge0$. Th
 \end{samepage}
 
 \begin{proof}
-    Necessity follows by applying $g$ to $h(x)=h(x')$. Conversely, for $y\in\F^m$, choose $x\in h^{-1}(y)$ and put $g(y)=h(f(x))$. Condition~\eqref{eq:forward-compatible-state-fibers} makes this definition independent of the choice of $x$. It gives $gh=hf$, and surjectivity of $h$ forces these values of $g$ at every $y$.
+    Necessity follows by applying $g$ to $h(x)=h(x')$. Conversely, for $y\in\F^m$, choose $x\in h^{-1}(y)$ and put $g(y)=h(f(x))$. The condition in equation~\eqref{eq:forward-compatible-state-fibers} makes this definition independent of the choice of $x$. It gives $gh=hf$, and surjectivity of $h$ forces these values of $g$ at every $y$.
 \end{proof}
 
 \begin{example}\label{ex:semiconjugacy-projection}
@@ -808,7 +804,7 @@ Distance preservation would force $h$ to be injective, excluding every proper re
     A semiconjugacy satisfying this condition is a \emph{contractive semiconjugacy}.
 \end{definition}
 
-The inequality~\eqref{eq:hamming-contraction} is usually called \emph{Hamming nonexpansiveness}, or the $1$-Lipschitz condition; see, for example, \cite{richard2011nonexpansive}. We use \emph{contraction} for this non-strict inequality. A bound with a constant strictly smaller than $1$ would identify the endpoints of every cube edge, and connectedness of the cube would force the map to be constant. The contraction condition here concerns $h$; the update maps $f$ and $g$ need not be contractions.
+The inequality in equation~\eqref{eq:hamming-contraction} is usually called \emph{Hamming nonexpansiveness}, or the $1$-Lipschitz condition; see, for example, \cite{richard2011nonexpansive}. We use \emph{contraction} for this non-strict inequality. A bound with a constant strictly smaller than $1$ would identify the endpoints of every cube edge, and connectedness of the cube would force the map to be constant. The contraction condition here concerns $h$; the update maps $f$ and $g$ need not be contractions.
 
 \begin{lemma}\label{lem:contraction-edges}
     A map $h\colon\F^n\to\F^m$ is a contraction if and only if
@@ -823,7 +819,7 @@ The inequality~\eqref{eq:hamming-contraction} is usually called \emph{Hamming no
     Necessity follows by taking two inputs at distance $1$. Conversely, join $x$ to $x'$ by a path of length $d_H(x,x')$ in $Q_n$. Each step changes the image by distance at most $1$. The triangle inequality bounds the distance between the image endpoints by the length of this path.
 \end{proof}
 
-For Boolean self-maps, this criterion says that changing one input affects at most one output at any fixed state. It is the local out-degree characterization of nonexpansiveness in \cite[Proposition~2]{richard2011nonexpansive}. The proof above applies also when the two cubes have different dimensions. Compositions of contractions are contractions. A surjective contraction from $\F^n$ to itself is an isometry. Indeed, it is a bijection of a finite set, so $h^N=\id$ for some $N\ge1$. Repeated application of~\eqref{eq:hamming-contraction} gives
+For Boolean self-maps, this criterion says that changing one input affects at most one output at any fixed state. It is the local out-degree characterization of nonexpansiveness in \cite[Proposition~2]{richard2011nonexpansive}. The proof above applies also when the two cubes have different dimensions. Compositions of contractions are contractions. A surjective contraction from $\F^n$ to itself is an isometry. Indeed, it is a bijection of a finite set, so $h^N=\id$ for some $N\ge1$. Repeated application of equation~\eqref{eq:hamming-contraction} gives
 \[
     d_H(x,x')\ge d_H(h(x),h(x'))\ge\cdots
     \ge d_H(h^N(x),h^N(x'))=d_H(x,x'),
@@ -925,7 +921,7 @@ The maps $h\colon\F^n\to\F^m$ and $\phi\colon[n]\to[m]$ act on different sets: $
 \begin{proof}
     Suppose (i) holds. If $i\notin B_a$, equation~\eqref{eq:compatible-node-directions} gives $h_a(x+e_i)=h_a(x)$. Any two states agreeing on $B_a$ can be joined by changing only coordinates outside $B_a$, so they have the same value of $h_a$. This proves (ii). Condition (ii) defines $H_a$ by restriction, and surjectivity of $h$ ensures that each $h_a$, hence each $H_a$, takes both Boolean values. Thus (iii) holds.
 
-    Conversely, under (iii), changing an input coordinate $i$ can affect only the output with $a=\phi(i)$, which gives (i). Finally, equation~\eqref{eq:compatible-node-directions} implies~\eqref{eq:contraction-edges}, so Lemma~\ref{lem:contraction-edges} gives contraction.
+    Conversely, under (iii), changing an input coordinate $i$ can affect only the output with $a=\phi(i)$, which gives (i). Finally, equation~\eqref{eq:compatible-node-directions} implies equation~\eqref{eq:contraction-edges}, so Lemma~\ref{lem:contraction-edges} gives contraction.
 \end{proof}
 
 This proposition identifies the extra restriction beyond contraction. At a fixed state, a contraction permits an input to affect at most one output; compatibility requires the same assignment at every state. Equivalently, a surjective $h$ admits a compatible node map precisely when each input coordinate is essential in at most one of the functions $h_1,\dots,h_m$. An input essential in $h_a$ must be assigned to $a$. Inputs ignored by every component of $h$ can be assigned to any node. Each output has an essential input because it is nonconstant, so these assignments give a surjection. When a compatible node map exists, it is unique exactly when every input is used or $m=1$.
@@ -1050,7 +1046,7 @@ The projection in Example~\ref{ex:semiconjugacy-projection} therefore has compat
     The reverse implication fails. For instance, $10\to1$ is an edge of $W(f)$ because $f_1=x_{10}$. Its endpoints have images $4$ and $1$, but $4\to1$ is absent from $W(g)$: the occurrences of $x_{10}$ cancel in the first aggregate. Similarly, the source edges $7\to4$, $1\to7$, and $4\to11$ have images $3\to2$, $1\to3$, and $2\to4$, respectively, all absent from $W(g)$. The AND, OR, and majority computations above explain their disappearance. In particular, a compatible node map need not be a graph homomorphism between the wiring diagrams.
 \end{example}
 
-The construction is not limited to twelve nodes or to these four rules. Let $[n]=B_1\sqcup\cdots\sqcup B_m$ be any partition into nonempty blocks, and choose any nonconstant functions $H_a\colon\F^{B_a}\to\F$. Define $h$ by~\eqref{eq:compatible-block-form}. Independent choices in the blocks show that $h$ is surjective, and its block assignment is compatible. For each $a$, choose states $s_a(0),s_a(1)$ with $H_a(s_a(t))=t$. Given any target network $g$, define a source network by
+The construction is not limited to twelve nodes or to these four rules. Let $[n]=B_1\sqcup\cdots\sqcup B_m$ be any partition into nonempty blocks, and choose any nonconstant functions $H_a\colon\F^{B_a}\to\F$. Define $h$ by equation~\eqref{eq:compatible-block-form}. Independent choices in the blocks show that $h$ is surjective, and its block assignment is compatible. For each $a$, choose states $s_a(0),s_a(1)$ with $H_a(s_a(t))=t$. Given any target network $g$, define a source network by
 \[
     f(x)|_{B_a}=s_a\bigl(g_a(h(x))\bigr),\qquad a\in[m].
 \]
