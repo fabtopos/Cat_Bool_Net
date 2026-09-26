@@ -1,0 +1,897 @@
+\section{Morphisms and Boolean observables}\label{sec:calculus-morphisms}
+
+Throughout this chapter, $[n]=\{1,\dots,n\}$, and all sums and products of Boolean values are taken in $\F$. Dimensions are positive unless stated otherwise. We use the unsigned wiring diagrams of the preceding chapter, including self-loops.
+
+\begin{definition}\label{def:network-morphism}
+    Let $f\colon\F^n\to\F^n$ and $g\colon\F^m\to\F^m$ be Boolean networks. A \emph{morphism} from $f$ to $g$ is a surjective Boolean map $h\colon\F^n\to\F^m$ satisfying
+    \[
+        h\circ f=g\circ h
+    \]
+    that is a contraction and admits a compatible node map in the sense of Definition~\ref{def:compatible-node-map}. We write $h\colon f\to g$.
+\end{definition}
+
+Morphisms are the state maps satisfying the hypotheses of Theorem~\ref{thm:compatible-edge-lifting}. Compatibility already implies contraction. A compatible node map is a witness to this condition; it is not additional data in the morphism. In particular, two different compatible node maps for the same $h$ do not define different morphisms.
+
+When a witness $\phi\colon[n]\to[m]$ is chosen, we write
+\begin{equation}\label{eq:calculus-block-map}
+    B_a=\phi^{-1}(a),\qquad
+    h_a(x)=H_a(x|_{B_a}),\qquad a\in[m].
+\end{equation}
+By Proposition~\ref{prop:compatible-block-form}, the blocks are nonempty and the functions $H_a$ are nonconstant. Conversely, any such block map is surjective and contractive. It is a morphism $f\to g$ exactly when it satisfies the displayed commutation identity.
+
+\begin{proposition}\label{prop:category-boolean-morphisms}
+    Boolean networks and their morphisms form a category $\BN$. Every morphism is an epimorphism. The isomorphisms are exactly the isometric conjugacies, and every endomorphism is an automorphism.
+\end{proposition}
+
+\begin{proof}
+    The identity state map is a morphism, with the identity node map as a witness. Suppose $h\colon f\to g$ and $k\colon g\to r$ have compatible node maps $\phi\colon[n]\to[m]$ and $\psi\colon[m]\to[\ell]$. Changing input $i$ either leaves $h$ unchanged or changes only its coordinate $\phi(i)$. Applying $k$ then either erases this change or changes only coordinate $\psi(\phi(i))$. Thus $\psi\circ\phi$ is compatible with $k\circ h$. The composite is surjective and
+    \[
+        (k\circ h)\circ f=k\circ g\circ h
+        =r\circ(k\circ h).
+    \]
+    Associativity and the identity laws are those of functions. Surjectivity gives right cancellation, so every morphism is an epimorphism.
+
+    An invertible morphism is a bijection between cubes, so their dimensions agree. A surjective contraction between cubes of the same dimension is an isometry, as proved in Section~\ref{sec:semiconjugacy-contraction}. Conversely, the inverse of an isometric conjugacy is an isometric conjugacy and hence a morphism. The same argument applies to every endomorphism, since its source and target dimensions agree.
+\end{proof}
+
+For the composite above, the block assigned to $c\in[\ell]$ is
+\[
+    (\psi\circ\phi)^{-1}(c)
+    =\bigcup_{a\in\psi^{-1}(c)}B_a.
+\]
+Consequently, successive reductions combine the blocks of the earlier reduction. A morphism can only decrease the number of nodes. A morphism between networks with the same number of nodes is an isometric conjugacy.
+
+\begin{example}\label{ex:calculus-running}
+    Put $P=x_1+x_2$ and $A=x_3x_4$, and define
+    \begin{align*}
+        h(x)&=(P,A),\\
+        f(x)&=(x_3,\ P+A+x_3,\ P,\ A),\\
+        g(y)&=(y_1+y_2,\ y_1y_2).
+    \end{align*}
+    The blocks $B_1=\{1,2\}$ and $B_2=\{3,4\}$ give a compatible node map. Parity on the first block and AND on the second block are nonconstant, so $h$ is surjective. Moreover,
+    \[
+        h(f(x))=(x_3+P+A+x_3,\ PA)
+        =(P+A,PA)=g(h(x)).
+    \]
+    Thus $h\colon f\to g$ is a morphism. We will use it to compare the calculus before and after aggregation.
+\end{example}
+
+\subsection{Pullback of observables}
+
+\begin{definition}\label{def:boolean-observables}
+    A \emph{Boolean observable} on $\F^n$ is a function $q\colon\F^n\to\F$. Let $\mathcal A_n$ be the algebra of these functions, with pointwise addition and multiplication. For a Boolean map $h\colon\F^n\to\F^m$, its \emph{pullback} is
+    \[
+        h^*\colon\mathcal A_m\to\mathcal A_n,
+        \qquad h^*q=q\circ h.
+    \]
+\end{definition}
+
+Every observable satisfies $q^2=q$. Negation and disjunction can be expressed in this algebra as $1+q$ and $p\vee q=p+q+pq$. An observable $q$ on the reduced network therefore gives an observable $h^*q$ on the original network by evaluating it on the observed state.
+
+\begin{proposition}\label{prop:observable-pullback}
+    If $h\colon f\to g$ is a morphism, then $h^*$ is an injective unital algebra homomorphism. Its image consists exactly of the observables constant on every state fiber of $h$. Furthermore,
+    \begin{equation}\label{eq:observable-intertwining}
+        f^*h^*=h^*g^*,
+        \qquad (k\circ h)^*=h^*k^*.
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+    Composition with $h$ preserves sums, products, and the constant function $1$. If $q\circ h=r\circ h$, surjectivity implies $q=r$. A pullback is constant on fibers. Conversely, if $p$ is constant on fibers, define $q(y)$ to be the common value of $p$ on $h^{-1}(y)$. Then $p=h^*q$. The two identities follow from $hf=gh$ and associativity of composition.
+\end{proof}
+
+\begin{proposition}\label{prop:observable-factor-criterion}
+    Let $h$ be a surjective compatible block map and let $f$ be a Boolean network. The following conditions are equivalent:
+    \begin{enumerate}[(i)]
+        \item There is a network $g$ for which $h\colon f\to g$ is a morphism.
+        \item The subalgebra $h^*(\mathcal A_m)$ is preserved by $f^*$.
+        \item Each observable $h_a\circ f$ is constant on every fiber of $h$.
+    \end{enumerate}
+    When these conditions hold, $g$ is unique.
+\end{proposition}
+
+\begin{proof}
+    Condition (i) gives (ii) by equation~\eqref{eq:observable-intertwining}. Since $h_a$ is the pullback of the coordinate observable $y_a$, condition (ii) gives (iii). Under (iii), define $g_a(y)=h_a(f(x))$ for any $x\in h^{-1}(y)$. This is well defined and gives $gh=hf$. Surjectivity gives uniqueness.
+\end{proof}
+
+This criterion expresses reduction in terms of measurements: the selected observables and every Boolean expression formed from them must be updatable using only their present values. It also gives a direct finite procedure. One checks compatibility of the selected coordinate functions and then checks that the aggregate update is constant on each state fiber.
+
+\section{Finite differences on the Boolean cube}\label{sec:boolean-differences}
+
+\subsection{Partial derivatives and the product rule}
+
+The finite differences used here belong to the classical Boolean calculus of differences; see \cite{thayse1981boolean}. The algebraic normal form and directional derivatives of Boolean functions are treated in \cite[Section~2.2.1]{carlet2021boolean}. We give the identities needed below explicitly.
+
+\begin{definition}\label{def:boolean-partial}
+    For $q\in\mathcal A_n$ and $i\in[n]$, the \emph{Boolean partial derivative} of $q$ in coordinate $i$ is
+    \begin{equation}\label{eq:boolean-partial}
+        D_iq(x)=q(x+e_i)+q(x).
+    \end{equation}
+    The \emph{essential support} of $q$ is
+    \[
+        \operatorname{Ess}(q)=\{i\in[n]:D_iq\not\equiv0\}.
+    \]
+\end{definition}
+
+The derivative takes the value $1$ precisely when changing the indicated coordinate changes the observable. In particular, $D_iq$ is independent of $x_i$. A coordinate outside $\operatorname{Ess}(q)$ can be changed without affecting $q$, and changing such coordinates one at a time shows that $q$ depends only on its essential support.
+
+\begin{proposition}\label{prop:boolean-derivative-rules}
+    For $p,q\in\mathcal A_n$ and $i,j\in[n]$,
+    \begin{align}
+        D_i(p+q)&=D_ip+D_iq,\label{eq:boolean-sum-rule}\\
+        D_i(pq)&=pD_iq+qD_ip+(D_ip)(D_iq),
+            \label{eq:boolean-product-rule}\\
+        D_i^2q&=0,\qquad D_iD_jq=D_jD_iq.
+            \label{eq:boolean-commuting-derivatives}
+    \end{align}
+    Moreover, all partial derivatives of $q$ vanish if and only if $q$ is constant.
+\end{proposition}
+
+\begin{proof}
+    The sum rule follows immediately from the definition. Write
+    \[
+        p(x+e_i)=p(x)+D_ip(x),\qquad
+        q(x+e_i)=q(x)+D_iq(x).
+    \]
+    Multiplying and adding $p(x)q(x)$ gives the product rule. Applying $D_i$ twice counts both endpoint values twice, giving zero. Applying $D_iD_j$ adds the values at the four vertices $x$, $x+e_i$, $x+e_j$, and $x+e_i+e_j$, independently of the order. Finally, vanishing derivatives make $q$ constant along every cube edge, hence on the connected cube.
+\end{proof}
+
+\begin{example}
+    For $q(x_1,x_2)=x_1x_2$,
+    \[
+        D_1q=x_2,\qquad D_2q=x_1,\qquad D_1D_2q=1.
+    \]
+    The correction term in equation~\eqref{eq:boolean-product-rule} is necessary even for one variable. Since $x_1^2=x_1$, its derivative is $1$, whereas the two terms $x_1D_1x_1+x_1D_1x_1$ cancel.
+\end{example}
+
+There is also an algebraic reason for this correction. If an $\F$-linear operator $\delta\colon\mathcal A_n\to\mathcal A_n$ satisfied the ordinary Leibniz rule, then
+\[
+    \delta(q)=\delta(q^2)=q\delta(q)+q\delta(q)=0
+\]
+for every $q$. Thus ordinary derivations of this algebra are zero. Boolean partial derivatives record finite changes and satisfy equation~\eqref{eq:boolean-product-rule} instead.
+
+\subsection{Higher derivatives and exact expansion}
+
+For $I\subseteq[n]$, define $D_I=\prod_{i\in I}D_i$, with $D_\varnothing$ the identity operator. Commutativity makes the order irrelevant. Repeated use of the definition gives
+\begin{equation}\label{eq:face-derivative}
+    D_Iq(x)=\sum_{T\subseteq I}q\left(x+\sum_{i\in T}e_i\right).
+\end{equation}
+Thus $D_Iq$ is independent of the coordinates indexed by $I$. A nonzero higher derivative records an interaction involving all of those coordinates.
+
+\begin{theorem}[Boolean Taylor expansion]\label{thm:boolean-taylor}
+    For $q\in\mathcal A_n$ and $x,v\in\F^n$,
+    \begin{equation}\label{eq:boolean-taylor}
+        q(x+v)=\sum_{I\subseteq[n]}D_Iq(x)\prod_{i\in I}v_i.
+    \end{equation}
+    Empty products are $1$. Consequently, every Boolean observable has a unique multilinear expression
+    \begin{equation}\label{eq:calculus-anf}
+        q(x)=\sum_{I\subseteq[n]}c_I\prod_{i\in I}x_i,
+        \qquad c_I=D_Iq(\0).
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Translation by $e_i$ is the operator $\id+D_i$. Translation by $v$ is therefore
+    \[
+        \prod_{\{i:v_i=1\}}(\id+D_i).
+    \]
+    Expanding this product and applying it to $q$ proves equation~\eqref{eq:boolean-taylor}. Taking the base point to be $\0$ proves existence in equation~\eqref{eq:calculus-anf}. Differentiating a multilinear monomial in the coordinates of $I$ and evaluating at $\0$ gives $1$ exactly when that monomial has support $I$. This determines every coefficient and proves uniqueness.
+\end{proof}
+
+Expression~\eqref{eq:calculus-anf} is the \emph{algebraic normal form}. For nonzero $q$, its algebraic degree is the largest $|I|$ with $c_I=1$; nonzero constants have degree $0$. We set $\deg0=-\infty$. Equivalently, a nonconstant $q$ has degree equal to the largest $|I|$ for which $D_Iq\not\equiv0$.
+
+\begin{example}\label{ex:calculus-higher-interaction}
+    The second update in Example~\ref{ex:calculus-running} is
+    \[
+        f_2=x_1+x_2+x_3x_4+x_3.
+    \]
+    Its first derivatives are $1,1,x_4+1,x_3$, and its only nonzero derivative of order two is $D_{\{3,4\}}f_2=1$. Thus its wiring diagram records four essential inputs, while the higher derivative singles out the interaction between inputs $3$ and $4$.
+\end{example}
+
+\subsection{Integration and reconstruction}
+
+\begin{proposition}[Integration on cube edges]\label{prop:boolean-integration}
+    Given functions $p_1,\dots,p_n\in\mathcal A_n$, there is an observable $q$ satisfying $D_iq=p_i$ for every $i$ if and only if
+    \begin{equation}\label{eq:boolean-integrability}
+        D_ip_i=0,\qquad D_ip_j=D_jp_i
+        \quad\text{for all }i,j.
+    \end{equation}
+    Such a $q$ is uniquely determined by its value at $\0$.
+\end{proposition}
+
+\begin{proof}
+    Necessity follows from equation~\eqref{eq:boolean-commuting-derivatives}. For sufficiency, assign the value $p_i(x)$ to the edge joining $x$ and $x+e_i$. The condition $D_ip_i=0$ makes this independent of the endpoint used. The other condition says that the sum around every coordinate square is zero:
+    \[
+        p_i(x)+p_j(x+e_i)+p_i(x+e_j)+p_j(x)=0.
+    \]
+    Fix $q(\0)=c$. For any $x$, take a path from $\0$ to $x$ that changes each coordinate with $x_i=1$ once, and define $q(x)$ as $c$ plus the sum of its edge values. Two orders of these coordinate changes differ by adjacent interchanges. Each interchange crosses a coordinate square, so the sum is independent of the order.
+
+    If $x_i=0$, a path to $x$ followed by its $i$th edge is an allowed path to $x+e_i$. Hence $q(x+e_i)+q(x)=p_i(x)$. If $x_i=1$, apply the same argument to $x+e_i$ and use endpoint independence. Uniqueness follows because a function with all derivatives zero is constant.
+\end{proof}
+
+For example, along a coordinate path $x=x^{(0)},\dots,x^{(r)}=z$, with $x^{(t+1)}=x^{(t)}+e_{i_t}$, the fundamental telescoping identity is
+\begin{equation}\label{eq:boolean-path-integral}
+    q(z)+q(x)=\sum_{t=0}^{r-1}D_{i_t}q(x^{(t)}).
+\end{equation}
+Consequently, all partial derivatives of a network, together with one output value, determine the entire network. The wiring diagram alone retains only which derivatives are nonzero somewhere, so it contains less information.
+
+\subsection{Jacobians and local wiring diagrams}
+
+\begin{definition}\label{def:boolean-jacobian}
+    For a Boolean map $F\colon\F^n\to\F^r$, its \emph{Boolean Jacobian} at $x$ is the $r\times n$ matrix
+    \[
+        J_F(x)_{ji}=D_iF_j(x).
+    \]
+    For a network $f$, the \emph{local wiring diagram} $W_x(f)$ has an edge $i\to j$ exactly when $J_f(x)_{ji}=1$.
+\end{definition}
+
+The global wiring diagram is the union of the local diagrams:
+\[
+    E(W(f))=\bigcup_{x\in\F^n}E(W_x(f)).
+\]
+This is a union of edge sets, rather than a sum of matrices over $\F$. Matrix addition can cancel two occurrences of the same edge.
+
+For a compatible block map $h$, each column of $J_h(x)$ is either zero or the basis vector $e_{\phi(i)}$. Let
+\begin{equation}\label{eq:essential-block-supports}
+    S_a=\operatorname{Ess}(h_a)\subseteq B_a.
+\end{equation}
+The sets $S_a$ are nonempty and pairwise disjoint. Unlike the blocks $B_a$, they are determined by $h$ itself. Coordinates outside their union are invisible to every output of $h$.
+
+\section{Differentiation through a morphism}\label{sec:calculus-chain-rules}
+
+\subsection{Composition and its correction terms}
+
+\begin{proposition}[Exact composition rule]\label{prop:general-boolean-chain-rule}
+    For $F\colon\F^n\to\F^r$ and $q\in\mathcal A_r$,
+    \begin{equation}\label{eq:general-boolean-chain-rule}
+        D_i(q\circ F)(x)
+        =\sum_{\varnothing\ne T\subseteq[r]}
+          (D_Tq)(F(x))\prod_{j\in T}D_iF_j(x).
+    \end{equation}
+    If $F$ is a contraction, then for every Boolean map $Q$ of the appropriate dimension,
+    \begin{equation}\label{eq:contractive-jacobian-chain-rule}
+        J_{Q\circ F}(x)=J_Q(F(x))J_F(x),
+    \end{equation}
+    with matrix multiplication over $\F$.
+\end{proposition}
+
+\begin{proof}
+    Apply Theorem~\ref{thm:boolean-taylor} to $q$ at $F(x)$ with displacement $F(x+e_i)+F(x)$. Its $j$th coordinate is $D_iF_j(x)$. Adding $q(F(x))$ cancels the term indexed by $\varnothing$ and proves equation~\eqref{eq:general-boolean-chain-rule}. If $F$ is a contraction, this displacement has at most one nonzero coordinate. Every product indexed by $|T|\ge2$ vanishes, leaving the matrix identity.
+\end{proof}
+
+In particular, if $h\colon f\to g$ is a morphism, the composite $g\circ h$ satisfies the ordinary matrix formula. The other composite $h\circ f$ can require higher derivatives, since $f$ need not be a contraction.
+
+\begin{corollary}\label{cor:differential-morphism-identity}
+    Let $h\colon f\to g$ have compatible node map $\phi$, and let $a=\phi(i)$. For every target coordinate $b$,
+    \begin{equation}\label{eq:differential-morphism-identity}
+        D_ih_a(x)\,D_ag_b(h(x))
+        =\sum_{\varnothing\ne T\subseteq S_b}
+           (D_Th_b)(f(x))\prod_{j\in T}D_if_j(x).
+    \end{equation}
+    Equivalently,
+    \begin{equation}\label{eq:jacobian-morphism-correction}
+        J_g(h(x))J_h(x)=J_h(f(x))J_f(x)+R(x),
+    \end{equation}
+    where
+    \[
+        R(x)_{bi}=\sum_{\substack{T\subseteq S_b\\|T|\ge2}}
+              (D_Th_b)(f(x))\prod_{j\in T}D_if_j(x).
+    \]
+    The correction $R$ vanishes if every aggregation function is affine, or if $f$ is a contraction.
+\end{corollary}
+
+\begin{proof}
+    Differentiate $g_b\circ h=h_b\circ f$ using Proposition~\ref{prop:general-boolean-chain-rule}. Only coordinate $a$ can change through $h$ when input $i$ changes. Derivatives of $h_b$ involving a coordinate outside $S_b$ vanish. Separating singleton sets from larger sets gives equation~\eqref{eq:jacobian-morphism-correction}. An affine function has no derivatives of order at least two, and a contraction has at most one nonzero entry in each Jacobian column.
+\end{proof}
+
+\begin{example}\label{ex:jacobian-correction}
+    Put $p=x_1x_2$ and consider
+    \[
+        h(x)=p,\qquad f(x)=(p,p),\qquad g(y)=y.
+    \]
+    Since $p^2=p$, we have $hf=gh$. The single block $\{1,2\}$ makes $h$ a morphism. At $x=(0,1)$,
+    \[
+        J_h(x)=\begin{pmatrix}1&0\end{pmatrix},\qquad
+        J_f(x)=\begin{pmatrix}1&0\\1&0\end{pmatrix},\qquad
+        J_h(f(x))=\begin{pmatrix}0&0\end{pmatrix}.
+    \]
+    Hence $J_g(h(x))J_h(x)=(1\ \ 0)$, while $J_h(f(x))J_f(x)=0$. The term involving $D_{\{1,2\}}h=1$ supplies the missing row $(1\ \ 0)$.
+\end{example}
+
+\subsection{An exact chain rule for all partial derivatives}
+
+\begin{theorem}[Block chain rule]\label{thm:block-chain-rule}
+    Let $h$ be a surjective compatible block map. For a nonempty set $I\subseteq[n]$, put
+    \[
+        A=\phi(I),\qquad I_a=I\cap B_a\quad(a\in A).
+    \]
+    Then, for every $q\in\mathcal A_m$,
+    \begin{equation}\label{eq:block-chain-rule}
+        D_I(h^*q)
+        =h^*(D_Aq)\prod_{a\in A}D_{I_a}h_a.
+    \end{equation}
+    Moreover,
+    \begin{equation}\label{eq:block-chain-nonvanishing}
+        D_I(h^*q)\not\equiv0
+        \quad\Longleftrightarrow\quad
+        \begin{cases}
+            D_Aq\not\equiv0,\\
+            D_{I_a}h_a\not\equiv0\quad\text{for every }a\in A.
+        \end{cases}
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Expand $q$ as a multilinear polynomial in the active coordinates $y_a$, $a\in A$, with coefficient functions in the remaining coordinates:
+    \[
+        q(y)=\sum_{T\subseteq A}q_T(y|_{[m]\setminus A})
+                                  \prod_{a\in T}y_a.
+    \]
+    The coefficient $q_A$ is $D_Aq$. After substitution by $h$, a term missing an active coordinate $a$ is independent of the entire block $B_a$. Since $I_a$ is nonempty, applying $D_I$ kills that term. In the remaining term, the coefficient is independent of all active blocks, and the other factors depend on disjoint blocks. Differentiating each factor in its own block gives equation~\eqref{eq:block-chain-rule}.
+
+    If any factor on its right is identically zero, the result is zero. Conversely, suppose all indicated derivatives are nonzero. Choose the active blocks independently so that each $D_{I_a}h_a$ is $1$. The function $D_Aq$ is independent of $y_a$ for $a\in A$. Choose its remaining arguments to give value $1$, and realize those arguments using surjectivity of the remaining block functions. These independent choices give an input where the product is $1$.
+\end{proof}
+
+\begin{corollary}\label{cor:essential-support-pullback}
+    For every observable $q$,
+    \begin{equation}\label{eq:essential-support-pullback}
+        \operatorname{Ess}(h^*q)
+        =\bigcup_{a\in\operatorname{Ess}(q)}S_a.
+    \end{equation}
+    In particular, every essential input of $h_a$ remains essential in $h^*q$ whenever $q$ depends essentially on $y_a$.
+\end{corollary}
+
+\begin{proof}
+    Take $I=\{i\}$ in equation~\eqref{eq:block-chain-nonvanishing}.
+\end{proof}
+
+The formula covers differentiation in several inputs of the same block. For instance, if $i,j\in B_a$ are distinct, then
+\[
+    D_iD_j(h^*q)=h^*(D_aq)D_iD_jh_a.
+\]
+Thus repeated differentiation within one block measures the aggregation rule, while differentiation across distinct blocks also measures interactions in the target observable.
+
+\begin{example}\label{ex:pullback-interactions}
+    In Example~\ref{ex:calculus-running}, let $q(y)=y_1y_2$. Then
+    \[
+        h^*q=(x_1+x_2)x_3x_4.
+    \]
+    Since $D_{\{1,2\}}q=1$,
+    \[
+        D_{\{1,3\}}(h^*q)=x_4,\qquad
+        D_{\{1,3,4\}}(h^*q)=1.
+    \]
+    The third derivative combines the interaction between the two target coordinates with the second derivative of the AND aggregation on $B_2$.
+\end{example}
+
+\begin{proposition}[Degree under pullback]\label{prop:weighted-pullback-degree}
+    Write $d_a=\deg h_a\ge1$ and let the nonzero observable $q$ have algebraic normal form $q(y)=\sum_Ac_A\prod_{a\in A}y_a$. Then
+    \begin{equation}\label{eq:weighted-pullback-degree}
+        \deg(h^*q)=\max_{\{A:c_A=1\}}\sum_{a\in A}d_a.
+    \end{equation}
+    In particular, $\deg(h^*q)\ge\deg q$.
+\end{proposition}
+
+\begin{proof}
+    Substituting the polynomials $h_a$ gives the upper bound. Choose $A$ of greatest indicated weight and choose a monomial of degree $d_a$ in each $h_a$ for $a\in A$. Since the blocks are disjoint, their product has degree $\sum_{a\in A}d_a$ and uses variables in every block indexed by $A$.
+
+    For another target monomial to contribute this same source monomial, its support must contain $A$. A strict superset with nonzero coefficient would have greater weight, because every $d_a$ is positive. Within the term indexed by $A$, disjointness of the blocks makes the chosen product unique. It therefore cannot cancel, proving the lower bound.
+\end{proof}
+
+This statement concerns pullback of observables. Nonlinear aggregation of the outputs of $f$ can still produce target updates of higher degree than any individual source update.
+
+\begin{example}\label{ex:aggregation-creates-degree}
+    Define
+    \[
+        h(x)=(x_1,x_2,x_3x_4),\qquad
+        f(x)=(x_1,x_2,x_1,x_2),
+    \]
+    and $g(y)=(y_1,y_2,y_1y_2)$. The blocks $\{1\}$, $\{2\}$, and $\{3,4\}$ make $h$ a morphism, since
+    \[
+        h(f(x))=(x_1,x_2,x_1x_2)=g(h(x)).
+    \]
+    Every coordinate function of $f$ is linear, whereas $D_{\{1,2\}}g_3=1$. Neither $f_3$ nor $f_4$ has this mixed interaction. It appears when their outputs are multiplied by $h_3$.
+\end{example}
+
+\subsection{Sections and recovery of the reduced calculus}
+
+\begin{proposition}[Isometric sections]\label{prop:isometric-section}
+    Every surjective compatible block map $h\colon\F^n\to\F^m$ admits a section $s\colon\F^m\to\F^n$ and indices $i_a\in S_a$ such that
+    \begin{equation}\label{eq:isometric-section}
+        h\circ s=\id,\qquad s(y+e_a)=s(y)+e_{i_a}.
+    \end{equation}
+    The section preserves Hamming distances. One may prescribe any essential coordinate $i_a\in S_a$ in each block.
+\end{proposition}
+
+\begin{proof}
+    For each prescribed $i_a\in S_a$, essential dependence provides adjacent block states $u_a^0,u_a^1$ differing only in coordinate $i_a$ and satisfying $H_a(u_a^t)=t$. Define
+    \[
+        s(y)|_{B_a}=u_a^{y_a}.
+    \]
+    Independent blocks give $h(s(y))=y$. Changing $y_a$ changes exactly coordinate $i_a$ of $s(y)$, which proves the second identity and distance preservation.
+\end{proof}
+
+The section selects a coordinate cube inside the source state space. It need not preserve the dynamics, and if $m<n$ it is not surjective, so it is not a morphism in $\BN$.
+
+\begin{corollary}\label{cor:recover-target-derivatives}
+    Let $s$ and $i_a$ be as above, and put $I_A=\{i_a:a\in A\}$. For every $A\subseteq[m]$,
+    \begin{equation}\label{eq:recover-target-derivatives}
+        (D_Aq)(y)=D_{I_A}(h^*q)(s(y)).
+    \end{equation}
+    If $h\colon f\to g$ is a morphism, then
+    \begin{equation}\label{eq:recover-reduced-update}
+        g=h\circ f\circ s,\qquad
+        D_Ag_b(y)=D_{I_A}(h_b\circ f)(s(y)).
+    \end{equation}
+\end{corollary}
+
+\begin{proof}
+    For every $a$, $D_{i_a}h_a(s(y))=1$. The first identity follows from Theorem~\ref{thm:block-chain-rule}, including the empty set case by $hs=\id$. The remaining identities follow by applying it to $q=g_b$ and using $g_bh=h_bf$.
+\end{proof}
+
+For example, all algebraic normal form coefficients of $g_b$ can be read as $D_{I_A}(h_bf)(s(\0))$. The values of $f$ on the selected coordinate cube therefore suffice to reconstruct $g$ and all of its derivatives.
+
+\subsection{Influence and the distribution of observations}
+
+\begin{definition}
+    For an observable $q$ on $\F^n$, the \emph{influence} of coordinate $i$ is
+    \[
+        \operatorname{Inf}_i(q)=2^{-n}\bigl|\{x:D_iq(x)=1\}\bigr|.
+    \]
+    A Boolean function is \emph{balanced} if it takes each value on exactly half of its inputs.
+\end{definition}
+
+Influence measures the fraction of input states at which an edge is active. Its value is positive exactly when the corresponding coordinate is essential. Let $X$ be uniformly distributed on $\F^n$, and write $Y=h(X)$ and $\mu_h$ for the distribution of $Y$. Disjointness of the blocks makes the variables $Y_a$ independent, but they need not be uniformly distributed.
+
+\begin{proposition}\label{prop:influence-pullback}
+    For $i\in B_a$,
+    \begin{equation}\label{eq:influence-pullback}
+        \operatorname{Inf}_i(h^*q)
+        =\operatorname{Inf}_i(h_a)\,\Pr_{Y\sim\mu_h}[D_aq(Y)=1].
+    \end{equation}
+    If every $H_a$ is balanced, then $Y$ is uniform and the last factor is $\operatorname{Inf}_a(q)$.
+\end{proposition}
+
+\begin{proof}
+    The first derivative chain rule expresses $D_i(h^*q)$ as the product of $D_ih_a$ and $(D_aq)\circ h$. The first factor depends only on $B_a$. Since $D_aq$ is independent of $y_a$, the second factor depends only on the other blocks. The two events are independent under the uniform distribution on source states, giving the formula. Balanced independent outputs give the uniform distribution on $\F^m$.
+\end{proof}
+
+\begin{example}
+    For $h=(x_1+x_2,x_3x_4)$ and $q(y)=y_1y_2$, the observed second coordinate equals $1$ with probability $1/4$. Hence
+    \[
+        \operatorname{Inf}_1(h^*q)=\frac14,
+        \qquad\operatorname{Inf}_1(h_1)=1,
+        \qquad\operatorname{Inf}_1(q)=\frac12.
+    \]
+    Uniform averaging on the target would give the wrong pullback influence. Equation~\eqref{eq:influence-pullback} uses the distribution actually induced by the aggregation.
+\end{example}
+
+\section{Wiring diagrams, paths, and feedback}\label{sec:calculus-wiring}
+
+\subsection{Lifting from every essential input}
+
+The exact support formula strengthens Theorem~\ref{thm:compatible-edge-lifting}. It identifies which source nodes can initiate a lift and permits successive edges to be lifted consistently.
+
+\begin{theorem}[Essential edge lifting]\label{thm:essential-edge-lifting}
+    Let $h\colon f\to g$ be a morphism and let $S_a=\operatorname{Ess}(h_a)$. If $a\to b$ is an edge of $W(g)$, then
+    \begin{equation}\label{eq:essential-edge-lifting}
+        \text{for every }i\in S_a\text{ there is }j\in S_b
+        \text{ with }i\to j\text{ in }W(f).
+    \end{equation}
+    There is also a simultaneous local version. For a section $s$ and indices $i_a$ from Proposition~\ref{prop:isometric-section},
+    \begin{equation}\label{eq:local-section-edge-lifting}
+        a\to b\text{ in }W_y(g)
+        \quad\Longrightarrow\quad
+        i_a\to j\text{ in }W_{s(y)}(f)
+        \text{ for some }j\in S_b.
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    If $a\to b$ in $W(g)$, Corollary~\ref{cor:essential-support-pullback} gives
+    \[
+        S_a\subseteq\operatorname{Ess}(g_b\circ h)
+        =\operatorname{Ess}(h_b\circ f).
+    \]
+    The function $h_b$ depends only on the coordinates in $S_b$. Therefore,
+    \[
+        \operatorname{Ess}(h_b\circ f)
+        \subseteq\bigcup_{j\in S_b}\operatorname{Ess}(f_j).
+    \]
+    Every $i\in S_a$ must belong to at least one support on the right, which proves equation~\eqref{eq:essential-edge-lifting}.
+
+    For the local statement, put $x=s(y)$. Since $h(x+e_{i_a})=y+e_a$, an edge $a\to b$ in $W_y(g)$ gives
+    \[
+        h_b(f(x+e_{i_a}))+h_b(f(x))
+        =g_b(y+e_a)+g_b(y)=1.
+    \]
+    Hence $f(x+e_{i_a})$ and $f(x)$ differ in at least one coordinate $j\in S_b$. This gives the required edge at $x$. The same section works for all edges and all target states.
+\end{proof}
+
+\begin{example}
+    The local statement requires suitable representatives of the state fibers. In Example~\ref{ex:jacobian-correction}, at $x=(0,0)$ both rows of $J_f(x)$ are zero, while $g(y)=y$ has a local self-loop at $h(x)=0$. Thus local lifting at every source point above $y$ would be false. The section $s(y)=(y,1)$ chooses representatives at which the target loop does lift.
+\end{example}
+
+Nor can the endpoint of the lifted edge be prescribed arbitrarily. For
+\[
+    h(x_1,x_2)=x_1+x_2,\qquad
+    f(x_1,x_2)=(x_1+x_2,0),\qquad g(y)=y,
+\]
+both source nodes are essential in $h$, and both have an edge to node $1$. No edge enters node $2$. The theorem specifies a starting node and guarantees some suitable endpoint.
+
+\begin{corollary}\label{cor:outdegree-edge-count}
+    Let $d_f^+(i)$ and $d_g^+(a)$ denote out-degrees in the global wiring diagrams, counting a self-loop once. Then
+    \begin{equation}\label{eq:outdegree-edge-count}
+        d_f^+(i)\ge d_g^+(a)\quad(i\in S_a),\qquad
+        |E(W(f))|\ge\sum_{a=1}^m|S_a|d_g^+(a).
+    \end{equation}
+\end{corollary}
+
+\begin{proof}
+    Distinct out-neighbors $b$ of $a$ require endpoints in disjoint sets $S_b$, so their lifts from $i$ are distinct. Sum this bound over all essential source nodes. Edges from source nodes ignored by $h$ can only increase the total.
+\end{proof}
+
+\subsection{Paths, cycles, and strongly connected components}
+
+\begin{theorem}\label{thm:walk-cycle-lifting}
+    Let $h\colon f\to g$ be a morphism.
+    \begin{enumerate}[(i)]
+        \item Every directed walk $a_0\to\cdots\to a_r$ in $W(g)$ lifts, from any prescribed $i_0\in S_{a_0}$, to a directed walk $i_0\to\cdots\to i_r$ in $W(f)$ with $i_t\in S_{a_t}$. If the target vertices are distinct, the lifted vertices are distinct.
+        \item Every simple directed cycle of length $r$ in $W(g)$ lifts to a simple directed cycle of length $kr$ in $W(f)$ that goes around the target cycle $k$ times, where
+        \[
+            1\le k\le\min_{a\text{ on the target cycle}}|S_a|.
+        \]
+        \item For every strongly connected component $C$ of $W(g)$, there is a strongly connected subgraph of $W(f)$ contained in $\bigcup_{a\in C}S_a$ and meeting every $S_a$, $a\in C$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    For (i), repeatedly apply Theorem~\ref{thm:essential-edge-lifting}, using the endpoint of one lift as the starting point of the next. Disjointness of the supports gives the assertion about distinct vertices.
+
+    For (ii), retain the vertices above the target cycle and only source edges that follow its successive block labels. Every retained vertex has an outgoing edge in this finite graph. Following outgoing edges until a vertex repeats produces a simple directed cycle. Its labels advance around the target cycle, so its length is $kr$ for some positive integer $k$. It visits each support on that cycle exactly $k$ times, proving the bound. This also applies to a target self-loop, for which $r=1$.
+
+    For (iii), retain vertices in $\bigcup_{a\in C}S_a$ and source edges whose labels form an edge of the target subgraph on $C$. Choose a strongly connected component $K$ of this finite graph with no outgoing edge to another component. Such a component exists by following edges between components until none remain. If $K$ meets $S_a$ and $a\to b$ is an edge inside $C$, essential edge lifting provides an edge from a vertex of $K$ to $S_b$. This edge cannot leave $K$, so $K$ also meets $S_b$. The labels represented in $K$ are therefore a nonempty subset of $C$ closed under following edges. Strong connectivity of $C$ forces this subset to be all of $C$.
+\end{proof}
+
+\begin{example}\label{ex:cycle-length-change}
+    Let
+    \[
+        f(x_1,x_2)=(x_2,x_1),\qquad
+        h(x_1,x_2)=x_1+x_2,\qquad g(y)=y.
+    \]
+    This is a morphism. The target wiring diagram has a self-loop, while the source has a directed cycle of length two and no self-loop:
+    \[
+        \begin{tikzpicture}[>=Stealth,
+            vertex/.style={draw,circle,minimum size=7mm,inner sep=0pt}]
+            \node[vertex] (s1) at (0,0) {$1$};
+            \node[vertex] (s2) at (2,0) {$2$};
+            \draw[->,bend left=20] (s1) to (s2);
+            \draw[->,bend left=20] (s2) to (s1);
+            \node at (1,-.8) {$W(f)$};
+            \node[vertex] (t1) at (5,0) {$1$};
+            \draw[->,loop above] (t1) to (t1);
+            \node at (5,-.8) {$W(g)$};
+        \end{tikzpicture}
+    \]
+    Thus lifting a wiring cycle preserves the cyclic order of block labels, but can increase its length.
+\end{example}
+
+\begin{corollary}\label{cor:feedback-invariants}
+    A morphism has the following consequences for wiring diagrams:
+    \begin{enumerate}[(i)]
+        \item If $W(f)$ is acyclic, then $W(g)$ is acyclic.
+        \item Any family of vertex-disjoint directed cycles in $W(g)$ lifts to a family of vertex-disjoint directed cycles in $W(f)$.
+        \item The minimum number of vertices whose removal makes $W(g)$ acyclic is at most the corresponding number for $W(f)$.
+    \end{enumerate}
+\end{corollary}
+
+\begin{proof}
+    The first assertion follows from cycle lifting. Disjoint target cycles use disjoint essential supports, giving the second. For the third, let $K$ be a set of source vertices meeting every directed source cycle. Put
+    \[
+        L=\{a\in[m]:S_a\cap K\ne\varnothing\}.
+    \]
+    A target cycle avoiding $L$ would lift to a source cycle avoiding $K$, which is impossible. Thus $L$ meets every target cycle. The supports are disjoint, so $|L|\le|K|$.
+\end{proof}
+
+All these conclusions concern the essential supports of the observation. They do not imply that every source edge has an image in $W(g)$, or that the compatible node map is a graph homomorphism. The disappearing dependencies in Example~\ref{ex:large-compatible-aggregation} remain possible.
+
+\section{Perturbations and iteration}\label{sec:calculus-perturbations}
+
+\subsection{Exact propagation of a finite perturbation}
+
+\begin{definition}
+    For a Boolean map $F\colon\F^n\to\F^r$, define
+    \[
+        \Delta F(x;v)=F(x+v)+F(x),\qquad
+        TF(x,v)=(F(x),\Delta F(x;v)).
+    \]
+    The first component records the updated reference state, and the second records the difference between the two updated states.
+\end{definition}
+
+The Jacobian gives $\Delta F(x;e_i)=J_F(x)e_i$. For a general displacement, Theorem~\ref{thm:boolean-taylor} gives
+\begin{equation}\label{eq:exact-perturbation-expansion}
+    \Delta F(x;v)=\sum_{\varnothing\ne I\subseteq[n]}
+                         D_IF(x)\prod_{i\in I}v_i,
+\end{equation}
+where differentiation of a vector map is componentwise. Thus $J_F(x)v$ need not describe a simultaneous change in several coordinates.
+
+\begin{proposition}\label{prop:exact-perturbation-composition}
+    For composable Boolean maps $F,Q$,
+    \begin{equation}\label{eq:perturbation-chain-rule}
+        \Delta(Q\circ F)(x;v)
+        =\Delta Q(F(x);\Delta F(x;v)),\qquad
+        T(Q\circ F)=TQ\circ TF.
+    \end{equation}
+    In particular, a morphism $h\colon f\to g$ satisfies
+    \begin{equation}\label{eq:perturbation-semiconjugacy}
+        Th\circ Tf=Tg\circ Th.
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+    Since $F(x)+\Delta F(x;v)=F(x+v)$, the right side of the first identity is $Q(F(x+v))+Q(F(x))$. The identity for $T$ includes this equality and the ordinary composition of reference states. Applying it to $hf=gh$ gives the last identity.
+\end{proof}
+
+The maps $TF$ give an exact calculus on pairs of states written as a reference state and a displacement. Equation~\eqref{eq:perturbation-semiconjugacy} is an identity of Boolean maps. It does not assert that $Th$ is a morphism under Definition~\ref{def:network-morphism}: the change of coordinates from state pairs to reference states and displacements need not preserve Hamming distances.
+
+\begin{corollary}\label{cor:invisible-perturbations}
+    Write
+    \[
+        K_h(x)=\{v\in\F^n:h(x+v)=h(x)\}.
+    \]
+    If $h\colon f\to g$ is a morphism, then
+    \[
+        v\in K_h(x)\quad\Longrightarrow\quad
+        \Delta f(x;v)\in K_h(f(x)).
+    \]
+    In particular, an initially invisible difference remains invisible after every number of updates.
+\end{corollary}
+
+\begin{proof}
+    If $h(x+v)=h(x)$, semiconjugacy gives $h(f(x+v))=h(f(x))$. This is the asserted condition on $\Delta f(x;v)$. Iterate the same argument.
+\end{proof}
+
+\begin{example}
+    For $h(x_1,x_2)=x_1x_2$, the set $K_h(0,0)$ is $\{00,10,01\}$. It is not a vector subspace: $10+01=11$ is visible. Although $J_h(0,0)=0$, changing both coordinates changes $h$. The second derivative detects this effect. In Example~\ref{ex:jacobian-correction}, the full set of invisible differences is preserved by the dynamics as described in the corollary.
+\end{example}
+
+\subsection{Bounds on amplification}
+
+For a Boolean map $F$ define its Hamming Lipschitz constant by
+\[
+    L(F)=\max_{x\ne z}\frac{d_H(F(x),F(z))}{d_H(x,z)}.
+\]
+Following shortest cube paths shows that this maximum can be computed on edges:
+\begin{equation}\label{eq:lipschitz-local-degree}
+    L(F)=\max_{x,i}d_H(F(x+e_i),F(x))
+        =\max_{x,i}\sum_jD_iF_j(x).
+\end{equation}
+The last sum is taken in the integers. Indeed, the right side bounds the change at every step of a shortest path, giving the upper bound for all pairs; each edge itself is one of those pairs.
+
+\begin{proposition}\label{prop:lipschitz-under-reduction}
+    For a morphism $h\colon f\to g$ and every $t\ge0$,
+    \begin{equation}\label{eq:iterate-lipschitz-bound}
+        L(g^t)\le L(f^t).
+    \end{equation}
+    Consequently, a contractive source update has a contractive target update, and an isometric source update has an isometric target update.
+\end{proposition}
+
+\begin{proof}
+    Let $s$ be an isometric section of $h$. Iterating semiconjugacy gives $g^t=hf^ts$. For distinct $y,z$,
+    \begin{align*}
+        d_H(g^t(y),g^t(z))
+        &\le d_H(f^t(s(y)),f^t(s(z)))\\
+        &\le L(f^t)d_H(s(y),s(z))\\
+        &=L(f^t)d_H(y,z).
+    \end{align*}
+    If $f$ is isometric, it is surjective. Since $gh=hf$ and both $f$ and $h$ are surjective, $g$ is surjective as well. The bound makes $g$ a contraction; a surjective contraction of a cube to itself is an isometry.
+\end{proof}
+
+\subsection{Periodic orbits and basins}
+
+For a finite network, every forward trajectory eventually enters a periodic orbit. Its \emph{transient length} is the least number of updates needed to reach a periodic state. The \emph{basin} of a periodic orbit is the set of states whose trajectories eventually enter it.
+
+\begin{theorem}\label{thm:dynamics-under-morphism}
+    Let $h\colon f\to g$ be a morphism, and put $N_y=|h^{-1}(y)|$.
+    \begin{enumerate}[(i)]
+        \item A source periodic orbit of length $p$ maps onto a target periodic orbit of length $q$ dividing $p$. Every target periodic orbit has at least one periodic source orbit above it.
+        \item If a source periodic orbit lies above a target orbit $D$ of length $q$, its length is $kq$ for an integer satisfying
+        \[
+            1\le k\le\min_{y\in D}N_y.
+        \]
+        \item The transient length of $h(x)$ is at most the transient length of $x$.
+        \item The inverse image of the basin of $D$ is the union of the basins of all source periodic orbits whose images are $D$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    If $f^p(x)=x$, then $g^p(h(x))=h(x)$, so the target period divides $p$. For existence in the other direction, take a target point $y\in D$ of period $q$. The map $f^q$ sends the nonempty finite set $h^{-1}(y)$ to itself and therefore has a periodic point there. This point is periodic under $f$ and its orbit maps onto $D$.
+
+    If its $f$-period is $p=kq$, the successive source points have target labels cycling through $D$. Exactly $k$ distinct points of the source orbit lie over each $y\in D$. This proves (ii).
+
+    Once a source trajectory reaches a periodic state, its image is periodic, proving (iii). Every source trajectory eventually reaches a unique source periodic orbit, whose image is the eventual target periodic orbit. This gives (iv).
+\end{proof}
+
+\begin{example}\label{ex:fixed-points-do-not-lift}
+    The projection $h(y,z)=y$ is a morphism from
+    \[
+        f(y,z)=(y,z+1)
+        \quad\text{to}\quad g(y)=y.
+    \]
+    Both target states are fixed, but the source has no fixed point. Each target fixed point lifts to a source cycle of length two. In particular, surjectivity on periodic states does not imply surjectivity on fixed points.
+\end{example}
+
+For all $t\ge0$, surjectivity also gives
+\[
+    h\bigl(f^t(\F^n)\bigr)=g^t(\F^m).
+\]
+Every identity between source iterates descends: if $f^r=f^s$, then $g^rh=hf^r=hf^s=g^sh$, and hence $g^r=g^s$. In particular, if an iterate of $f$ is constant, the same iterate of $g$ is constant. These are consequences for the phase dynamics, distinct from the wiring cycles considered in Section~\ref{sec:calculus-wiring}.
+
+\section{Scalar factors and dynamical observables}\label{sec:scalar-factors}
+
+\subsection{First integrals}
+
+\begin{definition}
+    A Boolean observable $q$ is a \emph{first integral} of $f$ if $q\circ f=q$. Write
+    \[
+        \mathcal I(f)=\{q\in\mathcal A_n:q\circ f=q\}.
+    \]
+\end{definition}
+
+The values of a first integral are constant along trajectories. The set $\mathcal I(f)$ is a subalgebra of $\mathcal A_n$, since updating preserves sums and products of invariant observables.
+
+\begin{proposition}\label{prop:first-integrals-basins}
+    If $f$ has $c$ periodic orbits, then its first integrals are exactly the observables constant on the basin of each periodic orbit. Consequently, $\mathcal I(f)$ has $2^c$ elements and has dimension $c$ as an $\F$-vector space. A morphism $h\colon f\to g$ restricts to an injective algebra map
+    \[
+        h^*\colon\mathcal I(g)\to\mathcal I(f).
+    \]
+\end{proposition}
+
+\begin{proof}
+    The identity $q(f(x))=q(x)$ forces one value on an entire periodic orbit and the same value on every trajectory entering it. Conversely, assigning one Boolean value to each basin gives an invariant observable. The characteristic functions of the $c$ basins form a basis, giving the cardinality and dimension. Finally, if $qg=q$, then $(qh)f=qgh=qh$, and injectivity follows from Proposition~\ref{prop:observable-pullback}.
+\end{proof}
+
+Thus the number of target periodic orbits is at most the number of source periodic orbits. Pullback identifies which unions of source basins are distinguishable by invariant observations on the target.
+
+\subsection{Classification of one-node factors}
+
+A nonconstant observable $u\colon\F^n\to\F$ is automatically surjective, contractive, and compatible with the unique node map $[n]\to[1]$. Hence it is a morphism to a one-node network $g$ precisely when $uf=gu$. There are four possible update functions $g\colon\F\to\F$.
+
+\begin{theorem}\label{thm:one-node-factors}
+    Let $f$ have $c$ periodic orbits, and put $N=2^n$ and $M=|f(\F^n)|$.
+    \begin{enumerate}[(i)]
+        \item Morphisms to $g(t)=t$ are the nonconstant first integrals. There are $2^c-2$ of them, so such a factor exists exactly when $c\ge2$.
+        \item A morphism to $g(t)=t+1$ exists exactly when every periodic orbit of $f$ has even length. In that case there are $2^c$ such morphisms.
+        \item There are $2^{N-M}-1$ morphisms to $g(t)=0$, and the same number to $g(t)=1$. Such a factor exists exactly when $f$ is not bijective.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Part (i) follows from Proposition~\ref{prop:first-integrals-basins} after excluding the two constant observables.
+
+    For (ii), the equation is $u(f(x))=u(x)+1$. Along a periodic orbit the values must alternate. Returning to the initial state is consistent exactly when the orbit length is even. In that case choose either value at one point of each periodic orbit and extend by alternation around the orbit. For a state whose trajectory first enters this orbit after $r$ steps at $z$, define $u(x)=u(z)+(r\bmod2)$. This gives the required identity at every state. There are two choices per basin and no additional choices. Every such observable is nonconstant because each periodic orbit contains both values.
+
+    For the constant-zero target, the equation $u(f(x))=0$ says exactly that $u$ vanishes on the image of $f$. Its values at the $N-M$ remaining states are arbitrary, except that at least one must be $1$ for surjectivity. This gives $2^{N-M}-1$ choices. Complementing $u$ gives the corresponding count for the constant-one target. A self-map of a finite set fails to be bijective exactly when its image omits a state.
+\end{proof}
+
+\begin{corollary}\label{cor:every-network-scalar-factor}
+    Every Boolean network with at least one node has a one-node factor in $\BN$.
+\end{corollary}
+
+\begin{proof}
+    If $f$ is not bijective, use a constant target. If it is bijective and has at least two periodic orbits, use the identity target. Otherwise its phase space is a single cycle of length $2^n$, which is even because $n\ge1$. The complementation target then gives a factor.
+\end{proof}
+
+\begin{example}
+    For $f(y,z)=(y,z+1)$, the observable $u(y,z)=y$ gives the identity factor from Example~\ref{ex:fixed-points-do-not-lift}. The observable $v(y,z)=z$ gives the complementation factor. The first records which periodic orbit contains the state, and the second alternates along that orbit. Both observations are morphisms, but they retain different dynamical information.
+\end{example}
+
+\section{Reconstruction and the information in a morphism}\label{sec:calculus-reconstruction}
+
+\subsection{Recovering the state map from observables}
+
+The pullback of a morphism determines the morphism itself: its coordinate functions are the pullbacks of the target coordinate observables. The converse gives an algebraic description of exactly which observable embeddings come from morphisms.
+
+\begin{theorem}\label{thm:observable-characterization-morphisms}
+    Let $f\colon\F^n\to\F^n$ and $g\colon\F^m\to\F^m$. Morphisms $h\colon f\to g$ correspond bijectively to injective unital $\F$-algebra homomorphisms
+    \[
+        \alpha\colon\mathcal A_m\to\mathcal A_n
+    \]
+    satisfying
+    \begin{enumerate}[(i)]
+        \item $f^*\alpha=\alpha g^*$;
+        \item the essential supports of $\alpha(y_1),\dots,\alpha(y_m)$ are pairwise disjoint.
+    \end{enumerate}
+    The correspondence is $\alpha=h^*$.
+\end{theorem}
+
+\begin{proof}
+    A morphism gives these properties by Proposition~\ref{prop:observable-pullback} and compatibility. Conversely, put $h_a=\alpha(y_a)$ and $h=(h_1,\dots,h_m)$. Every observable is a polynomial in the coordinate observables by Theorem~\ref{thm:boolean-taylor}. Since $\alpha$ preserves constants, sums, and products, it follows that $\alpha(q)=q\circ h$ for every $q$.
+
+    If $h$ omitted a state $z\in\F^m$, the nonzero observable
+    \[
+        \delta_z(y)=\prod_{a=1}^m(1+y_a+z_a)
+    \]
+    would vanish after composition with $h$, contradicting injectivity of $\alpha$. Thus $h$ is surjective, and in particular each $h_a$ is nonconstant. Assign every coordinate in $\operatorname{Ess}(h_a)$ to node $a$, and assign any unused coordinates arbitrarily. Pairwise disjointness makes this a well-defined compatible node map; nonconstancy makes it surjective. Finally, applying condition (i) to $y_a$ gives $h_a\circ f=g_a\circ h$ for every $a$. Hence $h$ is a morphism, uniquely determined by $\alpha$.
+\end{proof}
+
+Together with equation~\eqref{eq:observable-intertwining}, this theorem describes composition of reductions entirely through embeddings of observable algebras, with the direction of the arrows reversed.
+
+\subsection{All source dynamics above a fixed reduction}
+
+\begin{theorem}[Freedom inside state fibers]\label{thm:all-source-lifts}
+    Fix a surjective compatible block map $h$ and a target network $g$. Write
+    \[
+        F_y=h^{-1}(y),\qquad N_y=|F_y|.
+    \]
+    The source networks $f$ for which $h\colon f\to g$ is a morphism are exactly the choices of functions
+    \begin{equation}\label{eq:all-source-lifts}
+        f|_{F_y}\colon F_y\to F_{g(y)},\qquad y\in\F^m.
+    \end{equation}
+    These choices are independent, so their total number is
+    \begin{equation}\label{eq:source-lift-count}
+        \prod_{y\in\F^m}N_{g(y)}^{\,N_y}.
+    \end{equation}
+    A bijective source network exists exactly when $g$ is bijective and $N_y=N_{g(y)}$ for every $y$. In that case the number of bijective source networks is $\prod_yN_y!$.
+\end{theorem}
+
+\begin{proof}
+    The identity $hf=gh$ is equivalent to $f(x)\in F_{g(y)}$ whenever $x\in F_y$, which is precisely equation~\eqref{eq:all-source-lifts}. There are $N_{g(y)}$ choices for the image of each of the $N_y$ states in $F_y$. This proves the count. All geometric conditions concern the fixed map $h$, so they impose no further restrictions on these choices.
+
+    If $f$ is bijective, $g$ is surjective by $gh=hf$, and therefore bijective. Each target fiber has a unique predecessor fiber. Surjectivity and injectivity of $f$ then force its restriction $F_y\to F_{g(y)}$ to be a bijection, so the two cardinalities agree. Conversely, if $g$ is bijective and the cardinalities agree, choose a bijection between each such pair of fibers. Their union is a bijective source update. There are $N_y!$ choices on $F_y$, independently.
+\end{proof}
+
+The fiber sizes can be read from the aggregation rules:
+\[
+    N_y=\prod_{a=1}^m\bigl|H_a^{-1}(y_a)\bigr|.
+\]
+In particular, the constraints on bijective lifts depend on the sizes of the observed state fibers as well as on the target dynamics.
+
+\begin{example}\label{ex:hidden-dynamics-arbitrary}
+    Let $h(y,z)=y$ be projection from $m+r$ nodes to $m$ nodes. Every source lift of $g$ has the form
+    \[
+        f(y,z)=(g(y),F(y,z)),
+    \]
+    where $F\colon\F^{m+r}\to\F^r$ is arbitrary. The state fibers all have size $2^r$, giving $(2^r)^{2^{m+r}}$ possible source networks. The hidden coordinates may depend on both the observed coordinates and one another. Their behavior is not determined by $g$ and $h$.
+\end{example}
+
+Ignored inputs also need not form a subsystem that can simply be deleted. For example,
+\[
+    h(x_1,x_2,z)=x_1+x_2,\qquad
+    f(x_1,x_2,z)=(z,z,0),\qquad g(t)=0
+\]
+define a morphism. Although $h$ ignores $z$, projection onto $(x_1,x_2)$ is not a semiconjugacy to any two-node network: its next value $(z,z)$ depends on the discarded coordinate. Cancellation makes the scalar observation autonomous.
+
+\subsection{A realization with the fewest wiring edges}
+
+\begin{theorem}\label{thm:minimal-source-realization}
+    Fix a compatible surjection $h$, a target network $g$, and an isometric section $s$ as in Proposition~\ref{prop:isometric-section}. Define
+    \begin{equation}\label{eq:minimal-source-realization}
+        f_0=s\circ g\circ h.
+    \end{equation}
+    Then $h\colon f_0\to g$ is a morphism, and
+    \begin{equation}\label{eq:sharp-source-edge-count}
+        |E(W(f_0))|=\sum_{a=1}^m|S_a|d_g^+(a).
+    \end{equation}
+    Thus this source network attains the lower bound in Corollary~\ref{cor:outdegree-edge-count}. Its image lies in $s(\F^m)$, its restriction to that set is conjugate to $g$, and $L(f_0)=L(g)$.
+\end{theorem}
+
+\begin{proof}
+    Since $hs=\id$, we have $hf_0=gh$. In each block $B_b$, the section $s$ varies only in the chosen coordinate $i_b$, which is equal to $y_b$ or its complement. Every other coordinate of $s$ is constant. Consequently, the only possibly nonconstant source update in $B_b$ is
+    \[
+        (f_0)_{i_b}=\epsilon_b+g_b\circ h
+        \quad\text{for some }\epsilon_b\in\F.
+    \]
+    Corollary~\ref{cor:essential-support-pullback} gives
+    \[
+        \operatorname{Ess}((f_0)_{i_b})
+        =\bigcup_{\{a:a\to b\text{ in }W(g)\}}S_a.
+    \]
+    Counting these edges over $b$ proves equation~\eqref{eq:sharp-source-edge-count}. Every other source update is constant, so there are no additional edges.
+
+    The image condition follows from the definition, and $f_0s=sg$ proves conjugacy on the invariant set $s(\F^m)$. Since $s$ is isometric and $h$ is a contraction, $L(f_0)\le L(g)$. Proposition~\ref{prop:lipschitz-under-reduction} gives the opposite inequality.
+\end{proof}
+
+Every state of this realization reaches $s(\F^m)$ after one step. Its periodic orbits correspond bijectively to those of $g$, with the same lengths. Every directed wiring cycle lies among the selected nodes $i_1,\dots,i_m$, since all other source nodes have constant updates and hence no incoming edges. The wiring subgraph on the selected nodes is isomorphic to $W(g)$.
+
+Equations~\eqref{eq:all-source-lifts} and~\eqref{eq:minimal-source-realization} describe two complementary aspects of a reduction. The first enumerates every source dynamics consistent with the observation. The second supplies a source realization attaining the necessary edge and amplification bounds. The derivative identities and lifting theorems above hold throughout this entire family.
