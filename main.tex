@@ -81,8 +81,24 @@
 \usepackage{comment}
 \def\<{\langle}
 \def\>{\rangle}
-\def\longto{\longrightarrow}
 
+%% Maps
+\def\longto{\longrightarrow}
+\def\into{\hookrightarrow}
+\def\onto{\twoheadrightarrow}
+\DeclareRobustCommand\longonto{\relbar\joinrel\twoheadrightarrow}
+
+\newcommand{\hookonto}{%
+  \mathrel{\lhook\joinrel\twoheadrightarrow}}
+
+\newcommand{\longhookonto}{%
+  \mathrel{\lhook\joinrel\relbar\joinrel\twoheadrightarrow}}
+  
+\DeclareRobustCommand{\loongrightarrow}{%
+  \DOTSB\relbar\joinrel\relbar\joinrel\rightarrow}
+
+\DeclareRobustCommand{\loongmapsto}{%
+  \DOTSB\mapstochar\loongrightarrow}
 
 %% Sets and Rings
 \def\C{\mathbb{C}}
@@ -223,7 +239,7 @@
     \chapter{Introduction}\label{ch:introduction}
     \inputfile{chapters/introduction.tex}
 
-    \chapter{Maps Between Boolean Networks}\label{ch: maps boolean}
+    \chapter{Quotients of Boolean Networks}\label{ch: maps boolean}
     \inputfile{chapters/Maps_Boolean.tex}
 
     \chapter{Node Maps and Factorization}\label{ch:node-maps-factorization}

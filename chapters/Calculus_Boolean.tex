@@ -1,6 +1,11 @@
+
+%%===========================================================================
 \section{Node maps beyond surjective reductions}\label{sec:general-node-maps}
 
-\begin{example}[A non-surjective solution of the semiconjugacy identity]\label{ex:nonsurjective-node-map}
+
+Add an introduction.
+
+\begin{example}\label{ex:nonsurjective-node-map}
 Let $f\colon\F^3\to\F^3$ and $g\colon\F^3\to\F^3$ be the networks
 \[
     f(x_1,x_2,x_3)=(x_3,\,x_1+x_2,\,x_1+x_2),
@@ -11,15 +16,15 @@ and consider the state map
 \[
     h(x_1,x_2,x_3)=(x_1+x_2,\,x_3,\,0).
 \]
-All sums in this chapter are taken in $\F$. Put $u=x_1+x_2$ and $v=x_3$. Then
+  Put $u=x_1+x_2$ and $v=x_3$. Then
 \[
     h(f(x))=(u+v,u,0)=g(h(x)).
 \]
-Thus $h$ satisfies the semiconjugacy identity of the preceding chapter. It is neither injective nor surjective: for instance, $h(0,0,v)=h(1,1,v)$, and its image is the four-state face
+ It is neither injective nor surjective: for instance, $h(0,0,v)=h(1,1,v)$, and its image is the four-state face
 \[
     S=\{(u,v,0):u,v\in\F\}\subsetneq\F^3.
 \]
-The preceding chapter requires surjectivity in its definition of semiconjugacy. Here we study maps satisfying the same intertwining identity without that requirement.
+
 
 Changing $x_1$ or $x_2$ flips only the first coordinate of $h$, while changing $x_3$ flips only the second. Consequently, the assignment
 \[
@@ -67,14 +72,14 @@ The wiring diagrams of the two networks make the missing node visible. Blue sour
 The edges emanating from target node $3$ need not lift to $W(f)$. The dynamics seen through $h$ uses only the restriction of $g$ to $S$.
 \end{example}
 
-We retain the compatibility condition~\eqref{eq:compatible-node-directions} for an arbitrary Boolean map $H\colon\F^n\to\F^m$ and an arbitrary function $\phi\colon[n]\to[m]$, without requiring either map to be surjective. We say that $H$ \emph{admits a node map} when such a $\phi$ exists, and continue to write $B_a=\phi^{-1}(a)$; these node fibers may now be empty. This extends the terminology of the preceding chapter: when $H$ is surjective, every target coordinate is nonconstant and compatibility forces $\phi$ to be surjective. Throughout this chapter, node counts remain positive. A node map is a witness for $H$, and different witnesses may exist when $H$ ignores some inputs.
+We retain the compatibility condition~\eqref{eq:compatible-node-directions} for an arbitrary Boolean map $h\colon\F^n\to\F^m$ and an arbitrary function $\phi\colon[n]\to[m]$, without requiring either map to be surjective. We say that $h$ \emph{admits a node map} when such a $\phi$ exists, and continue to write $B_a=\phi^{-1}(a)$; these node fibers may now be empty. This extends the terminology of the preceding chapter: when $h$ is surjective, every target coordinate is nonconstant and compatibility forces $\phi$ to be surjective. Throughout this chapter, node counts remain positive. A node map is a witness for $h$, and different witnesses may exist when $h$ ignores some inputs.
 
 \subsection{Composition of node maps}
 
 The compatibility condition is stable under successive changes of coordinates, even when either state map has a proper image.
 
 \begin{proposition}[Composition of node maps]\label{prop:general-node-map-composition}
-Let $h\colon\F^n\to\F^m$ admit a node map $\phi\colon[n]\to[m]$, and let $k\colon\F^m\to\F^\ell$ admit a node map $\psi\colon[m]\to[\ell]$. Then $k\circ h$ admits the node map $\psi\circ\phi$. If $h\circ f=g\circ h$ and $k\circ g=r\circ k$ for Boolean networks $f,g,r$, then $(k\circ h)\circ f=r\circ(k\circ h)$.
+Let $h\colon\F^n\to\F^m$ admit a node map $\phi\colon[n]\to[m]$, and let $k\colon\F^m\to\F^\ell$ admit a node map $\psi\colon[m]\to[\ell]$. Then $k\circ h$ admits the node map $\psi\circ\phi$.
 \end{proposition}
 
 \begin{proof}
@@ -83,14 +88,10 @@ Fix $x\in\F^n$ and $i\in[n]$. Compatibility gives either $h(x+e_i)=h(x)$ or $h(x
     k(h(x+e_i))+k(h(x))
     \in\{\0,e_{\psi(\phi(i))}\}.
 \]
-This is the required condition for $\psi\circ\phi$. The dynamical identity follows by substitution:
-\[
-    (k\circ h)\circ f=k\circ(g\circ h)
-    =(r\circ k)\circ h=r\circ(k\circ h).
-\]
+This is the required condition for $\psi\circ\phi$.
 \end{proof}
 
-\begin{example}[Two aggregations followed by a frozen coordinate]\label{ex:layered-node-map-composition}
+\begin{example}\label{ex:layered-node-map-composition}
 Consider
 \begin{align*}
     h\colon\F^5&\longrightarrow\F^4,
@@ -194,20 +195,20 @@ There is a colored path from $x$ to $z$, but $y_2=0$ makes the product vanish on
 The image in each example is a coordinate face. Compatibility forces this geometry for every Boolean map admitting a node map.
 
 \begin{proposition}[Coordinate-face image]\label{prop:node-map-image-face}
-Let $H\colon\F^n\to\F^m$ admit a node map $\phi$. Put
+Let $h\colon\F^n\to\F^m$ admit a node map $\phi$. Put
 \[
-    A(H)=\{a\in[m]:H_a\text{ is nonconstant}\}.
+    A(h)=\{a\in[m]:h_a\text{ is nonconstant}\}.
 \]
-For $b\notin A(H)$, write $c_b$ for the constant value of $H_b$. Then
+For $b\notin A(h)$, write $c_b$ for the constant value of $h_b$. Then
 \begin{equation}\label{eq:node-map-image-face}
-    \operatorname{im}H
-    =\{y\in\F^m:y_b=c_b\text{ for every }b\notin A(H)\}.
+    \operatorname{im}h
+    =\{y\in\F^m:y_b=c_b\text{ for every }b\notin A(h)\}.
 \end{equation}
-In particular, $|\operatorname{im}H|=2^{|A(H)|}$.
+In particular, $|\operatorname{im}h|=2^{|A(h)|}$.
 \end{proposition}
 
 \begin{proof}
-Let $B_a=\phi^{-1}(a)$, allowing empty fibers. If $i\notin B_a$, condition~\eqref{eq:compatible-node-directions} says that flipping $x_i$ leaves $H_a$ unchanged. Changing such inputs one at a time shows that $H_a$ depends only on $x|_{B_a}$. The sets $B_a$ are disjoint. For each $a\in A(H)$, nonconstancy supplies an assignment on $B_a$ giving output $0$ and another giving output $1$. These assignments can be chosen independently across $a\in A(H)$. Every choice of the active output values is therefore attained, while the other output values remain $c_b$. This proves the displayed equality and the cardinality formula.
+Let $B_a=\phi^{-1}(a)$, allowing empty fibers. If $i\notin B_a$, condition~\eqref{eq:compatible-node-directions} says that flipping $x_i$ leaves $h_a$ unchanged. Changing such inputs one at a time shows that $h_a$ depends only on $x|_{B_a}$. The sets $B_a$ are disjoint. For each $a\in A(h)$, nonconstancy supplies an assignment on $B_a$ giving output $0$ and another giving output $1$. These assignments can be chosen independently across $a\in A(h)$. Every choice of the active output values is therefore attained, while the other output values remain $c_b$. This proves the displayed equality and the cardinality formula.
 \end{proof}
 
 Thus a map admitting a node map is surjective exactly when all its output coordinates are nonconstant. For a coordinate set $A\subseteq[m]$, we use its increasing order to identify $\F^A$ with $\F^{|A|}$ when specifying node maps.
@@ -256,7 +257,7 @@ Let $\iota$ be a node map for $j$. If an input $i$ were ignored by $j$, then $j(
 Each $j_{\iota(i)}$ depends only on $x_i$ and is nonconstant, so it is $x_i$ or $x_i+1$. Every output coordinate outside $\iota([r])$ is constant. This proves the stated form, which plainly preserves Hamming distance. Conversely, every map of the stated form is injective and satisfies condition~\eqref{eq:compatible-node-directions} with node map $\iota$.
 \end{proof}
 
-\begin{theorem}[Factorization of maps admitting node maps]\label{thm:compatible-face-factorization}
+\begin{theorem}\label{thm:compatible-face-factorization}
 Let $h\colon\F^n\to\F^m$ be a Boolean map admitting a node map. If $h$ is constant, its image is a single state. Otherwise, put $A=A(h)$ and $S=\operatorname{im}h$. Then $h$ has a factorization
 \begin{equation}\label{eq:compatible-face-factorization}
     \F^n\xrightarrow{\ p\ }\F^A\xrightarrow{\ j\ }\F^m,
@@ -296,13 +297,14 @@ If $h$ is constant, then $h\circ f=g\circ h$ holds exactly when its value is a f
 The factorization concerns the state map $h$, not a particular witness $\phi$. For instance, $h(x_1,x_2)=(x_1,0)$ permits $\phi(1)=1$ and $\phi(2)=2$, since it ignores $x_2$. Its factorization through $p(x_1,x_2)=x_1$ assigns both source nodes to the only intermediate node. The composite witness changes, while the state map remains $h$.
 \end{remark}
 
-\subsection{Homomorphism theorem}\label{subsec:boolean-homomorphism-theorem}
 
-Macauley's visual treatment of the group homomorphism theorem separates two operations: identify elements with the same image, and then give the resulting classes their image labels \cite{macauleyVisualAlgebraHomomorphism}. The analogous construction for a Boolean map uses its \emph{fiber relation}
+%===========================================================================
+\subsection{The fundamental homomorphism theorem of Boolean networks}\label{subsec:boolean-homomorphism-theorem}
+
+ Define $E_h$ as the \emph{fiber relation}
 \[
     x\sim_h x'\quad\Longleftrightarrow\quad h(x)=h(x').
-\]
-We write $E_h$ for this relation. It is the whole partition into fibers, rather than the preimage of a distinguished zero state. When $h\circ f=g\circ h$, the relation is forward invariant: $x\sim_h x'$ implies $f(x)\sim_h f(x')$. Hence $[x]\mapsto[f(x)]$ defines dynamics on the classes. The question specific to node maps is whether a map defined on those classes still has a compatible assignment of input nodes to output nodes.
+\] It is the whole partition into fibers, rather than the preimage of a distinguished zero state. When $h\circ f=g\circ h$, the relation is forward invariant: $x\sim_h x'$ implies $f(x)\sim_h f(x')$. Hence $[x]\mapsto[f(x)]$ defines dynamics on the classes. The question specific to node maps is whether a map defined on those classes still has a compatible assignment of input nodes to output nodes.
 
 \begin{theorem}[Descent through a compatible quotient]\label{thm:node-map-descent}
 Let $p\colon\F^n\to\F^m$ be surjective and admit a node map, and let $k\colon\F^n\to\F^\ell$ admit a node map. Then
@@ -328,7 +330,7 @@ Finally, $u\circ g\circ p=u\circ p\circ f=k\circ f=r\circ k=r\circ u\circ p$. Su
 
 The first consequence gives a precise version of the quotient-and-relabeling picture. The quotient set does not by itself carry named Boolean coordinates; the map $h$ supplies them through its image face.
 
-\begin{theorem}[First homomorphism theorem for node maps]\label{thm:first-node-homomorphism}
+\begin{theorem}[Fundamental homomorphism theorem for node maps]\label{thm:first-node-homomorphism}
 Let $h\colon\F^n\to\F^m$ be nonconstant, admit a node map, and satisfy $h\circ f=g\circ h$. Put $S=\operatorname{im}h$. The map
 \[
     \Theta\colon\F^n/E_h\longrightarrow S,
@@ -357,7 +359,7 @@ The map $p$ is onto, has node fibers $\{1,2\}$ and $\{3\}$, and satisfies $p\cir
 
 The quotient coordinates are rigid even though its fibers may be uneven. Indeed, if surjective maps $p\colon\F^n\to\F^m$ and $q\colon\F^n\to\F^\ell$ both admit node maps and have $E_p=E_q$, Theorem~\ref{thm:node-map-descent} gives $q=u\circ p$ and $p=v\circ q$. Surjectivity makes $u$ and $v$ inverse maps. Lemma~\ref{lem:injective-node-map-form} then shows that $m=\ell$ and $u$ is a permutation of coordinates followed by possible coordinate complementations. Thus the same fibers cannot acquire a genuinely different compatible cube geometry merely by changing their labels.
 
-Macauley also studies a quotient taken in two stages, calling the corresponding group result the fraction theorem \cite{macauleyVisualAlgebraNested}. In the Boolean setting, a later quotient must identify whole fibers of the earlier one. The descent theorem supplies the missing node map automatically.
+ In the Boolean setting, a later quotient must identify whole fibers of the earlier one. The descent theorem automatically supplies the missing node map.
 
 \newpage
 \begin{theorem}[Nested-quotient theorem]\label{thm:nested-node-quotients}
