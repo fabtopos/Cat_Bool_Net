@@ -1,0 +1,19 @@
+
+This chapter investigates how maps between Boolean networks can respect both their dynamics and the variable dependencies encoded by their wiring diagrams. Two Boolean networks, $f$ and $g$, are conjugate if $g=\pi\circ f\circ \pi^{-1}$ for some bijection $\pi$ of the Boolean cube; so conjugacy defines reasonable notion of isomorphism of Boolean networks. Indeed, the state spaces of two conjugate Boolean networks are isomorphic as direct graphs, but their wiring diagrams need not be isomorphic. In fact, an arbitrary relabeling of states need not preserve changes in a single coordinate. We therefore begin with maps $\pi$ that preserve the Hamming distance on the Boolean cube, which we call \emph{isometries}. Algebraically, these form a group that is isomorphic to the Weyl group of type $B_n$---this is the well-known group of signed permutations, isomorphic to the wreath product $C_2\wr S_n$. It is also the  semidirect product $C_2^n\rtimes S_n$, because isometry is a composition of a coordinate permutation and coordinate complementation. Conjugating a Boolean network by one of these isometries induces an isomorphism of the wiring diagrams, and thus this provides a natural notion of equivalence for Boolean networks. 
+
+Everything in the previous paragraph is well know. Our main goal in this chapter is to extend these ideas of Boolean networks equivalence to reduction and morphisms of Boolean networks. A \emph{semiconjugacy} from an $n$-node Boolean network $f$ to an $m$-node Boolean network $g$, with $n\geq m$, is a surjective state map $h$ between the phase spaces satisfying $h\circ f=g\circ h$. Intuitively, the image $g$ is a reduction of the Boolean network $f$, and so a semiconjugacy defines a reasonable notion of \emph{homomorphism} between Boolean networks. In this chapter, we will strengthen this concept and define a \emph{homometry} between Boolean networks. Our goal is to understand which Boolean network homomorphisms reduce the wiring diagram in a structure-preserving manner. The following table summarizes the difference between the different types of structure preserving maps between Boolean networks:
+\[
+\renewcommand{\arraystretch}{1.5}
+\begin{array}{c|cc}
+& \text{preserves dynamics} & \text{also preserves wiring diagram} \\ \hline
+\F^n\longhookonto\F^n & \textbf{isomorphism} & \textbf{isometry} \\
+\F^n\longonto\F^m & \textbf{homomorphism} & \textbf{homometry}\\
+\end{array}
+\]
+
+
+Initially, it should not be obvious how to properly define the concept of homometry, or how to characterize these maps. For the first point, we will define that $h\colon\F^n\to\F^m$, sending $f\mapsto g$ is a homometry if and only if it is a (weak) \emph{contraction}, i.e., that 
+\[
+|h(x)-h(y)|\leq |x-y|,\qquad \text{for all $x,y\in\F^n$}.
+\]
+Then we will prove (see Theorem~\ref{thm:compatible-edge-lifting}) that an equivalence condition is that the inverse image of every edge in the wiring diagram of $g$ lifts to an edge in the wiring diagram of $f$. This leads to the concept of a \emph{node map} between the wiring diagrams. In some sense, this says that structure-preserving maps between Boolean networks are characterized by the inverse images of a key feature (variable dependencies) being preserved is analogous how continuous maps pull back open sets to open sets, or how group homomorphisms pull back normal subgroups to normal subgroups, or how linear maps pull back subspaces to subspaces. In all of these cases, there is a well-established categorical foundation, leading to the categories of $\Top$, $\Grp$, and $\Vect_{\mathbb{F}}$, respectively. In this thesis, we will develop the theory of structure-preserving maps between Boolean works, both as a Boolean analogue of continuous maps, and also in a categorical framework, where we explore ideas such as products, coproducts, adjoints, universal properties, and so on. 

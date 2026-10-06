@@ -1,23 +1,22 @@
 
-This chapter investigates how maps between Boolean networks can respect both their dynamics and the dependencies recorded by their wiring diagrams. Conjugate Boolean networks have isomorphic phase spaces, yet their wiring diagrams need not be isomorphic: an arbitrary relabeling of states need not preserve changes in a single coordinate. We therefore begin with conjugacies that preserve the Hamming distance on the Boolean cube. These isometric conjugacies induce isomorphisms of wiring diagrams and provide a natural notion of isomorphism for Boolean networks. We show that every isometry is a composition of a coordinate permutation and coordinate complementations. Such maps form the group of signed permutations, or the Weyl group of type $B_n$, isomorphic to the wreath product $C_2\wr S_n$, where $S_n$ is the symmetric group.
 
-Our main goal is to extend this connection between dynamics and wiring diagrams to reductions that aggregate several nodes into one. A semiconjugacy is a surjective state map $h$ satisfying $h\circ f=g\circ h$, so that the reduced network $g$ describes the evolution of the observed states. Requiring $h$ to be a contraction ensures that aggregation does not increase Hamming distances, but this alone does not ensure a corresponding relationship between wiring diagrams. We introduce a compatible node map $\phi$, which partitions the source nodes into blocks and requires each coordinate of $h$ to depend only on its assigned block. The main result, the edge-lifting theorem (Theorem~\ref{thm:compatible-edge-lifting}), shows that under these conditions every edge $a\to b$ in the reduced network lifts to an edge $i\to j$ in the original network with $\phi(i)=a$ and $\phi(j)=b$. Thus every dependency observed after reduction has a witness among the original dependencies. Examples show why compatibility is needed and how aggregation can erase source dependencies. The theorem gives a precise structural guarantee for network reduction and extends the preservation of wiring diagrams under isometric conjugacy to maps that identify states and group nodes.
+In this chapter, we will review the ideas of isomorphism and isometry of Boolean networks, and extend them to homomorphism and homometry, respectively. In a number of settings, a structure-preserving map can be factored into the composition of a quotient (epimorphisms)  and an embedding (monomorphism). In this chapter, we will focus on the concept of a quotient between Boolean networks.
+
+%Requiring $h$ to be a contraction ensures that aggregation does not increase Hamming distances, but this alone does not ensure a corresponding relationship between wiring diagrams. We introduce a compatible node map $\phi$, which partitions the source nodes into blocks and requires each coordinate of $h$ to depend only on its assigned block. The main result, the edge-lifting theorem (Theorem~\ref{thm:compatible-edge-lifting}), shows that under these conditions every edge $a\to b$ in the reduced network lifts to an edge $i\to j$ in the original network with $\phi(i)=a$ and $\phi(j)=b$. Thus every dependency observed after reduction has a witness among the original dependencies. Examples show why compatibility is needed and how aggregation can erase source dependencies. The theorem gives a precise structural guarantee for network reduction and extends the preservation of wiring diagrams under isometric conjugacy to maps that identify states and group nodes.
 
 
-%%=========================================
-\section{Conjugacy and isometric conjugacy}
+
+
+
+
+%%====================================================
+\section{Isomorphism and isometry of Boolean networks}
 
 The following definition captures precisely the concept of two Boolean networks having isomorphic state spaces (i.e., dynamics). As we will see soon, it is weaker than what we need for equivalence, because it need not preserve the wiring diagrams, which is an essential features of a Boolean network. It is nonetheless important to introduce right away, because we will extend this definition in two key directions in this chapter. 
 
 First, we will add an additional constraint that characterizes when such a conjugation preserves the structure of wiring diagram---we say that such networks are not just isomorphic, but \emph{isometric}. These concepts apply only to Boolean networks of the same size. We will adapt both to the setting where the networks have different sizes. 
 
-\[\renewcommand{\arraystretch}{1.5}
-\begin{array}{c|cc}
-& \text{preserves dynamics} & \text{also preserves wiring diagram} \\ \hline
-\F^n\longhookonto\F^n & \textbf{isomorphism} & \textbf{isometry} \\
-\F^n\longonto\F^m & \textbf{homomorphism} & \textbf{homometry}\\
-\end{array}
-\]
+
 
 For many algebraic structures, such as groups, every homomorphism 
 
@@ -720,7 +719,10 @@ The characterization has a particularly simple interpretation when the update ma
 \end{example}
 
 
-\section{Semiconjugacy and contraction}\label{sec:semiconjugacy-contraction}
+%%====================================================
+\section{Homomorphism and homometry of Boolean networks}\label{sec:semiconjugacy-contraction}
+
+
 
 Conjugacy describes a change of labels on the state space. To compare a network with a smaller system that records only some of its information, we must also allow distinct states to have the same image. We therefore replace the bijective state map by a surjective one. The dynamical condition remains a commutative square, but its consequences for the Boolean cube and the wiring diagram require separate consideration.
 

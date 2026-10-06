@@ -134,6 +134,7 @@
 \newcommand{\Field}{\catname{Field}}
 \newcommand{\Gph}{\catname{Gph}}
 \newcommand{\Grp}{\catname{Grp}}
+\newcommand{\Vect}{\catname{Vect}}
 \newcommand{\LocBool}{\catname{LocBool}}    
 \newcommand{\BN}{\catname{BN}}
 \newcommand{\FDS}{\catname{FDS}}
@@ -197,6 +198,7 @@
     \doublespacing                             % Text should be double spaced
     \setcounter{page}{2}                       % Abstract begins on page 2
     \addtotoc{Abstract}{\input{chapters/abstract}}  % Generate the abstract
+    \setcounter{tocdepth}{3}   % Include sections, but not subsections, in the ToC
 
     % The dedication page is optional.  
     %
