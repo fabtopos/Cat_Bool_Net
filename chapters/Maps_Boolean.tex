@@ -1,8 +1,7 @@
 
 
-In this chapter, we will review the ideas of isomorphism and isometry of Boolean networks, and extend them to homomorphism and homometry, respectively. In a number of settings, a structure-preserving map can be factored into the composition of a quotient (epimorphisms)  and an embedding (monomorphism). In this chapter, we will focus on the concept of a quotient between Boolean networks.
+In this chapter, we will review conjugacy and isometric conjugacy of Boolean networks, and extend them to semiconjugacy and homometry, respectively. We focus on surjective state maps and determine which additional condition gives a consistent assignment of source nodes to target nodes. The next chapter will allow maps that are not surjective and study their factorizations through their images.
 
-%Requiring $h$ to be a contraction ensures that aggregation does not increase Hamming distances, but this alone does not ensure a corresponding relationship between wiring diagrams. We introduce a compatible node map $\phi$, which partitions the source nodes into blocks and requires each coordinate of $h$ to depend only on its assigned block. The main result, the edge-lifting theorem (Theorem~\ref{thm:compatible-edge-lifting}), shows that under these conditions every edge $a\to b$ in the reduced network lifts to an edge $i\to j$ in the original network with $\phi(i)=a$ and $\phi(j)=b$. Thus every dependency observed after reduction has a witness among the original dependencies. Examples show why compatibility is needed and how aggregation can erase source dependencies. The theorem gives a precise structural guarantee for network reduction and extends the preservation of wiring diagrams under isometric conjugacy to maps that identify states and group nodes.
 
 
 
@@ -12,18 +11,7 @@ In this chapter, we will review the ideas of isomorphism and isometry of Boolean
 %%====================================================
 \section{Isomorphism and isometry of Boolean networks}
 
-The following definition captures precisely the concept of two Boolean networks having isomorphic state spaces (i.e., dynamics). As we will see soon, it is weaker than what we need for equivalence, because it need not preserve the wiring diagrams, which is an essential features of a Boolean network. It is nonetheless important to introduce right away, because we will extend this definition in two key directions in this chapter. 
-
-First, we will add an additional constraint that characterizes when such a conjugation preserves the structure of wiring diagram---we say that such networks are not just isomorphic, but \emph{isometric}. These concepts apply only to Boolean networks of the same size. We will adapt both to the setting where the networks have different sizes. 
-
-
-
-For many algebraic structures, such as groups, every homomorphism 
-
-
-hen, we will extend the concepts of isomorphism and isometry of Boolean networks to 
-
-two Boolean networks have 
+The following definition captures precisely the concept of two Boolean networks having isomorphic phase spaces. It need not preserve their wiring diagrams, which record additional information about coordinate dependence. We will strengthen conjugacy by requiring the state map to preserve Hamming distance. This condition ensures that the wiring diagrams are isomorphic, and the networks are then called \emph{isometrically conjugate}. Later in the chapter, we will allow surjective maps between networks of different sizes.
 
 \begin{definition}
     Let $f,g \colon \F^n\to \F^n$ be Boolean networks. A conjugacy from $f$ to $g$ is a bijection $h\colon \F^n\to \F^n$ such that $h\circ f=g\circ h$. When such a map exists, we say that $f$ and $g$ are conjugate and write $f\sim g$.
@@ -731,7 +719,7 @@ Throughout this section, $n,m\ge1$, $[n]=\{1,\dots,n\}$, and $+$ denotes additio
 \subsection{Semiconjugacy and the identification of states}
 
 \begin{definition}\label{def:boolean-semiconjugacy}
-    Let $f\colon\F^n\to\F^n$ and $g\colon\F^m\to\F^m$ be Boolean networks. A \emph{semiconjugacy} from $f$ to $g$ is a surjective Boolean map $h\colon\F^n\to\F^m$ such that
+    Let $f\colon\F^n\to\F^n$ and $g\colon\F^m\to\F^m$ be Boolean networks. A \emph{semiconjugacy}, or \emph{homomorphism}, from $f$ to $g$ is a surjective Boolean map $h\colon\F^n\to\F^m$ such that
     \begin{equation}\label{eq:semiconjugacy}
         h\circ f=g\circ h.
     \end{equation}
@@ -824,7 +812,7 @@ Distance preservation would force $h$ to be injective, excluding every proper re
         d_H(h(x),h(x'))\le d_H(x,x')
         \qquad\text{for all }x,x'\in\F^n.
     \end{equation}
-    A semiconjugacy satisfying this condition is a \emph{contractive semiconjugacy}.
+    A semiconjugacy satisfying this condition is a \emph{contractive semiconjugacy}, also called a \emph{homometry}.
 \end{definition}
 
 The inequality in equation~\eqref{eq:hamming-contraction} is usually called \emph{Hamming nonexpansiveness}, or the $1$-Lipschitz condition; see, for example, \cite{richard2011nonexpansive}. We use \emph{contraction} for this non-strict inequality. A bound with a constant strictly smaller than $1$ would identify the endpoints of every cube edge, and connectedness of the cube would force the map to be constant. The contraction condition here concerns $h$; the update maps $f$ and $g$ need not be contractions.
@@ -1134,5 +1122,5 @@ Here \emph{edge lifting} means the existence of an edge between the indicated no
     \[
         f_j(x^{(t)})\ne f_j(x^{(t+1)}).
     \]
-    This step has $x^{(t+1)}=x^{(t)}+e_i$ for some $i\in B_a$. It therefore witnesses an essential dependence of $f_j$ on $x_i$, giving $i\to j$ in $W(f)$. By construction, $\phi(i)=a$ and $\phi(j)=b$, as required. The argument also applies when $a=b$.
+    This step has $x^{(t+1)}=x^{(t)}+e_i$ for some $i\in B_a$. Hence $f_j$ depends essentially on $x_i$, so $i\to j$ in $W(f)$. By construction, $\phi(i)=a$ and $\phi(j)=b$, as required. The argument also applies when $a=b$.
 \end{proof}

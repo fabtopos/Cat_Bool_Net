@@ -1,0 +1,219 @@
+\section{The category of Boolean networks}\label{sec:category-boolnet}
+
+The preceding chapter studied Boolean maps through their node maps, their fibers, and their behavior under composition. We now collect those maps into a category. The universal properties already proved will identify its quotient maps and face embeddings, and explain the role of the tensor construction.
+
+A category consists of objects, morphisms between them, and an associative composition with an identity morphism at each object. An isomorphism is a morphism with a two-sided inverse. A functor assigns objects and morphisms while preserving identities and composition. It is faithful if it is injective on each set of morphisms, full if it is surjective on each such set, and essentially surjective if every object of its target is isomorphic to an object in its image. A full, faithful, and essentially surjective functor gives an equivalence of categories.
+
+\begin{definition}\label{def:category-boolnet}
+The category $\BoolNet$ has Boolean networks $(\F^n,f)$, with $n\geq1$, as objects. A morphism
+\[
+    h\colon(\F^n,f)\longrightarrow(\F^m,g)
+\]
+is a Boolean map admitting a node map and satisfying $h\circ f=g\circ h$. Composition and identities are those of the state maps.
+\end{definition}
+
+No injectivity or surjectivity is required. A surjective morphism is a semiconjugacy under the convention of Definition~\ref{def:boolean-semiconjugacy}. A morphism is determined by its state map: the choice of a compatible node map is not part of its data. We write $\Hom_{\BoolNet}(X,Y)$ for the finite set of morphisms from $X$ to $Y$.
+
+\begin{proposition}\label{prop:category-isomorphisms}
+Definition~\ref{def:category-boolnet} gives a category. Its isomorphisms are precisely the conjugacies that preserve Hamming distance.
+\end{proposition}
+
+\begin{proof}
+The identity state map admits the identity node map. Node maps compose by Proposition~\ref{prop:general-node-map-composition}, and the identities $h\circ f=g\circ h$ and $k\circ g=r\circ k$ give
+\[
+    (k\circ h)\circ f=r\circ(k\circ h).
+\]
+Associativity and the identity laws follow from composition of functions.
+
+The state map of an isomorphism is bijective, so its cubes have equal dimension. By Lemma~\ref{lem:injective-node-map-form}, it is a coordinate permutation followed by possible coordinate complementations. Its inverse has the same form and intertwines the updates in the reverse direction. Conversely, every Hamming isometry has this form by Theorem~\ref{thm:cube-isometries}. A conjugacy of this form and its inverse are morphisms.
+\end{proof}
+
+\subsection{Cancellation and factorization}\label{subsec:category-factorization}
+
+An epimorphism permits right cancellation and a monomorphism permits left cancellation. Thus $h$ is epic when $a\circ h=b\circ h$ forces $a=b$, and monic when $h\circ a=h\circ b$ forces $a=b$, for all morphisms with the indicated composites. A strong monomorphism is a monomorphism having the unique lifting property against every epimorphism on the left, in every commutative square with that monomorphism on the right.
+
+\begin{theorem}\label{thm:category-cancellation}
+The epimorphisms of $\BoolNet$ are precisely the surjective state maps. Its strong monomorphisms are precisely the injective state maps. Every nonconstant morphism has an epimorphism--strong-monomorphism factorization, unique up to an isomorphism of intermediate networks.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{prop:dynamic-right-cancellation} identifies epimorphisms with surjective state maps. An injective state map permits left cancellation, and Theorem~\ref{thm:node-map-lifting} gives its lifting property against those maps. Conversely, a strong monomorphism has this lifting property, so Theorem~\ref{thm:injective-lifting-characterization} makes its state map injective.
+
+Theorem~\ref{thm:compatible-face-factorization} gives the asserted factorization through the invariant image face. If $h=j\circ p=j'\circ p'$ are two such factorizations, that theorem supplies a Hamming isometry $u$ with $j'=j\circ u$ and $p'=u^{-1}\circ p$. Write $\bar g$ and $\bar g'$ for the intermediate updates, and $g$ for the target update. Then
+\[
+    j\circ u\circ\bar g'=j'\circ\bar g'
+    =g\circ j'=g\circ j\circ u=j\circ\bar g\circ u.
+\]
+Cancelling $j$ gives $u\circ\bar g'=\bar g\circ u$. Thus the comparison is a conjugacy, and hence an isomorphism by Proposition~\ref{prop:category-isomorphisms}.
+\end{proof}
+
+Thus the first part of a nonconstant morphism records its fiber relation, and the second places the quotient dynamics on its image face. The universal properties of this image are those of Theorem~\ref{thm:image-universal-properties}. Up to an isomorphism of its domain, every strong monomorphism is the inclusion of an invariant coordinate face of positive dimension.
+
+A constant morphism cannot have this factorization while node counts remain positive. In a factorization $h=j\circ p$ with $p$ surjective and $j$ injective, the image of $j$ equals the image of $h$. A constant $h$ would therefore require the intermediate cube to have one state.
+
+\begin{proposition}\label{prop:category-idempotents}
+Every nonconstant idempotent morphism splits in $\BoolNet$. A constant idempotent does not split in $\BoolNet$.
+\end{proposition}
+
+\begin{proof}
+A splitting consists of morphisms $p\colon X\to Z$ and $j\colon Z\to X$ with $h=j\circ p$ and $p\circ j=\id_Z$. Proposition~\ref{prop:node-map-retractions} gives these equations for a nonconstant idempotent. The second equation forces $p$ to be surjective and $j$ injective. If $h$ is constant, then $\operatorname{im}j=\operatorname{im}h$ is a singleton. Injectivity of $j$ therefore forces $Z$ to have one state, requiring a zero-node intermediate cube.
+\end{proof}
+
+\begin{proposition}\label{prop:category-nonbalanced}
+The category $\BoolNet$ is not balanced: a morphism can be both monic and epic without being an isomorphism. Its epimorphisms need not be regular epimorphisms.
+\end{proposition}
+
+\begin{proof}
+The majority map in Example~\ref{ex:majority-left-cancellation} is surjective and permits left cancellation against all morphisms with the indicated target. It is therefore both epic and monic. Its two state fibers each have size four, so it is not an isomorphism.
+
+A coequalizer of $a,b\colon Z\to X$ is a morphism $e\colon X\to Y$ with $e\circ a=e\circ b$ through which every morphism with this equality factors uniquely. Such a morphism is called a regular epimorphism. Suppose a monomorphism $e$ is a coequalizer of $a,b$. From $e\circ a=e\circ b$ and monicity we obtain $a=b$. The identity of $X$ therefore also coequalizes them, so there is $d\colon Y\to X$ with $d\circ e=\id_X$. Uniqueness in the coequalizer property makes $e$ epic, and the equality $(e\circ d)\circ e=e$ implies $e\circ d=\id_Y$. Hence $e$ is an isomorphism. The majority map above cannot be a regular epimorphism.
+\end{proof}
+
+\subsection{Tensor and universal constructions}\label{subsec:category-tensor}
+
+We use the tensor of Definition~\ref{def:network-tensor} and retain the notation $I_n=(\F^n,\id_{\F^n})$ for the identity networks.
+
+For this two-argument construction, functoriality means that pairs of identity maps give an identity and that tensoring satisfies the interchange identity for composition. This is the meaning of bifunctor in the next proposition. The associativity and symmetry identifications are coherent when any two sequences of regrouping and exchanging blocks that give the same final permutation of the blocks induce the same map.
+
+\begin{proposition}\label{prop:category-tensor}
+The tensor is a bifunctor on $\BoolNet$. Regrouping coordinate blocks and exchanging them give coherent associativity and symmetry isomorphisms. It preserves epimorphisms and strong monomorphisms, and carries image factorizations of nonconstant morphisms to image factorizations.
+\end{proposition}
+
+\begin{proof}
+Proposition~\ref{prop:node-map-tensor} gives compatibility with composition and identities, and shows that tensoring preserves surjectivity and injectivity. Apply Theorem~\ref{thm:category-cancellation}. The associativity and symmetry maps are the coordinate permutations that regroup or exchange the ordered blocks; their coherence identities follow by tracking each block. Theorem~\ref{thm:tensor-face-factorization} gives the assertion about image factorizations.
+\end{proof}
+
+Theorem~\ref{thm:passive-node-factorization} also shows that $h\otimes\id_{I_1}$ has an epimorphism--strong-monomorphism factorization for every morphism $h$, including constants. Every idempotent becomes split after tensoring with $\id_{I_1}$.
+
+A product of $X$ and $Y$ is a network $P$ with projections to $X$ and $Y$ through which every pair of morphisms from a common source factors uniquely. A coproduct has the reverse property: it receives maps from $X$ and $Y$, and every pair of morphisms from them to a common target extends uniquely. These are exactly the pairing and extension properties studied in Section~\ref{subsec:universal-observations}. An initial object has exactly one morphism to each object, and a terminal object has exactly one morphism from each object. A tensor unit would have natural isomorphisms $X\otimes U\cong X\cong U\otimes X$ compatible with regrouping.
+
+\begin{proposition}\label{prop:category-universal-obstructions}
+The product of $I_1$ with itself does not exist in $\BoolNet$. No pair of objects has a coproduct. There is no initial object, no terminal object, and no tensor unit.
+\end{proposition}
+
+\begin{proof}
+The universal properties of a product and a coproduct are exactly the pairing and extension properties excluded by Counterexample~\ref{ex:no-universal-pairing} and Proposition~\ref{prop:no-universal-extension}, respectively. In particular, the state projections of a tensor do not make it a categorical product; Proposition~\ref{prop:compatible-pairing} specifies when a pairing admits a node map.
+
+Every network has two distinct constant morphisms to $I_1$, so no object is initial. If $T$ were terminal, its unique incoming morphism from $I_1$ would take values in the fixed states of $T$. Choose such a state $c$. The identity of $T$ and the constant endomorphism at $c$ would be distinct, contrary to terminality.
+
+If a tensor unit had $r\geq1$ nodes, its tensor with $I_1$ would have $2^{r+1}$ states. It could not be isomorphic to $I_1$, which has two states.
+\end{proof}
+
+\subsection{The singleton and splitting idempotents}\label{subsec:category-singleton}
+
+The missing tensor unit and the unsplit constant idempotents have the same source: the singleton network has not been included. We now make this extension explicit.
+
+\begin{definition}\label{def:category-singleton-extension}
+Let $I_0=(\F^0,\id_{\F^0})$, where $\F^0$ consists of the empty tuple. The category $\BoolNet_0$ has the objects of $\BoolNet$ together with $I_0$. Between objects of $\BoolNet$, its morphisms are unchanged. There is one morphism $X\to I_0$ for every object $X$, and a morphism $I_0\to(\F^n,f)$ is a state $c\in\F^n$ with $f(c)=c$, regarded as a constant state map. Composition and identities are those of the state maps. Tensor is given by the same coordinate concatenation as in Definition~\ref{def:network-tensor}, now allowing empty coordinate blocks.
+\end{definition}
+
+The unique endomorphism of $I_0$ is its identity. These rules are closed under composition: a morphism carries a fixed state to a fixed state, and a composite through $I_0$ is constant at a fixed state of its target. This defines a category containing $\BoolNet$ as a full subcategory. Permitting maps into $I_0$ explicitly extends the node map convention, since there is no total node map $[n]\to[0]$ when $n>0$.
+
+Tensor also respects these rules. For positive-dimensional source and target, its output components have disjoint essential supports, just as in Proposition~\ref{prop:node-map-tensor}; an empty output block discards its inputs, and an empty input block contributes constant coordinates. If the entire source is $I_0$, the tensor value is a fixed state; if the entire target is $I_0$, the map is the unique one. The interchange identity and the identities for updates hold for empty blocks as well. Thus $\BoolNet_0$ is symmetric monoidal, with unit $I_0$ and the coordinate identifications as unit isomorphisms. The singleton is also terminal. Every constant morphism factors through it.
+
+This extension can be identified with a standard categorical construction. The \emph{Karoubi envelope} $\operatorname{Kar}(\BoolNet)$ has pairs $(X,e)$ as objects, where $e\colon X\to X$ is a morphism satisfying $e\circ e=e$. A morphism
+\[
+    a\colon(X,e)\longrightarrow(Y,d)
+\]
+is a morphism $a\colon X\to Y$ in $\BoolNet$ satisfying
+\[
+    a=d\circ a\circ e,
+    \qquad\text{equivalently}\qquad
+    d\circ a=a=a\circ e.
+\]
+Composition is inherited from $\BoolNet$, and the identity of $(X,e)$ is $e$. The displayed equations ensure that composition is closed and that these are identity morphisms.
+
+\begin{proposition}[Splitting all idempotents]\label{prop:category-idempotent-completion}
+Every idempotent in $\BoolNet_0$ splits, and there is an equivalence
+\[
+    \operatorname{Kar}(\BoolNet)\simeq\BoolNet_0.
+\]
+\end{proposition}
+
+\begin{proof}
+For each idempotent $e\colon X\to X$ in $\BoolNet$, choose maps in $\BoolNet_0$
+\[
+    X\xrightarrow{\ p_e\ }Z_e\xrightarrow{\ j_e\ }X,
+    \qquad j_e\circ p_e=e,\qquad p_e\circ j_e=\id_{Z_e}.
+\]
+If $e$ is nonconstant, Proposition~\ref{prop:node-map-retractions} supplies such a splitting through its image face. If $e$ is constant at $c$, its intertwining identity makes $c$ a fixed state of $X$. Take $Z_e=I_0$, let $p_e$ be the unique map to $I_0$, and let $j_e$ select $c$. For $e=\id_X$, choose $Z_e=X$ and both maps to be identities. This covers every idempotent on a positive-dimensional object. The only idempotent on $I_0$ is its identity, which already splits.
+
+Define $K\colon\operatorname{Kar}(\BoolNet)\to\BoolNet_0$ by
+\[
+    K(X,e)=Z_e,\qquad K(a)=p_d\circ a\circ j_e
+\]
+for $a\colon(X,e)\to(Y,d)$. It sends the identity $e$ to $\id_{Z_e}$. If also $b\colon(Y,d)\to(W,k)$, then
+\[
+    K(b)\circ K(a)
+    =p_k\circ b\circ j_d\circ p_d\circ a\circ j_e
+    =p_k\circ b\circ d\circ a\circ j_e
+    =p_k\circ b\circ a\circ j_e
+    =K(b\circ a).
+\]
+Thus $K$ is a functor.
+
+For a morphism $v\colon Z_e\to Z_d$ in $\BoolNet_0$, put
+\[
+    a=j_d\circ v\circ p_e.
+\]
+Its source and target lie in $\BoolNet$, so fullness of the inclusion makes it a morphism of $\BoolNet$. The splitting identities give $d\circ a\circ e=a$, so it is a morphism in the Karoubi envelope. Moreover,
+\[
+    p_d\circ(j_d\circ v\circ p_e)\circ j_e=v,
+    \qquad
+    j_d\circ(p_d\circ a\circ j_e)\circ p_e
+    =d\circ a\circ e=a.
+\]
+These formulas are inverse on the corresponding hom-sets, proving that $K$ is full and faithful. They apply also when one or both of $Z_e,Z_d$ equal $I_0$.
+
+Every object $X$ of $\BoolNet$ is $K(X,\id_X)$. The constant-zero endomorphism $e_0$ of $I_1$ is idempotent and has $K(I_1,e_0)=I_0$. Hence $K$ is essentially surjective, and therefore an equivalence.
+\end{proof}
+
+Adjoining the singleton therefore realizes the idempotent completion of $\BoolNet$. The product obstruction for $I_1$ and the coproduct obstruction persist. For positive-dimensional candidate objects, the same proofs apply, including when a source of a proposed coproduct is $I_0$: each source is nonempty and has constant maps to the identity networks. A singleton candidate cannot realize the distinct projection values required for the product, or the simultaneous values $00$ and $11$ required for a coproduct.
+
+\subsection{The obstruction to an internal hom}\label{subsec:category-internal-hom}
+
+A right adjoint $R$ to a functor $F$ gives bijections $\Hom(F(X),Y)\cong\Hom(X,R(Y))$ natural in $X$ and $Y$. In particular, there is a morphism $\varepsilon_Y\colon F(R(Y))\to Y$, called the counit, such that every $q\colon F(X)\to Y$ has a unique expression $q=\varepsilon_Y\circ F(a)$. For $F=-\otimes A$, the object $R(Y)$ is an internal hom from $A$ to $Y$. A symmetric monoidal category is closed if these right adjoints exist for every $A$.
+
+\begin{theorem}\label{thm:category-no-right-adjoint}
+The functor $-\otimes I_1\colon\BoolNet\to\BoolNet$ has no right adjoint.
+\end{theorem}
+
+\begin{proof}
+Suppose that it has a right adjoint $R$, and put $H=R(I_1)=(\F^r,u)$. The counit at $I_1$ is a morphism
+\[
+    E\colon H\otimes I_1\longrightarrow I_1.
+\]
+For every $n\geq1$ and every morphism $q\colon I_n\otimes I_1\to I_1$, the adjunction supplies a morphism $a\colon I_n\to H$ satisfying
+\[
+    q=E\circ(a\otimes\id_{I_1}).
+\]
+Every scalar Boolean function on $\F^{n+1}$ is such a morphism, since both updates are identities. Thus a single Boolean map $E\colon\F^{r+1}\to\F$ would evaluate every one of these functions through a map $a\colon\F^n\to\F^r$ admitting a node map. Corollary~\ref{cor:no-universal-evaluation} excludes this even without requiring the update identity for $a$. Hence no right adjoint exists.
+\end{proof}
+
+The argument also applies in $\BoolNet_0$. If $H=I_0$, the expression $E(a(x),t)$ is independent of $x$ and cannot equal the projection $(x,t)\mapsto x_1$. When $H$ has positive dimension, the preceding proof applies. Consequently, $\BoolNet_0$ is not closed: there is no internal hom for the pair $(I_1,I_1)$.
+
+\section{Comparison with finite dynamical systems}\label{sec:category-comparison}
+
+Let $\FDS$ denote the category whose objects are finite sets $S$ with a map $u\colon S\to S$, and whose morphisms $h\colon(S,u)\to(T,v)$ are functions satisfying $h\circ u=v\circ h$. This is the familiar category of finite actions of the additive monoid of nonnegative integers. Indeed, an update $u$ gives the action $k\cdot s=u^k(s)$, with $0\cdot s=s$ and $(k+\ell)\cdot s=k\cdot(\ell\cdot s)$. Conversely, an action is determined by the update $u(s)=1\cdot s$. A function commutes with this update if and only if it commutes with every iterate, which is exactly equivariance of the corresponding actions.
+
+\begin{proposition}\label{prop:category-finite-dynamics}
+Sending $(\F^n,f)$ to its finite state set with update $f$, and each morphism to its state map, defines a faithful functor
+\[
+    U\colon\BoolNet\longrightarrow\FDS.
+\]
+It reflects isomorphisms but is not full. Up to isomorphism, its image on objects consists precisely of finite dynamical systems with $2^n$ states for some $n\geq1$. It carries tensor to the Cartesian product of finite dynamical systems. Neither $\BoolNet$ nor $\BoolNet_0$ is equivalent to $\FDS$.
+\end{proposition}
+
+\begin{proof}
+Identities and composition are unchanged, so $U$ is a functor. It is faithful because a morphism of $\BoolNet$ is determined by its state map. If $U(h)$ is an isomorphism, then $h$ is bijective. Its source and target have the same dimension, and Lemma~\ref{lem:injective-node-map-form} makes it a coordinate permutation followed by coordinate complementations. Its inverse admits a node map and intertwines the updates. Thus $h$ is already an isomorphism in $\BoolNet$.
+
+The map $t\mapsto(t,t)$ from $U(I_1)$ to $U(I_2)$ is a morphism in $\FDS$, since both updates are identities. It has no node map, so it is not the image of a morphism in $\BoolNet$. Hence $U$ is not full.
+
+Every object in the image has $2^n$ states. Conversely, if $|S|=2^n$ with $n\geq1$, choose a bijection $q\colon\F^n\to S$. The Boolean network with update $q^{-1}\circ u\circ q$ maps to an object of $\FDS$ isomorphic to $(S,u)$ through $q$. This proves the assertion about objects; for example, the three-state identity system is not in this essential image.
+
+The product of $(S,u)$ and $(T,v)$ in $\FDS$ has state set $S\times T$ and update $(s,t)\mapsto(u(s),v(t))$. Its projections commute with updates, and the unique pairing of two commuting functions also commutes with updates. Under the identification $\F^{n+m}=\F^n\times\F^m$, this is exactly the image under $U$ of the tensor construction.
+
+The singleton identity system is terminal in $\FDS$, whereas $\BoolNet$ has no terminal object by Proposition~\ref{prop:category-universal-obstructions}. Existence of a terminal object is preserved by an equivalence, so no equivalence between these categories is possible. The category $\FDS$ has the product of every pair of objects, while $\BoolNet_0$ has no product of $I_1$ with itself. This also rules out an equivalence between $\BoolNet_0$ and $\FDS$.
+\end{proof}
+
+Thus actions on finite state sets describe the underlying dynamics. The additional restriction on coordinate dependence is recorded by the morphisms of $\BoolNet$. The equivalence with a standard completion established here is Proposition~\ref{prop:category-idempotent-completion}: adjoining the singleton realizes the Karoubi envelope of $\BoolNet$.

@@ -49,6 +49,7 @@
 \theoremstyle{definition} 
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
+\newtheorem{counterexample}[theorem]{Counterexample}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{question}[theorem]{Question}
 
@@ -137,6 +138,7 @@
 \newcommand{\Vect}{\catname{Vect}}
 \newcommand{\LocBool}{\catname{LocBool}}    
 \newcommand{\BN}{\catname{BN}}
+\newcommand{\BoolNet}{\catname{BoolNet}}
 \newcommand{\FDS}{\catname{FDS}}
 \newcommand{\Ring}{\catname{Ring}}
 \newcommand{\Rng}{\catname{Rng}}
@@ -196,20 +198,25 @@
 
     \addtotoc{Title Page}{\maketitle}          % Generate the title page
     \doublespacing                             % Text should be double spaced
-    \setcounter{page}{2}                       % Abstract begins on page 2
-    \addtotoc{Abstract}{\input{chapters/abstract}}  % Generate the abstract
+    \setcounter{page}{2}                       % Front matter continues on page 2
+    %\chapter*{Abstract}
+    %\addtotoc{Abstract}{\input{chapters/abstract}}
     \setcounter{tocdepth}{3}   % Include sections, but not subsections, in the ToC
 
     % The dedication page is optional.  
     %
-    \addtotoc{Dedication}{\input{chapters/dedication.tex}}
+    %\addtotoc{Dedication}{\input{chapters/dedication.tex}}
 
     % The acknowledgment page is optional.  
     %
     %\addtotoc{Acknowledgments}{\input{chapters/acknowledgement}}
 
     \singlespacing                             % Single space the lists
-    \tableofcontents \clearpage                % Generate the Table of Contents
+    \begingroup
+        \setlength{\cftbeforechapskip}{0.75em}
+        \tableofcontents
+    \endgroup
+    \clearpage
 
     %
     % REMEMBER: Review your caption listings in the genrated lists
@@ -246,9 +253,12 @@
 
     \chapter{Node Maps and Factorization}\label{ch:node-maps-factorization}
     \inputfile{chapters/Calculus_Boolean.tex}
+
+    \chapter{Categories of Boolean Networks}\label{ch:categories-boolean}
+    \inputfile{chapters/Categories_Boolean.tex}
    
-    \chapter*{Concluding remarks}\label{ch:conclusions}
-    \addtotoc{Concluding remarks}{\inputfile{chapters/conclusions.tex}}
+    %\chapter*{Concluding remarks}\label{ch:conclusions}
+    %\addtotoc{Concluding remarks}{\inputfile{chapters/conclusions.tex}}
     %\inputfile{appendixA.tex}
     %\chapter{Notes}
     %\inputfile{chapters/Notes}

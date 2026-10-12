@@ -1,9 +1,9 @@
 
 %%===========================================================================
-\section{Node maps beyond surjective reductions}\label{sec:general-node-maps}
+\section{Node maps and image factorization}\label{sec:general-node-maps}
 
 
-Add an introduction.
+We extend the node-map compatibility condition of the preceding chapter to state maps with proper images. Composition and factorization through these images provide the basis for the quotient theorems and universal properties developed below.
 
 \begin{example}\label{ex:nonsurjective-node-map}
 Let $f\colon\F^3\to\F^3$ and $g\colon\F^3\to\F^3$ be the networks
@@ -16,23 +16,23 @@ and consider the state map
 \[
     h(x_1,x_2,x_3)=(x_1+x_2,\,x_3,\,0).
 \]
-  Put $u=x_1+x_2$ and $v=x_3$. Then
+Put $u=x_1+x_2$ and $v=x_3$. Then
 \[
     h(f(x))=(u+v,u,0)=g(h(x)).
 \]
- It is neither injective nor surjective: for instance, $h(0,0,v)=h(1,1,v)$, and its image is the four-state face
+The map $h$ is noninjective, since $h(0,0,v)=h(1,1,v)$, and has image
 \[
     S=\{(u,v,0):u,v\in\F\}\subsetneq\F^3.
 \]
 
 
-Changing $x_1$ or $x_2$ flips only the first coordinate of $h$, while changing $x_3$ flips only the second. Consequently, the assignment
+The assignment
 \[
     \phi(1)=\phi(2)=1,\qquad \phi(3)=2
 \]
-satisfies the compatibility condition~\eqref{eq:compatible-node-directions}. No source node is assigned to target node $3$, whose value is fixed on $S$.
+satisfies the compatibility condition~\eqref{eq:compatible-node-directions}.
 
-The wiring diagrams of the two networks make the missing node visible. Blue source nodes are assigned to target node $1$, and the red source node is assigned to target node $2$. The gray dashed arrows in $W(g)$ are genuine dependencies of $g$, but their source is the coordinate $y_3$, which is fixed to zero on $S$.
+In the wiring diagrams, colors indicate the node assignment, and gray dashed arrows denote dependencies on $y_3$, which is zero on $S$.
 \begin{center}
     \begin{minipage}{0.45\linewidth}
         \centering
@@ -69,14 +69,12 @@ The wiring diagrams of the two networks make the missing node visible. Blue sour
         \small $W(g)$
     \end{minipage}
 \end{center}
-The edges emanating from target node $3$ need not lift to $W(f)$. The dynamics seen through $h$ uses only the restriction of $g$ to $S$.
+Edges from target node $3$ have no lifts under $\phi$; the induced dynamics is determined by $g|_S$.
 \end{example}
 
-We retain the compatibility condition~\eqref{eq:compatible-node-directions} for an arbitrary Boolean map $h\colon\F^n\to\F^m$ and an arbitrary function $\phi\colon[n]\to[m]$, without requiring either map to be surjective. We say that $h$ \emph{admits a node map} when such a $\phi$ exists, and continue to write $B_a=\phi^{-1}(a)$; these node fibers may now be empty. This extends the terminology of the preceding chapter: when $h$ is surjective, every target coordinate is nonconstant and compatibility forces $\phi$ to be surjective. Throughout this chapter, node counts remain positive. A node map is a witness for $h$, and different witnesses may exist when $h$ ignores some inputs.
+For arbitrary maps $h\colon\F^n\to\F^m$ and $\phi\colon[n]\to[m]$, we retain the compatibility condition~\eqref{eq:compatible-node-directions} and say that $h$ \emph{admits a node map} when such a $\phi$ exists. The node fibers $B_a=\phi^{-1}(a)$ may be empty. If $h$ is surjective, every output coordinate is nonconstant, so compatibility forces $\phi$ to be surjective. A map $h$ may admit several node maps when it ignores some inputs. Throughout this chapter, node counts are positive.
 
 \subsection{Composition of node maps}
-
-The compatibility condition is stable under successive changes of coordinates, even when either state map has a proper image.
 
 \begin{proposition}[Composition of node maps]\label{prop:general-node-map-composition}
 Let $h\colon\F^n\to\F^m$ admit a node map $\phi\colon[n]\to[m]$, and let $k\colon\F^m\to\F^\ell$ admit a node map $\psi\colon[m]\to[\ell]$. Then $k\circ h$ admits the node map $\psi\circ\phi$.
@@ -103,7 +101,7 @@ The first map has a node map with fibers $\{1,2\}$, $\{3,4\}$, $\{5\}$, and $\va
 \[
     (k\circ h)(x)=\bigl((x_1+x_2)x_3x_4,\,x_5,\,0\bigr).
 \]
-The following colored dependence diagram displays the composition. Each arrow joins an input to an output that depends essentially on it. Blue and red inputs enter separate intermediate coordinates and then meet at $z_1$; yellow passes through to $z_2$. The gray arrow is a dependency of $k$, but its input $y_4$ is always zero after $h$, so $z_3$ is fixed.
+The diagram records essential dependencies. The dashed arrow denotes dependence on $y_4$, which is zero on $\operatorname{im}h$.
 \begin{center}
 \begin{tikzpicture}[>=Stealth,
     vertex/.style={circle,draw,minimum size=7mm,inner sep=0pt,font=\small}]
@@ -141,7 +139,7 @@ The following colored dependence diagram displays the composition. Each arrow jo
     \node[font=\scriptsize,text=gray] at (8.6,-1.9) {$z_3=0$};
 \end{tikzpicture}
 \end{center}
-Flattening the two stages gives the dependence diagram of $k\circ h$:
+The dependence diagram of $k\circ h$ is
 \begin{center}
 \begin{tikzpicture}[>=Stealth,
     vertex/.style={circle,draw,minimum size=7mm,inner sep=0pt,font=\small}]
@@ -163,17 +161,15 @@ Flattening the two stages gives the dependence diagram of $k\circ h$:
     \draw[->,very thick,m-yellow!80!black] (x5) to (z2);
 \end{tikzpicture}
 \end{center}
-The resulting node map sends $1,2,3,4$ to target node $1$ and sends $5$ to target node $2$. Target node $3$ has no assigned source node. In particular, two different intermediate blocks can combine into one output block.
+The composite node map has fibers $\{1,2,3,4\}$, $\{5\}$, and $\varnothing$.
 \end{example}
 
-An arrow path through two dependence diagrams suggests a possible dependence of the composite. The next example shows why the values attained at the intermediate coordinates also matter.
-
-\begin{example}[A path blocked by a fixed coordinate]\label{ex:composition-blocked-path}
+\begin{example}[Constant composite of nonconstant maps]\label{ex:composition-blocked-path}
 Let $h\colon\F\to\F^2$ and $k\colon\F^2\to\F$ be given by
 \[
     h(x)=(x,0),\qquad k(y_1,y_2)=y_1y_2.
 \]
-Both maps admit node maps: the first assigns input $1$ to intermediate coordinate $1$, while the second assigns both intermediate coordinates to its sole output. The output of $k$ depends essentially on $y_1$ and $y_2$, but $k(h(x))=0$ for every $x$.
+Both maps admit node maps. Although $k$ depends essentially on both inputs, its restriction to $\operatorname{im}h$ is zero, so $k\circ h=0$.
 \begin{center}
 \begin{tikzpicture}[>=Stealth,
     vertex/.style={circle,draw,minimum size=7mm,inner sep=0pt,font=\small}]
@@ -187,14 +183,11 @@ Both maps admit node maps: the first assigns input $1$ to intermediate coordinat
     \node[font=\scriptsize,text=gray] at (2.7,-1.25) {$y_2=0$ on $\operatorname{im}h$};
 \end{tikzpicture}
 \end{center}
-There is a colored path from $x$ to $z$, but $y_2=0$ makes the product vanish on the image of $h$. The composite is constant, although neither factor is constant.
 \end{example}
 
-\subsection{The image and the wires that remain visible}
+\subsection{Images and essential supports}
 
-The image in each example is a coordinate face. Compatibility forces this geometry for every Boolean map admitting a node map.
-
-\begin{proposition}[Coordinate-face image]\label{prop:node-map-image-face}
+\begin{proposition}[Image as a coordinate face]\label{prop:node-map-image-face}
 Let $h\colon\F^n\to\F^m$ admit a node map $\phi$. Put
 \[
     A(h)=\{a\in[m]:h_a\text{ is nonconstant}\}.
@@ -208,19 +201,18 @@ In particular, $|\operatorname{im}h|=2^{|A(h)|}$.
 \end{proposition}
 
 \begin{proof}
-Let $B_a=\phi^{-1}(a)$, allowing empty fibers. If $i\notin B_a$, condition~\eqref{eq:compatible-node-directions} says that flipping $x_i$ leaves $h_a$ unchanged. Changing such inputs one at a time shows that $h_a$ depends only on $x|_{B_a}$. The sets $B_a$ are disjoint. For each $a\in A(h)$, nonconstancy supplies an assignment on $B_a$ giving output $0$ and another giving output $1$. These assignments can be chosen independently across $a\in A(h)$. Every choice of the active output values is therefore attained, while the other output values remain $c_b$. This proves the displayed equality and the cardinality formula.
+Let $B_a=\phi^{-1}(a)$. By condition~\eqref{eq:compatible-node-directions}, $h_a$ depends only on $x|_{B_a}$. For each $a\in A(h)$, nonconstancy implies that $h_a$ attains both Boolean values. Since the blocks $B_a$ are disjoint, these values can be chosen independently. Thus every assignment to the active coordinates is attained, while the remaining coordinates equal $c_b$. The image formula and its cardinality follow.
 \end{proof}
 
 Thus a map admitting a node map is surjective exactly when all its output coordinates are nonconstant. For a coordinate set $A\subseteq[m]$, we use its increasing order to identify $\F^A$ with $\F^{|A|}$ when specifying node maps.
 
-The preceding proposition also lets us identify exactly which dependencies survive a composition. For each $a\in[m]$, write
+For each $a\in[m]$, define the \emph{essential support} of $h_a$ by
 \[
     S_a(h)=\{i\in[n]:h_a\text{ depends essentially on }x_i\}.
 \]
-This set is empty when $h_a$ is constant.
 Let $S=\operatorname{im}h$ and identify $S$ with $\F^{A(h)}$ by its active coordinates. For $k\colon\F^m\to\F^\ell$, write $k_c|_S$ for the resulting Boolean function on $\F^{A(h)}$.
 
-\begin{proposition}[Visible dependencies of a composite]\label{prop:visible-composition-support}
+\begin{proposition}[Essential supports under composition]\label{prop:visible-composition-support}
 If $h$ admits a node map, then for every output coordinate $c$ of $k$,
 \begin{equation}\label{eq:visible-composition-support}
     \{i:(k\circ h)_c\text{ depends essentially on }x_i\}
@@ -230,16 +222,27 @@ The map $k$ need not itself admit a node map for this identity.
 \end{proposition}
 
 \begin{proof}
-An input $i$ can change at most one coordinate of $h$, namely $a=\phi(i)$. If $a\notin A(h)$ or $i\notin S_a(h)$, then it cannot change the composite. If $k_c|_S$ is independent of $a$, a change in $h_a$ also cannot change the composite. This gives inclusion from left to right.
+Choose a node map $\phi$ for $h$ and put $B_a=\phi^{-1}(a)$. An input $i$ can change at most one coordinate of $h$, namely $a=\phi(i)$. If $a\notin A(h)$ or $i\notin S_a(h)$, then it cannot change the composite. If $k_c|_S$ is independent of $a$, a change in $h_a$ also cannot change the composite. This gives inclusion from left to right.
 
-Conversely, suppose $i\in S_a(h)$ and $k_c|_S$ depends essentially on $a$. Choose values of the inputs in $B_a$ for which flipping $i$ changes $h_a$. Choose active output values outside $a$ at which flipping coordinate $a$ changes $k_c|_S$. The latter change occurs for either value of coordinate $a$, since the two endpoints of that cube edge are the same pair in either order. Proposition~\ref{prop:node-map-image-face} lets us realize the remaining output values independently using their disjoint input blocks. At the resulting state, flipping $i$ changes only $h_a$ and changes $k_c$. Hence $i$ is essential in $(k\circ h)_c$, proving the reverse inclusion.
+Conversely, suppose $i\in S_a(h)$ and $k_c|_S$ depends essentially on $a$. There exist $x\in\F^n$ and $y\in S$ such that
+\[
+    h_a(x+e_i)\ne h_a(x),
+    \qquad k_c(y+e_a)\ne k_c(y).
+\]
+Since $a\in A(h)$ and $S$ is a coordinate face, $y+e_a\in S$. Replacing $y$ by $y+e_a$ if necessary, we may assume $y_a=h_a(x)$. Choose $w\in\F^n$ with $h(w)=y$, and define $z\in\F^n$ by
+\[
+    z|_{B_a}=x|_{B_a},
+    \qquad z|_{[n]\setminus B_a}=w|_{[n]\setminus B_a}.
+\]
+Each $h_b$ depends only on the inputs in $B_b$, and these blocks are disjoint. Thus $h(z)=y$. Since $i\in B_a$, the first inequality also gives $h(z+e_i)=y+e_a$. Consequently,
+\[
+    (k\circ h)_c(z+e_i)=k_c(y+e_a)
+    \ne k_c(y)=(k\circ h)_c(z).
+\]
+Hence $i$ is essential in $(k\circ h)_c$, proving the reverse inclusion.
 \end{proof}
 
-In Example~\ref{ex:composition-blocked-path}, the restriction $k|_{\operatorname{im}h}$ is constant. Equation~\eqref{eq:visible-composition-support} therefore gives an empty essential support for the composite. In Example~\ref{ex:layered-node-map-composition}, the restriction of $k$ still depends on $y_1,y_2,y_3$, which explains the four inputs feeding $z_1$ and the one input feeding $z_2$.
-
 \subsection{Factorization through an invariant face}
-
-Before factoring a general compatible map, it is useful to know how rigid its injective instances are.
 
 \begin{lemma}[Injective maps with node maps]\label{lem:injective-node-map-form}
 An injective Boolean map $j\colon\F^r\to\F^m$ admits a node map if and only if there is an injection $\iota\colon[r]\to[m]$ such that
@@ -252,31 +255,35 @@ for constants $\epsilon_i,c_b\in\F$. In particular, $j$ preserves Hamming distan
 \end{lemma}
 
 \begin{proof}
-Let $\iota$ be a node map for $j$. If an input $i$ were ignored by $j$, then $j(x+e_i)=j(x)$ for every $x$, contradicting injectivity. Thus $j_{\iota(i)}$ depends essentially on $i$. If distinct inputs $i,i'$ had $\iota(i)=\iota(i')=a$, varying only those two inputs could change only the single output $j_a$. Four input states would then have at most two outputs, again contradicting injectivity. Hence $\iota$ is injective.
+Let $\iota\colon[r]\to[m]$ be a node map for $j$, and put $B_a=\iota^{-1}(a)$. Fix $a\in\iota([r])$ and $i\in B_a$. For every $x\in\F^r$, injectivity gives $j(x+e_i)\ne j(x)$. Compatibility allows only coordinate $a$ to change, so
+\[
+    j_a(x+e_i)\ne j_a(x).
+\]
+Thus $j_a$ depends essentially on $x_i$ for every $i\in B_a$.
 
-Each $j_{\iota(i)}$ depends only on $x_i$ and is nonconstant, so it is $x_i$ or $x_i+1$. Every output coordinate outside $\iota([r])$ is constant. This proves the stated form, which plainly preserves Hamming distance. Conversely, every map of the stated form is injective and satisfies condition~\eqref{eq:compatible-node-directions} with node map $\iota$.
+Now fix all inputs outside $B_a$ and vary the inputs in $B_a$. Since each $j_b$ depends only on the inputs in $B_b$, every output coordinate other than $a$ remains constant. The $2^{|B_a|}$ distinct input states therefore have at most two output states. Injectivity requires $2^{|B_a|}\le2$. Since $B_a$ is nonempty, $B_a=\{i\}$ for some $i\in[r]$. Hence $\iota$ is injective.
+
+Each $j_{\iota(i)}$ depends only on $x_i$ and is nonconstant, so it is $x_i$ or $x_i+1$. Every output coordinate outside $\iota([r])$ is constant. This proves the stated form, which preserves Hamming distance. Conversely, every map of this form is injective and satisfies condition~\eqref{eq:compatible-node-directions} with node map $\iota$.
 \end{proof}
 
 \begin{theorem}\label{thm:compatible-face-factorization}
-Let $h\colon\F^n\to\F^m$ be a Boolean map admitting a node map. If $h$ is constant, its image is a single state. Otherwise, put $A=A(h)$ and $S=\operatorname{im}h$. Then $h$ has a factorization
+Let $h\colon\F^n\to\F^m$ be a nonconstant Boolean map admitting a node map. Put $A=A(h)$ and $S=\operatorname{im}h$. Then $h$ has a factorization, unique up to permutation and complementation of the intermediate coordinates,
 \begin{equation}\label{eq:compatible-face-factorization}
-    \F^n\xrightarrow{\ p\ }\F^A\xrightarrow{\ j\ }\F^m,
+    \F^n\overset{p}{\onto}\F^A\overset{j}{\into}\F^m,
     \qquad h=j\circ p,
 \end{equation}
-where $p(x)=(h_a(x))_{a\in A}$ is a surjective map admitting a node map, and $j$ fills the constant coordinates of $h$. The map $j$ is an injective distance-preserving map admitting a node map, and its image is $S$.
+where $p$ and $j$ are respectively surjective and injective, and both admit node maps. Every such factorization has $|A|$ intermediate coordinates. The map $j$ is an isometric embedding with image $S$.
 
-In the nonconstant case, if $h\circ f=g\circ h$ for Boolean networks $f$ and $g$, then $S$ is invariant under $g$. The induced network $\bar g=j^{-1}\circ g\circ j$ on $\F^A$ satisfies
+If $h\circ f=g\circ h$ for Boolean networks $f$ and $g$, then $S$ is invariant under $g$. Write $j^{-1}\colon S\to\F^A$ for the inverse of $j$ onto its image. The induced network $\bar g=j^{-1}\circ g\circ j$ on $\F^A$ satisfies
 \begin{equation}\label{eq:compatible-face-dynamics}
     p\circ f=\bar g\circ p,
     \qquad
     j\circ\bar g=g\circ j.
 \end{equation}
-Any other factorization of $h$ as a surjective map admitting a node map followed by an injective map admitting a node map has $|A|$ intermediate nodes and differs from~\eqref{eq:compatible-face-factorization} by a permutation and possible complementation of those coordinates.
 \end{theorem}
 
 \begin{proof}
-The constant case is immediate. Suppose $h$ is nonconstant.
-Proposition~\ref{prop:node-map-image-face} shows that the active coordinates of $h$ take every value in $\F^A$ independently, so $p$ is surjective. The original node map for $h$ assigns every essential input of $h_a$ to $a$. Inputs ignored by all $h_a$ can be assigned to any node in $A$, which is nonempty because $h$ is nonconstant. This gives a node map for $p$. Define $j(u)$ by setting $j(u)_a=u_a$ for $a\in A$ and $j(u)_b=c_b$ for $b\notin A$. It has the inclusion $A\hookrightarrow[m]$ as a node map and preserves Hamming distance. By construction $j\circ p=h$ and $j(\F^A)=S$.
+Define $p(x)=(h_a(x))_{a\in A}$. Proposition~\ref{prop:node-map-image-face} shows that the active coordinates of $h$ take every value in $\F^A$ independently, so $p$ is surjective. The original node map for $h$ assigns every essential input of $h_a$ to $a$. Inputs ignored by all $h_a$ can be assigned to any node in $A$, which is nonempty because $h$ is nonconstant. This gives a node map for $p$. Define $j(u)$ by setting $j(u)_a=u_a$ for $a\in A$ and $j(u)_b=c_b$ for $b\notin A$, where $c_b$ is the constant value of $h_b$. It has the inclusion $A\hookrightarrow[m]$ as a node map and preserves Hamming distance. By construction $j\circ p=h$ and $j(\F^A)=S$.
 
 If $y=h(x)\in S$, then $g(y)=g(h(x))=h(f(x))\in S$, so $S$ is invariant. Consequently $\bar g$ is well defined. From $jpf=hf=gh=gjp=j\bar g p$ and injectivity of $j$, we obtain $pf=\bar g p$. The second identity in~\eqref{eq:compatible-face-dynamics} follows from the definition of $\bar g$.
 
@@ -292,19 +299,20 @@ For Example~\ref{ex:nonsurjective-node-map}, the factorization is explicit:
 The first map aggregates source nodes $1$ and $2$; the second places the resulting two-node dynamics on the invariant face $y_3=0$.
 
 \begin{remark}
-If $h$ is constant, then $h\circ f=g\circ h$ holds exactly when its value is a fixed point of $g$. Its image is a zero-dimensional face. A factorization through $\F^0$ would describe that image, but with positive node counts there is no total node map $[n]\to[0]$ for $n>0$. This is why the two factors in Theorem~\ref{thm:compatible-face-factorization} are required to admit node maps only in the nonconstant case.
+If $h$ is constant, then $h\circ f=g\circ h$ holds exactly when its value is a fixed point of $g$. Its image is a zero-dimensional face, but there is no node map $[n]\to[0]$ for $n>0$. Thus the factorization into maps admitting node maps in Theorem~\ref{thm:compatible-face-factorization} requires $h$ to be nonconstant.
 
-The factorization concerns the state map $h$, not a particular witness $\phi$. For instance, $h(x_1,x_2)=(x_1,0)$ permits $\phi(1)=1$ and $\phi(2)=2$, since it ignores $x_2$. Its factorization through $p(x_1,x_2)=x_1$ assigns both source nodes to the only intermediate node. The composite witness changes, while the state map remains $h$.
+The factorization is determined by $h$ and may change the assignment of ignored inputs. For example, $h(x_1,x_2)=(x_1,0)$ admits the node map $\phi(1)=1$, $\phi(2)=2$. Factoring through $p(x_1,x_2)=x_1$ instead yields a composite node map assigning both inputs to target node $1$.
 \end{remark}
 
 
 %===========================================================================
-\subsection{The fundamental homomorphism theorem of Boolean networks}\label{subsec:boolean-homomorphism-theorem}
+\subsection{Quotients and homomorphism theorems}\label{subsec:boolean-homomorphism-theorem}
 
- Define $E_h$ as the \emph{fiber relation}
+For a state map $h\colon\F^n\to\F^m$, define its \emph{fiber relation} by
 \[
-    x\sim_h x'\quad\Longleftrightarrow\quad h(x)=h(x').
-\] It is the whole partition into fibers, rather than the preimage of a distinguished zero state. When $h\circ f=g\circ h$, the relation is forward invariant: $x\sim_h x'$ implies $f(x)\sim_h f(x')$. Hence $[x]\mapsto[f(x)]$ defines dynamics on the classes. The question specific to node maps is whether a map defined on those classes still has a compatible assignment of input nodes to output nodes.
+    E_h=\{(x,x')\in\F^n\times\F^n:h(x)=h(x')\}.
+\]
+Its equivalence classes are the fibers of $h$. If $h\circ f=g\circ h$, then $E_h$ is forward invariant, so $[x]\mapsto[f(x)]$ defines the quotient dynamics. The following descent theorem establishes compatibility with node maps.
 
 \begin{theorem}[Descent through a compatible quotient]\label{thm:node-map-descent}
 Let $p\colon\F^n\to\F^m$ be surjective and admit a node map, and let $k\colon\F^n\to\F^\ell$ admit a node map. Then
@@ -317,9 +325,9 @@ Whenever it exists, $u$ admits a node map. It is surjective if $k$ is surjective
 \end{theorem}
 
 \begin{proof}
-If $k=u\circ p$, equal $p$-images plainly have equal $k$-images. Conversely, assume $E_p\subseteq E_k$. Define $u(p(x))=k(x)$. This is well defined by the inclusion and is unique because $p$ is onto. Also, $u(\F^m)=k(\F^n)$, proving the surjectivity assertion.
+If $k=u\circ p$, then $E_p\subseteq E_k$. Conversely, assume this inclusion and define $u(p(x))=k(x)$. The inclusion makes $u$ well defined, and surjectivity of $p$ gives uniqueness. Also, $u(\F^m)=k(\F^n)$, proving the surjectivity assertion.
 
-It remains to check the node condition; ordinary set-map factorization does not supply it. Write $S_a(p)$ for the essential input support of $p_a$. Since $p$ is onto, every $S_a(p)$ is nonempty, and compatibility makes these sets pairwise disjoint. Applying Proposition~\ref{prop:visible-composition-support} to $k=u\circ p$ gives, for each $c\in[\ell]$,
+Since $p$ is surjective, its essential supports $S_a(p)$ are nonempty; compatibility makes them pairwise disjoint. Applying Proposition~\ref{prop:visible-composition-support} to $k=u\circ p$ gives, for each $c\in[\ell]$,
 \[
     S_c(k)=\bigcup_{a\in S_c(u)}S_a(p).
 \]
@@ -328,7 +336,7 @@ If some input coordinate $a$ of $u$ were essential in two different outputs $u_c
 Finally, $u\circ g\circ p=u\circ p\circ f=k\circ f=r\circ k=r\circ u\circ p$. Surjectivity of $p$ gives $u\circ g=r\circ u$.
 \end{proof}
 
-The first consequence gives a precise version of the quotient-and-relabeling picture. The quotient set does not by itself carry named Boolean coordinates; the map $h$ supplies them through its image face.
+The image face supplies Boolean coordinates for the quotient set.
 
 \begin{theorem}[Fundamental homomorphism theorem for node maps]\label{thm:first-node-homomorphism}
 Let $h\colon\F^n\to\F^m$ be nonconstant, admit a node map, and satisfy $h\circ f=g\circ h$. Put $S=\operatorname{im}h$. The map
@@ -354,12 +362,10 @@ Consider
     f(x_1,x_2,x_3)=(x_1,x_2,x_3+1),\qquad
     g(u,v)=(u,v+1).
 \]
-The map $p$ is onto, has node fibers $\{1,2\}$ and $\{3\}$, and satisfies $p\circ f=g\circ p$. Its four fibers have sizes $3,3,1,1$. For each $v$, the fiber over $(0,v)$ has $(x_1,x_2)=(0,0),(0,1),(1,0)$, whereas the fiber over $(1,v)$ has only $(x_1,x_2)=(1,1)$. The first theorem says that all eight source states reduce to the four-state network $g$, which has two visible $2$-cycles. Equal-size fibers, as in group cosets, are unnecessary here. This example will also distinguish an invariant-face restriction from its full saturation below.
+The map $p$ is surjective, has node fibers $\{1,2\}$ and $\{3\}$, and satisfies $p\circ f=g\circ p$. For each $v\in\F$, the fibers over $(0,v)$ and $(1,v)$ have sizes three and one, respectively. Theorem~\ref{thm:first-node-homomorphism} identifies the quotient with $g$, which has two $2$-cycles.
 \end{example}
 
-The quotient coordinates are rigid even though its fibers may be uneven. Indeed, if surjective maps $p\colon\F^n\to\F^m$ and $q\colon\F^n\to\F^\ell$ both admit node maps and have $E_p=E_q$, Theorem~\ref{thm:node-map-descent} gives $q=u\circ p$ and $p=v\circ q$. Surjectivity makes $u$ and $v$ inverse maps. Lemma~\ref{lem:injective-node-map-form} then shows that $m=\ell$ and $u$ is a permutation of coordinates followed by possible coordinate complementations. Thus the same fibers cannot acquire a genuinely different compatible cube geometry merely by changing their labels.
-
- In the Boolean setting, a later quotient must identify whole fibers of the earlier one. The descent theorem automatically supplies the missing node map.
+If surjective maps $p\colon\F^n\to\F^m$ and $q\colon\F^n\to\F^\ell$ admit node maps and satisfy $E_p=E_q$, Theorem~\ref{thm:node-map-descent} gives $q=u\circ p$ and $p=v\circ q$. Surjectivity makes $u$ and $v$ inverse maps. By Lemma~\ref{lem:injective-node-map-form}, $m=\ell$ and $u$ is a coordinate permutation followed by coordinate complementations. Thus the fiber relation determines the quotient coordinates up to an isometry.
 
 \newpage
 \begin{theorem}[Nested-quotient theorem]\label{thm:nested-node-quotients}
@@ -378,10 +384,10 @@ Both sides acquire the same $\ell$-node quotient network through their maps to $
 \end{theorem}
 
 \begin{proof}
-Theorem~\ref{thm:node-map-descent} gives the unique compatible, surjective $u$ with $q=u\circ p$ and $u\circ g=r\circ u$. Thus the displayed relation says exactly $u(y)=u(y')$, independent of the choices of $x,x'$. The proposed map on quotient classes is well defined because $u(p(x))=q(x)$; it is bijective because both iterated and direct classes identify exactly the pairs in $E_q$. The intertwining identities show that $[x]\mapsto[f(x)]$ induces the same transition on either side. Finally, $u$ and $q$ provide compatible coordinates for the quotients.
+Theorem~\ref{thm:node-map-descent} gives a unique surjective map $u$ admitting a node map with $q=u\circ p$ and $u\circ g=r\circ u$. Thus the displayed relation is $u(y)=u(y')$, independent of the choices of $x,x'$. The map on quotient classes is well defined because $u(p(x))=q(x)$ and bijective because both quotients identify exactly the pairs in $E_q$. The intertwining identities give the same induced update on both quotients, with Boolean coordinates supplied by $u$ and $q$.
 \end{proof}
 
-\begin{example}[A two-stage reduction exposing a three-cycle]\label{ex:nested-node-quotients}
+\begin{example}[Successive quotients]\label{ex:nested-node-quotients}
 Take $p\colon\F^4\to\F^3$ and $u\colon\F^3\to\F^2$ to be
 \[
     p(x_1,x_2,x_3,x_4)=(x_1+x_2,x_3,x_4)=(s,t,w),
@@ -393,7 +399,7 @@ The source, intermediate, and final networks are
     g(s,t,w)&=(w,\ s+t,\ s+t),
     &r(a,b)&=(a+b,a).
 \end{align*}
-Direct substitution gives $p\circ f=g\circ p$ and $u\circ g=r\circ u$. The colored wiring diagram shows which source nodes are merged at each stage. Blue nodes $1,2,3$ become the final coordinate $a$; red node $4$ becomes $b$.
+Direct substitution gives $p\circ f=g\circ p$ and $u\circ g=r\circ u$. The diagram records the node assignments for both maps.
 \begin{center}
 \begin{tikzpicture}[>=Stealth,
     vertex/.style={circle,draw,minimum size=7mm,inner sep=0pt,font=\small}]
@@ -421,11 +427,11 @@ Direct substitution gives $p\circ f=g\circ p$ and $u\circ g=r\circ u$. The color
     \node[font=\scriptsize] at (4,-1.75) {$16\longrightarrow 8\longrightarrow 4$ states};
 \end{tikzpicture}
 \end{center}
-The direct observable is $(u\circ p)(x)=(x_1+x_2+x_3,x_4)$. Its two coordinates follow $r$, whose state $00$ is fixed and whose other states form the cycle $01\to10\to11\to01$. The theorem guarantees that reducing the $16$-state system directly or through the $8$-state intermediate system yields this same four-state dynamics. It therefore reveals a three-step observable pattern without listing all source transitions.
+The composite $(u\circ p)(x)=(x_1+x_2+x_3,x_4)$ induces the quotient update $r$, with fixed point $00$ and cycle $01\to10\to11\to01$.
 \end{example}
 
 \newpage
-There is also a useful restriction statement, with a precise limit. A coordinate face is a Boolean cube obtained by fixing some coordinates. If such a face is forward invariant and has free coordinates, its dynamics is again a Boolean network in those coordinates.
+An invariant coordinate face of positive dimension carries a Boolean network on its free coordinates.
 
 \begin{proposition}[Restriction to an invariant face]\label{prop:invariant-face-quotient}
 Let $p\colon\F^n\to\F^m$ be a surjective map admitting a node map and satisfying $p\circ f=g\circ p$. If $T\subseteq\F^n$ is an invariant coordinate face, then $p(T)$ is an invariant coordinate face of $\F^m$. The restriction $p|_T$ gives a bijection of dynamical systems
@@ -433,20 +439,427 @@ Let $p\colon\F^n\to\F^m$ be a surjective map admitting a node map and satisfying
     T/(E_p|_{T\times T})\ \cong\ p(T),
     \qquad [x]\longmapsto p(x).
 \]
-If $p(T)$ has positive dimension, this is a Boolean-network quotient admitting a node map after identifying the two faces with their free coordinates.
+If $p(T)$ has positive dimension, the restriction $p|_T$ is a semiconjugacy admitting a node map when $T$ and $p(T)$ are expressed in their free coordinates.
 \end{proposition}
 
 \begin{proof}
 If $T$ is a singleton, then $p(T)$ is a singleton and the assertions are immediate. Otherwise, $T$ has positive dimension.
-The inclusion of $T$ into $\F^n$, expressed in its free coordinates, is an injective map admitting a node map by Lemma~\ref{lem:injective-node-map-form}. Its composition with $p$ admits a node map by Proposition~\ref{prop:general-node-map-composition}; hence its image $p(T)$ is a coordinate face by Proposition~\ref{prop:node-map-image-face}. For $y=p(x)$ with $x\in T$, we have $g(y)=p(f(x))\in p(T)$ because $T$ is invariant. The displayed bijection and its dynamical identity follow as in Theorem~\ref{thm:first-node-homomorphism}. When $p(T)$ has positive dimension, factor the restricted map through its active coordinates using Theorem~\ref{thm:compatible-face-factorization}.
+The inclusion of $T$ into $\F^n$, expressed in its free coordinates, is an injective map admitting a node map by Lemma~\ref{lem:injective-node-map-form}. Its composition with $p$ admits a node map by Proposition~\ref{prop:general-node-map-composition}; hence its image $p(T)$ is a coordinate face by Proposition~\ref{prop:node-map-image-face}. For $y=p(x)$ with $x\in T$, we have $g(y)=p(f(x))\in p(T)$ because $T$ is invariant. The displayed bijection and its intertwining identity follow as in Theorem~\ref{thm:first-node-homomorphism}. When $p(T)$ has positive dimension, factor the restricted map through its active coordinates using Theorem~\ref{thm:compatible-face-factorization}.
 \end{proof}
 
-\begin{example}[Why a face cannot simply be saturated]\label{ex:invariant-face-saturation}
-Return to Example~\ref{ex:and-homomorphism} and restrict to the invariant face $T=\{x_1=0\}$. Its image is the invariant face $p(T)=\{u=0\}$, and $p|_T$ forgets $x_2$ while retaining $v=x_3$. The restricted four-state system therefore has the two-state quotient $v\mapsto v+1$.
+\begin{example}[Saturation of an invariant face]\label{ex:invariant-face-saturation}
+In Example~\ref{ex:and-homomorphism}, the invariant face $T=\{x_1=0\}$ has image $p(T)=\{u=0\}$. In free coordinates, $p|_T$ is the projection $(x_2,x_3)\mapsto x_3$, with quotient update $v\mapsto v+1$.
 
-The full inverse image of this quotient face is larger:
+The saturation of $T$ is
 \[
     p^{-1}(p(T))=\{(x_1,x_2,x_3):x_1x_2=0\}.
 \]
-It has six states, so it is not a coordinate face. It is invariant under $f$, but it is not a Boolean subnetwork obtained by fixing source coordinates. Thus the face-restriction statement cannot be turned into an unrestricted group-style correspondence between coordinate faces before and after quotienting: saturating an invariant face may leave the class of faces.
+This set is invariant under $f$ and has six states, so it is not a coordinate face. Hence coordinate faces are not closed under saturation.
 \end{example}
+
+
+%%===========================================================================
+\section{Universal properties and tensor products}\label{sec:factorization-tensor}
+
+The image factorization has universal properties determined by fiber inclusion and image containment. We establish these properties, examine their compatibility with prescribed updates, and study their behavior under tensor products.
+
+\subsection{Universal properties of the image}\label{subsec:image-universal-properties}
+
+\begin{theorem}[Universal properties of the image factorization]\label{thm:image-universal-properties}
+Let $h\colon\F^n\to\F^m$ be nonconstant and admit a node map. Write
+\[
+    h=j\circ p,\qquad
+    p\colon\F^n\to\F^A,\qquad j\colon\F^A\to\F^m,
+    \qquad A=A(h),
+\]
+for the factorization in Theorem~\ref{thm:compatible-face-factorization}. Then:
+\begin{enumerate}[(i)]
+    \item If $k\colon\F^n\to\F^\ell$ admits a node map, there is a unique map $u\colon\F^A\to\F^\ell$ with $k=u\circ p$ if and only if $E_h\subseteq E_k$. Whenever it exists, $u$ admits a node map.
+    \item If $k\colon\F^\ell\to\F^m$ admits a node map, there is a unique map $v\colon\F^\ell\to\F^A$ with $k=j\circ v$ if and only if $\operatorname{im}k\subseteq\operatorname{im}h$. Whenever it exists, $v$ admits a node map.
+\end{enumerate}
+If $h\circ f=g\circ h$, let $\bar g$ be the induced update on $\F^A$. In (i), $k\circ f=r\circ k$ implies $u\circ\bar g=r\circ u$. In (ii), $k\circ r=g\circ k$ implies $v\circ r=\bar g\circ v$.
+\end{theorem}
+
+\begin{proof}
+Since $j$ is injective, $E_h=E_p$. Part (i), including the intertwining identity, follows from Theorem~\ref{thm:node-map-descent}.
+
+For (ii), the equation $k=j\circ v$ requires $\operatorname{im}k\subseteq\operatorname{im}j=\operatorname{im}h$. Conversely, assume this inclusion. Let $\pi_A\colon\F^m\to\F^A$ be the coordinate projection, and put $v=\pi_A\circ k$. Since $A$ is nonempty, $\pi_A$ admits a node map, as does $v$ by composition. The image inclusion gives $j\circ v=k$, and injectivity of $j$ proves uniqueness. Finally,
+\[
+    j\circ v\circ r=k\circ r=g\circ k
+    =g\circ j\circ v=j\circ\bar g\circ v.
+\]
+Cancelling $j$ gives the last assertion.
+\end{proof}
+
+\begin{theorem}[Lifting through a quotient]\label{thm:node-map-lifting}
+Suppose all four maps in the following square admit node maps and satisfy $j\circ a=b\circ e$, with $e$ surjective and $j$ injective:
+\[
+\begin{tikzpicture}[>=Stealth]
+    \node (A) at (0,1.7) {$\F^n$};
+    \node (B) at (0,0) {$\F^m$};
+    \node (C) at (4,1.7) {$\F^r$};
+    \node (D) at (4,0) {$\F^s$};
+    \draw[->] (A)--node[above] {$a$} (C);
+    \draw[->>] (A)--node[left] {$e$} (B);
+    \draw[->] (B)--node[below] {$b$} (D);
+    \draw[->] (C)--node[right] {$j$} (D);
+    \draw[->,dashed] (B)--node[above left] {$d$} (C);
+\end{tikzpicture}
+\]
+There is a unique map $d\colon\F^m\to\F^r$ with
+\[
+    d\circ e=a,\qquad j\circ d=b,
+\]
+and this map admits a node map. If updates $f,g,u$ on $\F^n,\F^m,\F^r$, respectively, satisfy $e\circ f=g\circ e$ and $a\circ f=u\circ a$, then $d\circ g=u\circ d$.
+\end{theorem}
+
+\begin{proof}
+If $e(x)=e(x')$, commutativity gives $j(a(x))=j(a(x'))$. Injectivity of $j$ gives $a(x)=a(x')$, so $E_e\subseteq E_a$. Theorem~\ref{thm:node-map-descent} supplies a unique map $d$ admitting a node map with $d\circ e=a$, together with the intertwining identity. Finally,
+\[
+    j\circ d\circ e=j\circ a=b\circ e.
+\]
+Surjectivity of $e$ gives $j\circ d=b$.
+\end{proof}
+
+\begin{theorem}[Injectivity and unique lifting]\label{thm:injective-lifting-characterization}
+A Boolean map $j\colon\F^r\to\F^s$ admitting a node map is injective if and only if every square of the form in Theorem~\ref{thm:node-map-lifting}, with this $j$ and a surjective $e$, has a unique map $d$ admitting a node map and satisfying the two lifting identities. The equivalence also holds for a map $j$ intertwining prescribed updates, with all maps in the square and the lift required to intertwine the corresponding updates.
+\end{theorem}
+
+\begin{proof}
+The forward implication is Theorem~\ref{thm:node-map-lifting}. Conversely, first suppose $j$ is nonconstant and write $j=i\circ p$ as in Theorem~\ref{thm:compatible-face-factorization}, with $p$ surjective and $i$ injective. Apply the assumed lifting property to
+\[
+    j\circ\id_{\F^r}=i\circ p.
+\]
+It gives $d\circ p=\id_{\F^r}$. Thus $p$ is injective, and so is $j=i\circ p$.
+
+If $j$ is constant, use the two projections
+\[
+    e(x,y)=x,\qquad a(x,y)=y
+    \qquad\text{from }\F^{2r}\text{ to }\F^r,
+\]
+and put $b=j$. Then $j\circ a=b\circ e$, but $d\circ e=a$ would require $d(x)=y$ for all $x,y$, which is impossible. Both projections admit node maps, so this excludes the constant case.
+
+For prescribed updates, the nonconstant argument uses the induced update on the image face. In the constant case, if $f$ is the source update of $j$, give $\F^{2r}$ the update $(x,y)\mapsto(f(x),f(y))$. Both projections intertwine the updates, and the same contradiction applies.
+\end{proof}
+
+\subsection{One-sided inverses and retractions}\label{subsec:node-map-retractions}
+
+\begin{proposition}\label{prop:compatible-one-sided-inverses}
+If $p\colon\F^n\to\F^r$ is surjective and admits a node map, there is a map $s\colon\F^r\to\F^n$ admitting a node map such that $p\circ s=\id_{\F^r}$. The map $s$ is an isometric embedding onto a coordinate face. If $j\colon\F^r\to\F^m$ is injective and admits a node map, there is a map $q\colon\F^m\to\F^r$ admitting a node map such that $q\circ j=\id_{\F^r}$.
+\end{proposition}
+
+\begin{proof}
+Choose a node map for $p$, with blocks $B_1,\ldots,B_r$. Each $p_a$ is nonconstant on its block. A path joining an input with value zero to one with value one therefore contains an edge on which $p_a$ changes. Choose such an edge in each block, and let $i_a\in B_a$ be its changing coordinate. Fix the other coordinates of that block at their values on the chosen edge. On this edge, $p_a$ is either $x_{i_a}$ or $x_{i_a}+1$.
+
+Given $y\in\F^r$, choose the endpoint in block $B_a$ for which $p_a=y_a$. The disjoint blocks make these choices independent and define $s(y)$. Its only changing coordinates are the distinct $i_a$, each equal to $y_a$ or $y_a+1$. Thus $s$ admits a node map, preserves Hamming distance, and satisfies $p\circ s=\id$.
+
+For the second assertion, use Lemma~\ref{lem:injective-node-map-form}. If $j_{\iota(a)}(x)=x_a+\epsilon_a$, put $q_a(y)=y_{\iota(a)}+\epsilon_a$. These components use distinct input coordinates, so $q$ admits a node map, and $q\circ j=\id$.
+\end{proof}
+
+These one-sided inverses need not intertwine network updates. For example, let
+\[
+    f(x_1,x_2)=(x_2,1+x_1),\qquad p(x_1,x_2)=x_1+x_2,
+    \qquad g(t)=t+1.
+\]
+Then $p\circ f=g\circ p$. A map $s$ satisfying both $p\circ s=\id$ and $s\circ g=f\circ s$ would have an invariant two-state image under $f$. This is impossible because $f$ has the single cycle $00\to01\to11\to10\to00$.
+
+\begin{proposition}[Retraction onto the image]\label{prop:node-map-retractions}
+Let $h\colon\F^n\to\F^n$ admit a node map and satisfy $h\circ h=h$. If $h$ is nonconstant, its image factorization $h=j\circ p$ satisfies
+\[
+    p\circ j=\id_{\F^{A(h)}}.
+\]
+If $h\circ f=f\circ h$, both factors intertwine $f$ with the induced update on the image. If $h$ is constant, there are no maps through a positive-dimensional intermediate cube satisfying both $h=j\circ p$ and $p\circ j=\id$.
+\end{proposition}
+
+\begin{proof}
+For nonconstant $h$, substitute $h=j\circ p$ into $h\circ h=h$ to obtain
+\[
+    j\circ p\circ j\circ p=j\circ p.
+\]
+Cancel the injective $j$ and then the surjective $p$ to obtain $p\circ j=\id$. The assertion about updates follows from Theorem~\ref{thm:compatible-face-factorization}. In any factorization with $p\circ j=\id$, the map $p$ is surjective and $j$ is injective, so $\operatorname{im}h=\operatorname{im}j$. If $h$ is constant, the intermediate cube must therefore have a single state.
+\end{proof}
+
+\subsection{Cancellation and prescribed dynamics}\label{subsec:node-map-cancellation}
+
+For maps intertwining prescribed updates, surjectivity is equivalent to right cancellation.
+
+\begin{proposition}[Right cancellation]\label{prop:dynamic-right-cancellation}
+Let $h\colon\F^n\to\F^m$ admit a node map and satisfy $h\circ f=g\circ h$. Then $h$ is surjective if and only if the following property holds: for every Boolean update $r\colon\F^s\to\F^s$ and all maps $k,\ell\colon\F^m\to\F^s$ admitting node maps with
+\[
+    k\circ g=r\circ k,\qquad \ell\circ g=r\circ\ell,
+\]
+the equality $k\circ h=\ell\circ h$ implies $k=\ell$.
+\end{proposition}
+
+\begin{proof}
+Surjectivity gives the stated cancellation. Conversely, suppose $S=\operatorname{im}h$ is proper. The identity $h\circ f=g\circ h$ makes $S$ invariant under $g$.
+
+If there is $z\notin S$ with no preimage under $g$, let $H$ be the indicator of $\{z\}$. Then $H\circ g=0$. The maps $H$ and $0$ are distinct scalar maps, both intertwining $g$ with the constant-zero update, and their composites with $h$ agree.
+
+Otherwise every state outside $S$ has a preimage under $g$, and none of these preimages lies in $S$. Since the complement is finite, $g$ permutes it. Its indicator $H$ satisfies $H\circ g=H$. Thus $H$ and $0$ are distinct scalar maps intertwining $g$ with the identity update, again agreeing after composition with $h$. Every scalar Boolean map admits a node map, so both cases contradict the stated property.
+\end{proof}
+
+Injectivity implies left cancellation. Among Boolean maps admitting node maps, the converse follows by considering constant maps: if $h(x)=h(x')$, the constant maps from $\F$ with values $x$ and $x'$ have equal composites with $h$. For prescribed updates, the converse can fail, as the following lemma and example establish.
+
+\begin{lemma}[Rigidity of majority aggregation]\label{lem:majority-node-map-rigidity}
+Let $a,b\colon\F^n\to\F^3$ be surjective maps admitting node maps. If
+\[
+    \operatorname{maj}(a_1,a_2,a_3)
+    =\operatorname{maj}(b_1,b_2,b_3),
+\]
+where $\operatorname{maj}(u_1,u_2,u_3)=u_1u_2+u_1u_3+u_2u_3$, then $b=P_\sigma\circ a$ for a permutation $\sigma$ of $[3]$.
+\end{lemma}
+
+\begin{proof}
+Each triple consists of nonconstant functions with pairwise disjoint essential supports. By Proposition~\ref{prop:visible-composition-support}, the essential support of their common majority function is the union of the supports in either triple. Let its size be $N$, so $N\geq3$. We may omit the ignored inputs and work on these $N$ variables.
+
+The three-input majority function is prime for disjoint-support decomposition. Indeed, replacing any pair of its inputs by a single Boolean value would need to distinguish the three residual functions $0,t,1$, obtained when the pair has values $00,01,11$. A single Boolean value cannot distinguish all three.
+
+If $N>3$, uniqueness of disjoint-support decompositions with a prime outer function on more than two inputs implies that the two triples agree up to permutation and complementation \cite[Section~2.1]{bertacco1997disjunctive}. If $N=3$, every component in either triple is a literal on one of the same three input variables, and this conclusion holds directly. Consequently,
+\[
+    b=P_\sigma\circ a+\epsilon
+\]
+for a permutation $\sigma$ of $[3]$ and a vector $\epsilon\in\F^3$. Surjectivity of $a$ and symmetry of majority give
+\[
+    \operatorname{maj}(u+\epsilon)=\operatorname{maj}(u)
+    \qquad\text{for all }u\in\F^3.
+\]
+Taking $u=\0$ shows that $\epsilon$ has at most one nonzero coordinate. If $\epsilon=e_j$, take $u=e_k$ with $k\ne j$. Then $\operatorname{maj}(u)=0$ but $\operatorname{maj}(u+\epsilon)=1$, a contradiction. Hence $\epsilon=\0$.
+\end{proof}
+
+\begin{example}[Left cancellation without injectivity]\label{ex:majority-left-cancellation}
+Define $f\colon\F^3\to\F^3$ by the single cycle
+\[
+    000\to111\to001\to110\to010\to101\to100\to011\to000,
+\]
+and put $g(t)=t+1$ and $p(x)=\operatorname{maj}(x_1,x_2,x_3)$. Majority alternates along the cycle, so $p\circ f=g\circ p$. The map $p$ admits the node map sending all three nodes to the sole target node. It is surjective and has two state fibers of size four.
+
+Let $r\colon\F^s\to\F^s$ be any update, and suppose $a,b\colon\F^s\to\F^3$ admit node maps and satisfy
+\[
+    a\circ r=f\circ a,\qquad b\circ r=f\circ b,
+    \qquad p\circ a=p\circ b.
+\]
+Their images are nonempty invariant faces. A single cycle through all eight states has no proper nonempty invariant subset, so $a$ and $b$ are surjective. Lemma~\ref{lem:majority-node-map-rigidity} gives $b=P_\sigma\circ a$. The intertwining identities imply
+\[
+    P_\sigma\circ f\circ a=P_\sigma\circ a\circ r
+    =b\circ r=f\circ b=f\circ P_\sigma\circ a.
+\]
+Surjectivity of $a$ gives $P_\sigma\circ f=f\circ P_\sigma$. Every coordinate permutation fixes $000$. Commutation with $f$ forces $P_\sigma$ to fix the whole cycle, so $P_\sigma=\id$ and $a=b$.
+
+Thus $p$ satisfies left cancellation among maps intertwining the prescribed updates, although it is noninjective. Without the intertwining requirement, the constant maps with values $000$ and $001$ violate cancellation.
+\end{example}
+
+\subsection{Tensor products of maps and networks}\label{subsec:node-map-tensor}
+
+\begin{definition}\label{def:network-tensor}
+For Boolean maps $h\colon\F^n\to\F^r$ and $k\colon\F^m\to\F^s$, define
+\[
+    h\otimes k\colon\F^{n+m}\to\F^{r+s},
+    \qquad (h\otimes k)(x,y)=(h(x),k(y)).
+\]
+For networks $X=(\F^n,f)$ and $Y=(\F^m,g)$, write
+\[
+    X\otimes Y=(\F^{n+m},f\otimes g).
+\]
+The coordinates of the first factor precede those of the second.
+\end{definition}
+
+\begin{proposition}\label{prop:node-map-tensor}
+If $h$ and $k$ admit node maps, so does $h\otimes k$. This tensor is injective exactly when both factors are injective, and surjective exactly when both are surjective. For maps of the appropriate dimensions,
+\[
+    (h'\otimes k')\circ(h\otimes k)
+    =(h'\circ h)\otimes(k'\circ k).
+\]
+In particular, if $h\circ f=f'\circ h$ and $k\circ g=g'\circ k$, then
+\[
+    (h\otimes k)\circ(f\otimes g)
+    =(f'\otimes g')\circ(h\otimes k).
+\]
+Regrouping or exchanging coordinate blocks gives Hamming isometric conjugacies between the corresponding tensor networks.
+\end{proposition}
+
+\begin{proof}
+If $\phi\colon[n]\to[r]$ and $\psi\colon[m]\to[s]$ are node maps for $h$ and $k$, respectively, a node map for their tensor is
+\[
+    i\longmapsto
+    \begin{cases}
+        \phi(i),&1\leq i\leq n,\\
+        r+\psi(i-n),&n<i\leq n+m.
+    \end{cases}
+\]
+Injectivity and surjectivity follow by considering each output block separately. The composition identity follows by evaluation at $(x,y)$ and implies the intertwining identity. Regrouping $(x,y,z)$ and exchanging $(x,y)$ with $(y,x)$ are coordinate permutations that intertwine the corresponding updates.
+\end{proof}
+
+\begin{theorem}[Tensor products and image factorization]\label{thm:tensor-face-factorization}
+Let $h$ and $k$ be nonconstant Boolean maps admitting node maps, with image factorizations $h=j_h\circ p_h$ and $k=j_k\circ p_k$. Then
+\[
+    h\otimes k=(j_h\otimes j_k)\circ(p_h\otimes p_k)
+\]
+is a factorization through the image of $h\otimes k$, with a surjective first map and an injective second map, both admitting node maps. The intermediate cube has $|A(h)|+|A(k)|$ coordinates. If the maps intertwine network updates, the intermediate update is the tensor of the two induced updates.
+
+For surjective maps $p\colon\F^n\to\F^r$ and $q\colon\F^m\to\F^s$ admitting node maps, the fiber relations satisfy
+\[
+    (x,y)\mathrel{E_{p\otimes q}}(x',y')
+    \quad\Longleftrightarrow\quad
+    x\mathrel{E_p}x'\text{ and }y\mathrel{E_q}y'.
+\]
+If $p\circ f=\bar f\circ p$ and $q\circ g=\bar g\circ q$, the resulting quotient update is $\bar f\otimes\bar g$.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{prop:node-map-tensor} gives the displayed factorization and the properties of its two maps. Moreover,
+\[
+    \operatorname{im}(h\otimes k)
+    =\operatorname{im}h\times\operatorname{im}k.
+\]
+This face has the stated dimension, and its induced update is the tensor of the two induced updates. Theorem~\ref{thm:compatible-face-factorization} identifies the intermediate coordinates up to permutation and complementation. The fiber identity follows from equality in each output block, and the quotient update follows from Proposition~\ref{prop:node-map-tensor}.
+\end{proof}
+
+The induced bijection of quotient sets is
+\[
+    \F^{n+m}/E_{p\otimes q}
+    \longrightarrow(\F^n/E_p)\times(\F^m/E_q),
+    \qquad [(x,y)]\longmapsto([x],[y]).
+\]
+It intertwines the quotient updates whenever the original maps intertwine their updates.
+
+\begin{example}\label{ex:tensor-independent-quotients}
+Consider the quotient $p(x_1,x_2)=x_1+x_2$ from
+\[
+    f(x_1,x_2)=(x_2,1+x_1)
+\]
+to the one-node flip $\bar f(u)=u+1$, and the quotient $q(y_1,y_2)=y_1y_2$ from the two-node identity network to the one-node identity network. Then
+\[
+    (p\otimes q)(x_1,x_2,y_1,y_2)
+    =(x_1+x_2,y_1y_2)
+\]
+reduces the four-node update
+\[
+    (x_1,x_2,y_1,y_2)\longmapsto(x_2,1+x_1,y_1,y_2)
+\]
+to $(u,v)\mapsto(u+1,v)$. Its fibers have size six when $v=0$ and size two when $v=1$. The quotient has two $2$-cycles.
+\end{example}
+
+Write $I_n=(\F^n,\id_{\F^n})$ for the $n$-node identity network. A \emph{passive node} is a factor $I_1$. Tensoring with $\id_{\F}$ gives a nonconstant map, so the image factorization applies even when the original map is constant.
+
+\begin{theorem}[Factorization with a passive node]\label{thm:passive-node-factorization}
+For every Boolean map $h\colon\F^n\to\F^m$ admitting a node map,
+\[
+    h\otimes\id_{\F}\colon\F^{n+1}\to\F^{m+1}
+\]
+factors through a cube with $|A(h)|+1$ coordinates as a surjective map followed by an injective map, both admitting node maps. Its image is $\operatorname{im}h\times\F$. If $h\circ f=g\circ h$, the factors intertwine the updates $f\otimes\id_{\F}$ and $g\otimes\id_{\F}$ with the induced intermediate update.
+\end{theorem}
+
+\begin{proof}
+Since $h\otimes\id_{\F}$ is nonconstant, Theorem~\ref{thm:compatible-face-factorization} applies. Proposition~\ref{prop:node-map-image-face} gives the image and dimension.
+
+For nonconstant $h=j\circ p$, the factors are $p\otimes\id_{\F}$ and $j\otimes\id_{\F}$. If $h(x)=c$, they are
+\[
+    \F^{n+1}\xrightarrow{\ p\ }\F
+    \xrightarrow{\ j\ }\F^{m+1},
+    \qquad p(x,t)=t,\qquad j(t)=(c,t).
+\]
+Both maps admit node maps. If $h\circ f=g\circ h$, then $g(c)=c$, so the induced intermediate update is $\id_{\F}$.
+\end{proof}
+
+If $h\circ h=h$, then $(h\otimes\id_{\F})\circ(h\otimes\id_{\F})=h\otimes\id_{\F}$. Proposition~\ref{prop:node-map-retractions} therefore gives a retraction onto its positive-dimensional image even when $h$ is constant.
+
+\subsection{Pairings and extensions}\label{subsec:universal-observations}
+
+\begin{proposition}[Compatible pairing]\label{prop:compatible-pairing}
+Let $a\colon\F^n\to\F^r$ and $b\colon\F^n\to\F^s$ admit node maps. Write $\pi_1,\pi_2$ for the two block projections from $\F^{r+s}$. There is a map $u\colon\F^n\to\F^{r+s}$ admitting a node map with
+\[
+    \pi_1\circ u=a,\qquad \pi_2\circ u=b
+\]
+if and only if
+\[
+    S_i(a)\cap S_j(b)=\varnothing
+    \qquad\text{for all }i\in[r],\ j\in[s].
+\]
+When it exists, it is unique and equals $u(x)=(a(x),b(x))$. If $a\circ f=g\circ a$ and $b\circ f=k\circ b$, then $u\circ f=(g\otimes k)\circ u$.
+\end{proposition}
+
+\begin{proof}
+The projection identities determine $u(x)=(a(x),b(x))$. Its components have disjoint essential supports within each block. The stated condition is therefore equivalent to all components having disjoint essential supports, hence to $u$ admitting a node map. The intertwining identity follows by evaluation.
+\end{proof}
+
+For $a(t)=b(t)=t$, the pairing $u(t)=(t,t)$ admits no node map. More generally, two copies of $I_1$ admit no universal pairing, as the following counterexample shows.
+
+\begin{counterexample}[Failure of universal pairing]\label{ex:no-universal-pairing}
+Take two copies of $I_1$. Suppose there were a Boolean network $(\F^r,u)$ with scalar maps $\pi_1,\pi_2\colon\F^r\to\F$ satisfying $\pi_i\circ u=\pi_i$ and the following property: for every network $(\F^n,f)$ and scalar maps $a,b$ satisfying $a\circ f=a$, $b\circ f=b$, there is a unique map $c\colon\F^n\to\F^r$ admitting a node map such that
+\[
+    c\circ f=u\circ c,\qquad \pi_1\circ c=a,
+    \qquad \pi_2\circ c=b.
+\]
+
+Take $f=\id_{\F}$. For each constant pair $(\alpha,\beta)\in\F^2$, the required map $c$ has the same two scalar composites as its composition with the constant-zero map on $\F$. Both intertwine the updates, so uniqueness makes $c$ constant. Its value is a fixed state $z_{\alpha\beta}$ of $u$, uniquely determined by the two scalar values. These four states are distinct.
+
+Now apply the property to the pairs $(\id,0)$, $(0,\id)$, and $(t\mapsto t+1,\id)$. Each resulting map from $\F$ is nonconstant, hence injective. By Lemma~\ref{lem:injective-node-map-form}, its image is a coordinate edge. The endpoint pairs are
+\[
+    \{z_{00},z_{10}\},\qquad
+    \{z_{00},z_{01}\},\qquad
+    \{z_{10},z_{01}\}.
+\]
+These pairs form a triangle, contradicting bipartiteness of the Boolean cube.
+\end{counterexample}
+
+\begin{proposition}[Obstruction to universal extension]\label{prop:no-universal-extension}
+Fix networks $(\F^n,f)$ and $(\F^m,g)$. There is no network $(\F^r,u)$ with maps $i\colon\F^n\to\F^r$ and $j\colon\F^m\to\F^r$ admitting node maps and satisfying $i\circ f=u\circ i$, $j\circ g=u\circ j$, with the following property: for every network $(\F^s,v)$ and maps $a\colon\F^n\to\F^s$, $b\colon\F^m\to\F^s$ admitting node maps with $a\circ f=v\circ a$, $b\circ g=v\circ b$, there is a unique map $c\colon\F^r\to\F^s$ admitting a node map such that
+\[
+    c\circ u=v\circ c,\qquad c\circ i=a,
+    \qquad c\circ j=b.
+\]
+\end{proposition}
+
+\begin{proof}
+Use the constant maps with values $00$ and $11$ into $(\F^2,\id)$. The property gives $c\colon\F^r\to\F^2$. Its scalar components $c_1,c_2$ satisfy $c_i\circ u=c_i$ and have the same prescribed composites with both $i$ and $j$. Apply uniqueness with target $(\F,\id)$ to get $c_1=c_2=q$. This scalar function is nonconstant: it is zero on the nonempty image of $i$ and one on the nonempty image of $j$. Thus $c=(q,q)$ has overlapping essential supports and cannot admit a node map.
+\end{proof}
+
+The same proofs establish both obstructions for Boolean maps without prescribed updates.
+
+\subsection{Obstructions to universal parameterization}\label{subsec:compatible-parameterizations}
+
+Consider representations $H(x,t)=E(a(x),t)$ through a fixed evaluation map
+\[
+    E\colon\F^r\times\F\to\F,
+\]
+where $a$ admits a node map. The following theorem gives a lower bound on the parameter dimension for a specific family of Boolean functions.
+
+\begin{theorem}[Injectivity from parity and AND]\label{thm:parity-and-observations}
+For $n\geq1$, put
+\[
+    H_n(x,t)=(1+t)(x_1+\cdots+x_n)+t x_1\cdots x_n.
+\]
+Suppose $a\colon\F^n\to\F^r$ admits a node map and $E\colon\F^{r+1}\to\F$ satisfies
+\[
+    H_n(x,t)=E(a(x),t)\qquad(x\in\F^n,\ t\in\F).
+\]
+Then $a$ is injective. In particular, $r\geq n$ and $a$ has the form in Lemma~\ref{lem:injective-node-map-form}.
+\end{theorem}
+
+\begin{proof}
+Choose a node map $\phi$ for $a$. At $t=0$, the function $H_n$ is parity and changes whenever one input is flipped. Thus $a(x+e_i)\ne a(x)$ for every $x,i$. Compatibility then gives
+\[
+    a(x+e_i)=a(x)+e_{\phi(i)}.
+\]
+If $i\ne j$ and $\phi(i)=\phi(j)$, applying this identity twice gives
+\[
+    a(x+e_i+e_j)=a(x).
+\]
+Take $x=\1$ and $t=1$. The AND value is one at $\1$ and zero at $\1+e_i+e_j$, contradicting the assumed expression through $a$. Therefore $\phi$ is injective. Changing the nonzero inputs of $x$ one at a time now gives
+\[
+    a(x)=a(\0)+\sum_{\{i:x_i=1\}}e_{\phi(i)}.
+\]
+The distinct assigned coordinates show that $a$ is injective. The argument also covers $n=1$, when injectivity of $\phi$ is automatic.
+\end{proof}
+
+\begin{corollary}[No fixed universal evaluation]\label{cor:no-universal-evaluation}
+There is no fixed positive integer $r$ and map $E\colon\F^{r+1}\to\F$ such that, for every $n\geq1$ and every scalar Boolean function $H\colon\F^{n+1}\to\F$, there exists a map $a\colon\F^n\to\F^r$ admitting a node map with
+\[
+    H(x,t)=E(a(x),t).
+\]
+\end{corollary}
+
+\begin{proof}
+Taking $n=r+1$ contradicts Theorem~\ref{thm:parity-and-observations}, which requires $r\geq n$. A singleton parameter space also fails, since then $E(a(x),t)$ is independent of $x$.
+\end{proof}
