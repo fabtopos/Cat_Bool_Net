@@ -322,6 +322,17 @@ Let $p\colon\F^n\to\F^m$ be surjective and admit a node map, and let $k\colon\F^
     \text{there is a unique map $u\colon\F^m\to\F^\ell$ with $k=u\circ p$.}
 \]
 Whenever it exists, $u$ admits a node map. It is surjective if $k$ is surjective. If, in addition, $p\circ f=g\circ p$ and $k\circ f=r\circ k$, then $u\circ g=r\circ u$.
+\[
+\begin{tikzpicture}[scale=.9,xscale=.75,every label/.append style={font=\scriptsize}]
+ \tikzstyle{v} = [circle, draw, fill=black,inner sep=0pt, minimum size=.75mm]
+    \node(N) at (0,2) {$\F^n$};
+    \node(M) at (2,0) {$\F^n$};
+    \node(L) at (4,2) {$\F^l$};
+    \draw[->] (N) -- node [above] {$k$} (L);
+    \draw[->] (N) -- node [anchor= east] {$p$} (M);
+    \draw[->, dashed] (M) -- node [anchor=west] {$u$} (L);
+\end{tikzpicture}
+\]
 \end{theorem}
 
 \begin{proof}
@@ -332,11 +343,10 @@ Since $p$ is surjective, its essential supports $S_a(p)$ are nonempty; compatibi
     S_c(k)=\bigcup_{a\in S_c(u)}S_a(p).
 \]
 If some input coordinate $a$ of $u$ were essential in two different outputs $u_c$ and $u_d$, then every input in the nonempty set $S_a(p)$ would be essential in both $k_c$ and $k_d$. This contradicts the existence of a node map for $k$. Thus each input of $u$ is essential in at most one output. Assign that input to its unique affected output, or assign it arbitrarily if no output depends on it. This assignment satisfies condition~\eqref{eq:compatible-node-directions}, so $u$ admits a node map.
-
 Finally, $u\circ g\circ p=u\circ p\circ f=k\circ f=r\circ k=r\circ u\circ p$. Surjectivity of $p$ gives $u\circ g=r\circ u$.
 \end{proof}
 
-The image face supplies Boolean coordinates for the quotient set.
+% ------------ FUNDAMENTAL HOMOMORPHISM THEOREM -----
 
 \begin{theorem}[Fundamental homomorphism theorem for node maps]\label{thm:first-node-homomorphism}
 Let $h\colon\F^n\to\F^m$ be nonconstant, admit a node map, and satisfy $h\circ f=g\circ h$. Put $S=\operatorname{im}h$. The map
