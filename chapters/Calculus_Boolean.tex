@@ -339,19 +339,41 @@ Finally, $u\circ g\circ p=u\circ p\circ f=k\circ f=r\circ k=r\circ u\circ p$. Su
 The image face supplies Boolean coordinates for the quotient set.
 
 \begin{theorem}[Fundamental homomorphism theorem for node maps]\label{thm:first-node-homomorphism}
-Let $h\colon\F^n\to\F^m$ be nonconstant, admit a node map, and satisfy $h\circ f=g\circ h$. Put $S=\operatorname{im}h$. The map
+Let $h\colon\F^n\to\F^m$ be nonconstant, admit a node map, and satisfy $h\circ f=g\circ h$. Put $S=\operatorname{im}h$. The minimum Hamming distance between fibers,
+\[
+    d_{E_h}([x],[y])
+    =\min_{\substack{u\in[x]\\v\in[y]}}d_H(u,v),
+\]
+defines a metric on $\F^n/E_h$. With $S$ equipped with the restriction of the Hamming metric, the map
 \[
     \Theta\colon\F^n/E_h\longrightarrow S,
     \qquad [x]\longmapsto h(x),
 \]
-is a bijection intertwining the quotient dynamics $[x]\mapsto[f(x)]$ with $g|_S$. Moreover, $S$ is an invariant coordinate face, and Theorem~\ref{thm:compatible-face-factorization} identifies this quotient with a Boolean network on $\F^{A(h)}$ through a surjective map admitting a node map. In particular, when $h$ is surjective, the quotient is the whole target network $g$.
+is an isometric conjugacy between the quotient dynamics $\bar f([x])=[f(x)]$ and $g|_S$. Moreover, $S$ is an invariant coordinate face, and Theorem~\ref{thm:compatible-face-factorization} identifies this quotient with a Boolean network on $\F^{A(h)}$ through a surjective map admitting a node map. In particular, when $h$ is surjective, the quotient is isometrically conjugate to the whole target network $g$.
 \end{theorem}
 
 \begin{proof}
-The definition of $E_h$ makes $\Theta$ well defined and injective; its codomain is the image, so it is surjective. If $h(x)=h(x')$, then $h(f(x))=g(h(x))=g(h(x'))=h(f(x'))$, so quotient dynamics is well defined. The same identity gives
+The definition of $E_h$ makes $\Theta$ well defined and injective; its codomain is the image, so it is surjective. We show that
 \[
-    \Theta([f(x)])=h(f(x))=g(h(x))=g(\Theta([x])).
+    d_{E_h}([x],[y])=d_H(h(x),h(y)).
 \]
+Compatibility allows each input flip to change at most one output coordinate, so $h$ is Hamming nonexpansive. Thus every $u\in[x]$ and $v\in[y]$ satisfy
+\[
+    d_H(h(x),h(y))=d_H(h(u),h(v))\le d_H(u,v),
+\]
+giving one inequality.
+
+For the reverse inequality, choose a node map $\phi$ for $h$ and put $B_a=\phi^{-1}(a)$. Each $h_a$ depends only on the inputs in $B_a$. If $h_a(x)\ne h_a(y)$, this Boolean function is nonconstant, so some edge of its input cube has different output values at its endpoints. Choose those adjacent block inputs in the order realizing $h_a(x)$ and $h_a(y)$. If $h_a(x)=h_a(y)$, choose the same block input for both, realizing their common value. These choices also apply to empty blocks, whose outputs are constant. Since the blocks are disjoint, the choices combine into states $u\in[x]$ and $v\in[y]$ differing in exactly one input coordinate for each differing output coordinate. Hence
+\[
+    d_H(u,v)=d_H(h(x),h(y)),
+\]
+which proves the equality. Since $\Theta$ is a bijection and $d_H$ is a metric on $S$, this equality proves that $d_{E_h}$ is a metric and $\Theta$ is an isometry.
+
+The identity $g(h(x))=h(f(x))$ shows that $S$ is invariant under $g$. If $h(x)=h(x')$, then $h(f(x))=g(h(x))=g(h(x'))=h(f(x'))$, so $\bar f$ is well defined. Moreover,
+\[
+    \Theta(\bar f([x]))=h(f(x))=g(h(x))=(g|_S)(\Theta([x])),
+\]
+so $\Theta$ is a conjugacy.
 Proposition~\ref{prop:node-map-image-face} and Theorem~\ref{thm:compatible-face-factorization} give the claimed face and its Boolean coordinates.
 \end{proof}
 
