@@ -35,10 +35,166 @@ The first part of this thesis is focused on developing the theory Boolean networ
 
 
 %%====================================================
-\section{Basic definition and preliminaries}
+\section{Basic definitions and preliminaries}\label{sec:basic-preliminaries}
 
 
-The concept of a Boolean networks is not difficult, but the notation and terminology can vary widely across the literature. Sometimes, a Boolean networks is a map $f\colon\F^n\to\F^n$, whereas others define it as an $n$-tuple of functions $(f_1,\dots,f_n)$, with $f_i\colon\F^n\to\F$. The graph that describes the dynamics can be called the phase space, if one is making parallels with classical dynamical systems, or the state space, if one is viewing them as generalized cellular automata. The directed graph that encodes the interactions of the variables has many names throughout the literature, such as interaction graph, wiring diagram, dependency graph, coupling graph, influence graph, and others. Sometimes this graph is signed to distinguish activations vs.\ inhibitions, and in other applications, such as for social networks, it even undirected. In this section, we will define the basic concepts, terminology and notation that we will use throughout this thesis.
+The concept of a Boolean network is not difficult, but the notation and terminology can vary widely across the literature. Some authors define a Boolean network as a map $f\colon\F^n\to\F^n$, whereas others define it as an $n$-tuple of functions $(f_1,\dots,f_n)$, with $f_i\colon\F^n\to\F$. The graph that describes the dynamics can be called the phase space, if one is making parallels with classical dynamical systems, or the state space, if one is viewing the network as a generalized cellular automaton. The directed graph that encodes the interactions of the variables also has many names, such as interaction graph, wiring diagram, dependency graph, coupling graph, and influence graph. Sometimes this graph is signed to distinguish activations from inhibitions, and in some applications, such as social networks, an undirected graph is used to describe the interactions. In this section, we will define the basic concepts, terminology, and notation that we will use throughout this thesis.
 
+\subsection{Boolean states and functions}
 
-We will usually use $x_1,\dots,x_n$. Sometimes, for $2$- or $3$-node networks, $x,y$ and $x,y,z$. In a few cases,  if there is a distinguished vertex, like in a star graph, we will denote that as $x_0$.
+We write $\F=\{0,1\}$ for the field with two elements, where addition and multiplication are taken modulo $2$. In particular, $1+1=0$, and $a+a=0$ for every $a\in\F$. We interpret $0$ and $1$ as the Boolean values false and true. The usual logical operations can then be written as
+\[
+    \Not{a}=1+a,\qquad
+    a\wedge b=ab,\qquad
+    a\vee b=a+b+ab.
+\]
+These are NOT, AND, and OR, respectively. Addition $a+b$ is exclusive OR, or XOR: its value is $1$ exactly when $a$ and $b$ are different. Thus OR and addition are different operations; for example, $1\vee1=1$, whereas $1+1=0$. Unless we explicitly say otherwise, arithmetic involving Boolean coordinates is in $\F$.
+
+For a positive integer $n$, write $[n]=\{1,\dots,n\}$. The set $\F^n$ consists of all $n$-tuples of Boolean values and is called the \emph{Boolean cube}. An element $x=(x_1,\dots,x_n)\in\F^n$ is a \emph{state}, and the coordinate indices in $[n]$ are the \emph{nodes}. There are $n$ nodes and $2^n$ states. We will usually use $x_1,\dots,x_n$ for the coordinate variables. For $2$- or $3$-node networks, we will sometimes use $x,y$ or $x,y,z$. If there is a distinguished node, like the center of a star graph, we may label it $0$ and use $x_0$ for its variable. This changes only the labels; the number of nodes will always be specified.
+
+We write $\0=(0,\dots,0)$ and $\1=(1,\dots,1)$, and let $e_i$ be the vector whose $i$th coordinate is $1$ and whose other coordinates are $0$. Vector addition is coordinatewise, so $x+e_i$ is obtained from $x$ by changing only its $i$th coordinate. In examples and diagrams, a string such as $010$ denotes the state $(0,1,0)$.
+
+A \emph{Boolean function} is a map $u\colon\F^n\to\F$. It can be specified by a logical expression, a polynomial expression over $\F$, or a \emph{truth table} listing its value at every state. Examples include the AND function $x_1\cdots x_n$, the OR function $x_1\vee\cdots\vee x_n$, and the parity function $x_1+\cdots+x_n$. The three-variable majority function, which we will also use, is
+\begin{align*}
+    \operatorname{maj}(x_1,x_2,x_3)
+    &=(x_1x_2)\vee(x_1x_3)\vee(x_2x_3)\\
+    &=x_1x_2+x_1x_3+x_2x_3.
+\end{align*}
+It takes the value $1$ exactly when at least two inputs are $1$. A variable $x_i$ or its complement $\Not{x}_i$ is called a \emph{literal}.
+
+More generally, a \emph{Boolean map} $h\colon\F^n\to\F^m$ has coordinate functions $h_a\colon\F^n\to\F$, so that
+\[
+    h(x)=\bigl(h_1(x),\dots,h_m(x)\bigr).
+\]
+A coordinate function may be constant, or it may ignore some of the input variables. We call $h$ constant if all its coordinate functions are constant.
+
+\subsection{Boolean networks and their dynamics}
+
+A \emph{Boolean network} on $n$ nodes is a map $f\colon\F^n\to\F^n$. Its coordinate functions $f_1,\dots,f_n$ are the \emph{local update functions}, and $f$ is the \emph{global update map}. Starting at a state $x$, the next state is
+\[
+    f(x)=\bigl(f_1(x),\dots,f_n(x)\bigr).
+\]
+All coordinates are updated simultaneously, using their values in the original state. This is called \emph{synchronous updating}, and it is the convention throughout this thesis. An AND-network or OR-network is one whose local functions are conjunctions or disjunctions, respectively, of specified input variables.
+
+A Boolean network is a particular case of a \emph{finite dynamical system}, which is a pair $(X,f)$ consisting of a finite set $X$ and a map $f\colon X\to X$. We will sometimes write a Boolean network as $(\F^n,f)$ when we want to specify both its states and its update map. We take $n\geq1$ unless a zero-node network is explicitly introduced.
+
+The \emph{iterates} of $f$ are defined by $f^0=\id_X$ and $f^{t+1}=f\circ f^t$ for integers $t\geq0$. Here $\id_X$ is the identity map on $X$. The \emph{forward orbit} of $x$ is the sequence
+\[
+    x,\ f(x),\ f^2(x),\dots.
+\]
+A state $x$ is a \emph{fixed point} if $f(x)=x$. More generally, it is \emph{periodic} if $f^p(x)=x$ for some positive integer $p$. The least such $p$ is its \emph{period}, and the distinct states
+\[
+    x,\ f(x),\dots,f^{p-1}(x)
+\]
+form a \emph{cycle} of length $p$. A state that is not periodic is called \emph{transient}. Since $X$ is finite, every forward orbit eventually enters a cycle. We call these cycles \emph{attractors}, including fixed points as cycles of length $1$. The \emph{basin} of an attractor is the set of states whose forward orbits eventually enter it.
+
+A subset $S\subseteq X$ is \emph{invariant} under $f$ if $f(S)\subseteq S$. Thus a state that starts in $S$ stays in $S$ under every subsequent update. In this case, the restriction $f|_S\colon S\to S$ defines a dynamical system on $S$. We use invariant in this forward sense; equality $f(S)=S$ is not required.
+
+\subsection{State spaces and wiring diagrams}
+
+We will associate two directed graphs to a Boolean network. To fix our conventions, a \emph{directed graph} $G$ consists of a vertex set $V(G)$ and an edge set $E(G)\subseteq V(G)\times V(G)$. We write $u\to v$ for the edge $(u,v)$. Self-loops $u\to u$ are allowed, and there is at most one edge for each ordered pair of vertices.
+
+The \emph{state space}, or \emph{phase space}, of $f\colon X\to X$ is the directed graph with vertex set $X$ and one edge
+\[
+    x\longrightarrow f(x)
+\]
+from each state. Every vertex therefore has exactly one outgoing edge. A fixed point gives a self-loop, and a periodic orbit gives a directed cycle. We will use state space for this graph, and also for its underlying set when the meaning is clear.
+
+The wiring diagram describes which local functions depend on which variables. A Boolean function $u\colon\F^n\to\F$ \emph{depends essentially} on $x_i$ if there is a state $x$ such that
+\[
+    u(x+e_i)\ne u(x).
+\]
+In other words, changing only $x_i$ can change the output. If this never happens, $u$ is independent of $x_i$. Essential dependence is a property of the function, rather than of a particular expression for it: for example, $x_1+x_1+x_2=x_2$ is independent of $x_1$. We say that $u$ \emph{depends only on} a set $A\subseteq[n]$ of coordinates if any two states that agree on $A$ have the same value under $u$.
+
+The \emph{wiring diagram} $W(f)$ has vertex set $[n]$ and edges
+\[
+    i\longrightarrow j
+    \quad\Longleftrightarrow\quad
+    f_j\text{ depends essentially on }x_i.
+\]
+Thus an edge points from an input node to a node whose update can be affected by that input. A self-loop at $i$ means that $f_i$ depends on $x_i$. We use unsigned wiring diagrams, so the edges record dependence without assigning activation or inhibition signs.
+
+For example, consider the two-node network
+\[
+    f(x_1,x_2)=(x_1x_2,\ 1+x_2).
+\]
+Its wiring diagram has edges $1\to1$, $2\to1$, and $2\to2$. Its state space has four vertices, with transitions
+\[
+    00\longrightarrow01,\qquad
+    01\longrightarrow00,\qquad
+    10\longrightarrow01,\qquad
+    11\longrightarrow10.
+\]
+There is one attractor, the cycle $00\to01\to00$, and its basin is all of $\F^2$. The nodes of the wiring diagram describe the two variables, while the vertices of the state space describe their four possible joint values.
+
+A \emph{homomorphism of directed graphs} $\phi\colon G\to H$ is a map of vertex sets such that $u\to v$ in $G$ implies $\phi(u)\to\phi(v)$ in $H$. An \emph{isomorphism} is a bijection of vertices for which this implication holds in both directions. An isomorphism from a graph to itself is an \emph{automorphism}. These definitions will let us compare state spaces and wiring diagrams separately.
+
+\subsection{Hamming distance and coordinate faces}
+
+To compare states, we need to count how many coordinates differ. The \emph{Hamming weight} of $x\in\F^n$ is
+\[
+    |x|=\bigl|\{i\in[n]:x_i=1\}\bigr|,
+\]
+and the \emph{Hamming distance} between $x,y\in\F^n$ is
+\[
+    d_H(x,y)=\bigl|\{i\in[n]:x_i\ne y_i\}\bigr|
+            =|x+y|=|x-y|.
+\]
+These quantities are ordinary nonnegative integers. The notation $|x-y|$ in the preceding section refers to this distance. Addition and subtraction of vectors agree over $\F$, whereas counting coordinates is not done modulo $2$.
+
+The \emph{cube graph} $Q_n$ is the undirected graph with vertex set $\F^n$, in which $x$ and $y$ are adjacent exactly when $d_H(x,y)=1$. Equivalently, $y=x+e_i$ for a unique $i$, and we call this an edge in coordinate direction $i$. The shortest path distance in $Q_n$ is $d_H$: a shortest path changes each differing coordinate exactly once. This graph records the geometry of the states, independently of the update map.
+
+A map $h\colon\F^n\to\F^m$ is \emph{distance preserving} if $d_H(h(x),h(y))=d_H(x,y)$ for all states $x,y$. Such a map is injective and is called an \emph{isometric embedding}; when $n=m$, it is an \emph{isometry} of the Boolean cube. A map is a \emph{contraction} in our terminology if
+\[
+    d_H(h(x),h(y))\leq d_H(x,y)
+    \qquad\text{for all }x,y\in\F^n.
+\]
+This is the non-strict inequality, also called nonexpansiveness. Neither condition by itself imposes any relation between network updates; that will be an additional requirement in the next chapter.
+
+We will also use cubes whose coordinates are indexed by a finite set $A$. Write $\F^A$ for the set of assignments of a Boolean value to each element of $A$. If $A\subseteq[n]$, then
+\[
+    x|_A=(x_i)_{i\in A}\in\F^A
+\]
+denotes the restriction to those coordinates. Listing the elements of $A$ in increasing order identifies $\F^A$ with $\F^{|A|}$. The map $\pi_A\colon\F^n\to\F^A$, given by $\pi_A(x)=x|_A$, is the \emph{coordinate projection}. Similarly, we identify $\F^n\times\F^m$ with $\F^{n+m}$ by concatenating the coordinate tuples, and write a resulting state as $(x,y)$.
+
+A \emph{coordinate face} of $\F^n$ is a subset obtained by fixing some coordinates and allowing all the others to vary freely. More precisely, for $A\subseteq[n]$ and fixed values $c_b\in\F$ for $b\notin A$, it has the form
+\[
+    S=\{x\in\F^n:x_b=c_b\text{ for every }b\notin A\}.
+\]
+The coordinates in $A$ are the \emph{free coordinates}, and the \emph{dimension} of the face is $|A|$. Restricting $\pi_A$ to $S$ gives a bijection with $\F^A$ that preserves Hamming distance. For example, $\{(u,0,v):u,v\in\F\}$ is a two-dimensional face of $\F^3$.
+
+The whole cube is a face of dimension $n$, and a singleton is a face of dimension $0$. For this last case, we use the convention $[0]=\varnothing$ and $\F^0=\F^\varnothing=\{()\}$, the set containing the empty tuple. This notation is useful even when the networks under consideration have positive numbers of nodes. If a coordinate face of positive dimension is invariant under a network, its restricted dynamics can be written as a Boolean network on its free coordinates. In the two-node example above, the face $\{x_1=0\}$ is invariant, and its update in the free coordinate is $x_2\mapsto1+x_2$.
+
+\subsection{State maps, fibers, and quotients}
+
+Given dynamical systems $(X,f)$ and $(Y,g)$, a \emph{state map} is a function $h\colon X\to Y$. It \emph{intertwines} the updates if
+\[
+    h\circ f=g\circ h.
+\]
+This means that updating a state and then applying $h$ gives the same result as applying $h$ and then updating in the target system. We will sometimes omit the composition symbol and write $hf=gh$; the rightmost map is applied first. A diagram of maps \emph{commutes} when the composites along any two directed paths with the same starting and ending points agree.
+
+A bijective state map intertwining the updates is a \emph{conjugacy}. A surjective state map intertwining the updates is a \emph{semiconjugacy}; we include surjectivity in this definition throughout the thesis. Such a map identifies the target system as a \emph{factor} of the source. For Boolean networks, these are the isomorphisms and homomorphisms discussed in the preceding section. The next chapter will impose additional conditions involving Hamming distance and the nodes.
+
+For any map $h\colon X\to Y$, its \emph{image} is $\operatorname{im}h=\{h(x):x\in X\}$, and the \emph{fiber} over $y\in Y$ is
+\[
+    h^{-1}(y)=\{x\in X:h(x)=y\}.
+\]
+Here $h^{-1}(y)$ denotes a preimage, and does not assume that $h$ has an inverse. The nonempty fibers partition $X$. If $h$ intertwines the updates, its image is invariant under $g$, since $g(h(x))=h(f(x))$.
+
+An \emph{equivalence relation} $E$ on $X$ is a reflexive, symmetric, and transitive relation. Its equivalence class at $x$ is $[x]_E=\{x'\in X:(x,x')\in E\}$, and the \emph{quotient set} $X/E$ is the set of these classes. The \emph{quotient map} sends $x$ to $[x]_E$. We will write $[x]$ when the relation is understood. In particular, a state map $h$ defines the \emph{fiber relation}
+\[
+    E_h=\{(x,x')\in X\times X:h(x)=h(x')\},
+\]
+whose classes are precisely the fibers of $h$ over its image.
+
+To put dynamics on a quotient, we require $E$ to be \emph{forward invariant} under $f$, meaning that
+\[
+    (x,x')\in E\quad\Longrightarrow\quad(f(x),f(x'))\in E.
+\]
+This makes the \emph{quotient update}
+\[
+    \bar f\colon X/E\to X/E,\qquad [x]\longmapsto[f(x)]
+\]
+well defined: choosing another representative of a class gives the same output class. The fiber relation of a map intertwining updates always has this property. For example, the projection $h(x_1,x_2)=x_2$ from the two-node network above intertwines $f$ with the one-node network $g(t)=1+t$. Its fibers are $\{00,10\}$ and $\{01,11\}$, and the quotient update exchanges these two classes. A quotient set need not come with Boolean coordinates or a Hamming metric; in later chapters we will give conditions that supply this additional structure.
+
+Finally, a \emph{section}, or right inverse, of $p\colon X\to Y$ is a map $s\colon Y\to X$ with $p\circ s=\id_Y$. A left inverse of $j\colon Y\to X$ is a map $q\colon X\to Y$ with $q\circ j=\id_Y$. A \emph{retraction} onto $S\subseteq X$ is a map $r\colon X\to S$ whose restriction to $S$ is the identity. A map $e\colon X\to X$ is \emph{idempotent} if $e\circ e=e$; equivalently, it fixes every point in its image. For maps between dynamical systems, intertwining the updates is a separate requirement.
