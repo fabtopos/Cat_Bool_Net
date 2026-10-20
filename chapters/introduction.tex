@@ -1,6 +1,9 @@
 
 %This chapter investigates how maps between Boolean networks can respect both their dynamics and the variable dependencies encoded by their wiring diagrams. 
 
+%%====================================================
+\section{Overview and goals of this thesis}
+
 It is well-known that every Boolean function $f\colon\F^n\to\F^n$ can be expressed in terms of $n$ local functions $f_i\colon\F^2\to\F$, i.e., as a map
 \[
 x=(x_1,\dots,x_n)\longmapsto (f_1(x),\dots,f_n(x)).
@@ -29,3 +32,13 @@ Initially, it should not be obvious how to properly define the concept of homome
 Then we will prove (see Theorem~\ref{thm:compatible-edge-lifting}) that an equivalent condition is that the inverse image of every edge in the wiring diagram of $g$ lifts to an edge in the wiring diagram of $f$. This leads to the concept of a \emph{node map} between the wiring diagrams. In some sense, this says that structure-preserving maps between Boolean networks are characterized by the inverse images of a key feature (variable dependencies) being preserved. This is analogous how continuous maps pull back open sets to open sets, or how group homomorphisms pull back normal subgroups to normal subgroups, or how linear maps pull back subspaces to subspaces. In all of these cases, there is a well-developed theory of these objects and their structure-preserving maps, and we will develop an analogous theory for Boolean networks. For example, we will state and prove a universal property of quotient homometries, and analogues of the isomorphism theorems, including the factorization of homometry into the composition of a quotient and embedding.
 
 The first part of this thesis is focused on developing the theory Boolean networks and homometry, and a number of structure theorems that are analogous to those in fields such as topology, abstract algebra, and linear algebra. All of those settings have a well-established categorical foundation, leading to the categories of $\Top$, $\Grp$, and $\Vect_{\mathbb{F}}$, respectively. In the second part of this thesis, we will develop the theory of structure-preserving maps between Boolean works in a categorical framework. This will abstract the structure from the first part, and we will explore ideas such as products, coproducts, adjoints, universal properties, and so on. 
+
+
+%%====================================================
+\section{Basic definition and preliminaries}
+
+
+The concept of a Boolean networks is not difficult, but the notation and terminology can vary widely across the literature. Sometimes, a Boolean networks is a map $f\colon\F^n\to\F^n$, whereas others define it as an $n$-tuple of functions $(f_1,\dots,f_n)$, with $f_i\colon\F^n\to\F$. The graph that describes the dynamics can be called the phase space, if one is making parallels with classical dynamical systems, or the state space, if one is viewing them as generalized cellular automata. The directed graph that encodes the interactions of the variables has many names throughout the literature, such as interaction graph, wiring diagram, dependency graph, coupling graph, influence graph, and others. Sometimes this graph is signed to distinguish activations vs.\ inhibitions, and in other applications, such as for social networks, it even undirected. In this section, we will define the basic concepts, terminology and notation that we will use throughout this thesis.
+
+
+We will usually use $x_1,\dots,x_n$. Sometimes, for $2$- or $3$-node networks, $x,y$ and $x,y,z$. In a few cases,  if there is a distinguished vertex, like in a star graph, we will denote that as $x_0$. 
